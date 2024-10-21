@@ -8,24 +8,32 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Sambit\\.nuget\\packages\\": {}
+    "C:\\Users\\andyD\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\MovieReviewApp\\MovieReviewApp.csproj",
+      "projectUniqueName": "C:\\Users\\andyD\\OneDrive\\Desktop\\547\\Movie-Review-App\\backend\\MovieReviewApp.csproj",
       "projectName": "MovieReviewApp",
-      "projectPath": "C:\\MovieReviewApp\\MovieReviewApp.csproj",
-      "packagesPath": "C:\\Users\\Sambit\\.nuget\\packages\\",
-      "outputPath": "C:\\MovieReviewApp\\obj\\",
+      "projectPath": "C:\\Users\\andyD\\OneDrive\\Desktop\\547\\Movie-Review-App\\backend\\MovieReviewApp.csproj",
+      "packagesPath": "C:\\Users\\andyD\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\andyD\\OneDrive\\Desktop\\547\\Movie-Review-App\\backend\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Sambit\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\andyD\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -67,7 +75,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
