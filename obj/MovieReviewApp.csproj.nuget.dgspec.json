@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\MovieReviewApp\\MovieReviewApp.csproj": {}
+    "C:\\Users\\keefe\\OneDrive\\Desktop\\Coding Projects\\Movie-Review-App\\MovieReviewApp.csproj": {}
   },
   "projects": {
-    "C:\\MovieReviewApp\\MovieReviewApp.csproj": {
+    "C:\\Users\\keefe\\OneDrive\\Desktop\\Coding Projects\\Movie-Review-App\\MovieReviewApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\MovieReviewApp\\MovieReviewApp.csproj",
+        "projectUniqueName": "C:\\Users\\keefe\\OneDrive\\Desktop\\Coding Projects\\Movie-Review-App\\MovieReviewApp.csproj",
         "projectName": "MovieReviewApp",
-        "projectPath": "C:\\MovieReviewApp\\MovieReviewApp.csproj",
-        "packagesPath": "C:\\Users\\Sambit\\.nuget\\packages\\",
-        "outputPath": "C:\\MovieReviewApp\\obj\\",
+        "projectPath": "C:\\Users\\keefe\\OneDrive\\Desktop\\Coding Projects\\Movie-Review-App\\MovieReviewApp.csproj",
+        "packagesPath": "C:\\Users\\keefe\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\keefe\\OneDrive\\Desktop\\Coding Projects\\Movie-Review-App\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Sambit\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\keefe\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
