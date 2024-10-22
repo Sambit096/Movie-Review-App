@@ -1,4 +1,6 @@
 # Ignore Visual Studio files 
+backend/.vs/
+backend/.vscode/*
 bin
 obj
 backend/bin
