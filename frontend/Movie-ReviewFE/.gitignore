@@ -1,11 +1,3 @@
-# Ignore Visual Studio files 
-backend/.vs/
-backend/.vs/*
-backend/.vscode/*
-bin
-obj
-backend/bin
-backend/obj
 # Logs
 logs
 *.log
