@@ -1,0 +1,43 @@
+.header{
+  background-color: #00171F;
+  max-width:100%;
+  padding: 1.25rem 2rem;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.together{
+  position:fixed;
+  top:0;
+  left:0;
+  max-width: 100%;
+  width: 100%;
+}
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  margin: 0;
+  display:flex;
+}
+button {
+  background-color: transparent;
+  padding: .5rem .5rem .5rem;
+  border: 2px solid #00a7e1;
+  border-radius: 10px; 
+  font-size: 1.25rem;
+  font-weight: 500;
+  color:white;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  height:95%;
+}
+button:hover {
+  background-color: #00a7e1;
+}
+hr {
+  width: 100%;
+  height: 1px;
+  border:none;
+  background-color:white;
+  margin:0;
+}
