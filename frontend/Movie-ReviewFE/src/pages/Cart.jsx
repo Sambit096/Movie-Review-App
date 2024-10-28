@@ -1,6 +1,6 @@
 const Cart = () => {
     return (
-        <h1>Cart</h1>
+        <h1>This is the cart page where the user can see selected movies they have added to the cart</h1>
     )
 }
 

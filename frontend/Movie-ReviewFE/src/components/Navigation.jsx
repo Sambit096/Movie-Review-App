@@ -8,10 +8,17 @@ import Checkout from "../pages/Checkout";
 const Navigation = () => {
     return (
         <Router>
-            <PageButton to=""/>
-            <PageButton to="Movies" />
-            <PageButton to="Cart" />
-            <PageButton to="Checkout" />
+            <nav className="navbar">
+                <div id="nav--left">
+                    <p>Movie App Title (TODO)</p>
+                </div>
+                <div id="nav--right">
+                    <PageButton to=""/>
+                    <PageButton to="Movies" />
+                    <PageButton to="Cart" />
+                    <PageButton to="Checkout" />
+                </div>
+            </nav>
             <Routes>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/Cart" element={<Cart />}></Route>
