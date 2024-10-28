@@ -5,21 +5,6 @@
   text-align: center;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
 /** Navbar **/
 .navbar {
   left: 0%;
@@ -36,6 +21,12 @@
   display: flex;
 }
 
+#nav--left:first-child {
+  justify-content: left;
+  align-items: center;
+  padding-left: 2%;
+}
+
 #nav--right {
   flex: 1;
   display: flex;
@@ -48,6 +39,10 @@
 
 .nav--item {
   color: white;
+}
+
+.nav--item:first-child {
+  float: left;
 }
 
 .nav--item:hover {

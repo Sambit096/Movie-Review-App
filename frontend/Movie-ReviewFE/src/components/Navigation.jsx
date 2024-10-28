@@ -10,7 +10,7 @@ const Navigation = () => {
         <Router>
             <nav className="navbar">
                 <div id="nav--left">
-                    <p>Movie App Title (TODO)</p>
+                    <h3>App Title</h3>
                 </div>
                 <div id="nav--right">
                     <PageButton to=""/>
