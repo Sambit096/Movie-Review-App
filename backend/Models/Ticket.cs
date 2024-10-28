@@ -13,12 +13,12 @@ namespace MovieReviewApp.Models{
         public int Quantity { get; set; }
 
         public Ticket(){}
-        public Ticket(int ticketId, int showTimeId, double price, int quantity = 1)
+        /*public Ticket(int ticketId, int showTimeId, double price, int quantity = 1)
         {
             this.TicketId = ticketId;
             this.ShowTimeId = showTimeId;
             this.Price = price;
             this.Quantity = quantity; 
-        }
+        }*/
     }
 }
