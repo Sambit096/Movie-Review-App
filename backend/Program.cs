@@ -14,6 +14,13 @@ builder.Services.AddSingleton<IMovieService, MovieService>();
 builder.Services.AddDbContext<MovieReviewDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddCors(options => {
+    options.AddPolicy(name: "MyAllowSpecificOrigins",
+                        policy => {
+                            policy.WithOrigins("http://localhost:5173").WithHeaders("*").WithMethods("*");
+                        });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
@@ -29,6 +36,8 @@ builder.Services.AddSwaggerGen();
  });*/
 
 var app = builder.Build();
+
+app.UseCors("MyAllowSpecificOrigins");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
