@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using MovieReviewApp.Models;
+using MovieReviewApp.backend.Models;
 using MovieReviewApp.Interfaces;
+using System.Web.Http.Cors;
 
 namespace MovieReviewApp.Controllers;
 [ApiController]
@@ -20,5 +21,10 @@ public class MovieController : ControllerBase {
     [HttpPost(nameof(AddMovie))]
     public bool AddMovie(Movie movie) {
         return movieService.AddMovie(movie);
+    }
+
+    [HttpDelete(nameof(RemoveMovie))]
+    public bool RemoveMovie(Movie movie) {
+        return movieService.RemoveMovie(movie);
     }
 }

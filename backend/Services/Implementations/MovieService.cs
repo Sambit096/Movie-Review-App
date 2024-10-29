@@ -1,5 +1,5 @@
 using MovieReviewApp.Interfaces;
-using MovieReviewApp.Models;
+using MovieReviewApp.backend.Models;
 using System.Linq;
 
 namespace MovieReviewApp.Services {

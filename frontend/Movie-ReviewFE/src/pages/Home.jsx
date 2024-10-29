@@ -27,9 +27,11 @@ const Home = () => {
     return (
         <section className="page" id="home--page">
             <h1 className="page--header">Welcome to our Movie review site!</h1>
-            {movies.map(movie => (
-                <Movie key={movie.movieId} title={movie.title}/>
-            ))}
+            <div className='container row'>
+                {movies.map(movie => (
+                    <Movie key={movie.movieId} title={movie.title} desc={movie.description}/>
+                ))}
+            </div>
         </section>
     )
 }

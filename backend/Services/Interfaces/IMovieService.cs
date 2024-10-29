@@ -1,4 +1,4 @@
-using MovieReviewApp.Models;
+using MovieReviewApp.backend.Models;
 namespace MovieReviewApp.Interfaces {
     public interface IMovieService {
         IList<Movie> GetMovies();
