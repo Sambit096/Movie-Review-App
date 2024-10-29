@@ -1,6 +1,6 @@
 const Movies = () => {
     return (
-        <h1>Movies</h1>
+        <h1>This is a page that will hold the movie times after a movie is selected.</h1>
     )
 }
 

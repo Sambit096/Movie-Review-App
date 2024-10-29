@@ -5,8 +5,8 @@ const PageButton = ({ to }) => {
     const navigate = useNavigate();
 
     return (
-        <button onClick={() => {navigate(`/${to}`)}}>
-            {to === "" ? "Home" : to}
+        <button onClick={() => {navigate(`/${to}`)}} className="page--button">
+            <p className="nav--item">{to === "" ? "Home" : to }</p>
         </button>
     )
 }
