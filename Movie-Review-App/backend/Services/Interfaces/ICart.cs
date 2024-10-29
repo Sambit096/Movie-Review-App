@@ -1,6 +1,5 @@
-using System.Collections.Generic;
-
-namespace MovieReviewApp.models
+using MovieReviewApp.models;
+namespace MovieReviewApp.interfaces
 {
     public interface ICart
     {
