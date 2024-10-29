@@ -1,12 +1,13 @@
-// Connect this to API Endpoint to fill with movie data
+import { useParams } from "react-router-dom"
 
-const Movie = ({title}) => {
+const Movie = () => {
 
+    const { id } = useParams()
 
-    return(
-        <div className="movie--item">
-            <p>{title}</p>
-        </div>
+    // API Fetch to get this specific Movie info
+
+    return (
+        <h1>TODO</h1>
     )
 }
 
