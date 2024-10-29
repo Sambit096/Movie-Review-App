@@ -16,11 +16,17 @@ namespace MovieReviewApp.Services {
         }
 
         public bool RemoveMovie(Movie removingMovie) {
+            movies.Remove(removingMovie);
             return true;
         }
 
         public bool EditMovie (Movie editedMovie) {
-            return true;
+            if(movies.Contains(editedMovie)) {
+                int index = movies.IndexOf(editedMovie);
+                movies[index] = editedMovie;
+                return true;
+            }
+            return false;
         }
     }
 }
