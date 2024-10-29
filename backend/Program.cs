@@ -16,6 +16,10 @@ builder.Services.AddDbContext<MovieReviewDbContext>(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
+// Need to add ShowTimeService to Scope
+builder.Services.AddScoped<IShowTimeService, ShowTimeService>();
+
 builder.Services.AddSwaggerGen();
 /* builder.Services.AddSwaggerGen(c =>
  {
