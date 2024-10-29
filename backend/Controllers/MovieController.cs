@@ -21,4 +21,9 @@ public class MovieController : ControllerBase {
     public bool AddMovie(Movie movie) {
         return movieService.AddMovie(movie);
     }
+
+    [HttpDelete(nameof(RemoveMovie))]
+    public bool RemoveMovie(Movie movie) {
+        return movieService.RemoveMovie(movie);
+    }
 }
