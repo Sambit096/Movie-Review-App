@@ -12,6 +12,8 @@ namespace MovieReviewApp.Models{
         // Number of tickets purchased or available in this transaction
         public int Quantity { get; set; }
 
+        // If ticket is purchased or not
+        public bool Availability {get; set; }
         public Ticket(){}
         /*public Ticket(int ticketId, int showTimeId, double price, int quantity = 1)
         {

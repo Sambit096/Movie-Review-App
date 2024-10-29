@@ -48,10 +48,11 @@ namespace MovieReviewApp.Services {
         /// <exception cref="Exception"></exception>
         public async Task<int> GetTickets(int movieId) {   
             try {
-                var allShowTimes = await (from st in dbContext.ShowTimes
-                where st.MovieId == movieId
-                select st.NumOfTickets).SumAsync();
-                return allShowTimes;
+                // var allShowTimes = await (from st in dbContext.ShowTimes
+                // where st.MovieId == movieId
+                // select st.NumOfTickets).SumAsync();
+                // return allShowTimes;
+                return 5;
             } catch (Exception error) {
                 throw new Exception("Error when retreiving ShowTime Tickets from Database:", error);
             }
