@@ -17,6 +17,71 @@ namespace MovieReviewApp.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PaymentGateway>().HasKey(pg => pg.GatewayId); // Define primary key explicitly
+            modelBuilder.Entity<Movie>().HasData(
+                //Movie sample data provided by ChatGPT
+                new Movie { MovieId = 1, Title = "John Wick: Chapter 4", Genre = "Action", Description = "John Wick uncovers a path to defeating The High Table, but before he can earn his freedom, he must face a new enemy with powerful alliances across the globe.", Rating = MPAARating.R },
+                new Movie { MovieId = 2, Title = "Barbie", Genre = "Comedy", Description = "After being expelled from Barbieland for being a less-than-perfect doll, Barbie embarks on a journey of self-discovery in the real world.", Rating = MPAARating.PG },
+                new Movie { MovieId = 3, Title = "Oppenheimer", Genre = "Biography, Drama, History", Description = "A dramatic portrayal of the life of J. Robert Oppenheimer and his role in the development of the atomic bomb.", Rating = MPAARating.R },
+                new Movie { MovieId = 4, Title = "Guardians of the Galaxy Vol. 3", Genre = "Action, Adventure, Comedy", Description = "The Guardians must protect Rocket, who is in grave danger, while dealing with their pasts and new threats to the galaxy.", Rating = MPAARating.PG13 },
+                new Movie { MovieId = 5, Title = "Mission: Impossible - Dead Reckoning Part One", Genre = "Action, Adventure, Thriller", Description = "Ethan Hunt and his IMF team must track down a dangerous new weapon before it falls into the wrong hands.", Rating = MPAARating.PG13 },
+                new Movie { MovieId = 6, Title = "Spider-Man: Across the Spider-Verse", Genre = "Animation, Action, Adventure", Description = "Miles Morales returns for a new adventure across the multiverse, meeting other Spider-People along the way.", Rating = MPAARating.PG },
+                new Movie { MovieId = 7, Title = "The Marvels", Genre = "Action, Adventure, Fantasy", Description = "Captain Marvel teams up with Ms. Marvel and Monica Rambeau to face a new cosmic threat.", Rating = MPAARating.PG },
+                new Movie { MovieId = 8, Title = "The Super Mario Bros. Movie", Genre = "Animation, Adventure, Comedy", Description = "Mario and Luigi embark on a journey through the Mushroom Kingdom to rescue Princess Peach from Bowser.", Rating = MPAARating.PG },
+                new Movie { MovieId = 9, Title = "Evil Dead Rise", Genre = "Horror", Description = "Two estranged sisters must battle a group of flesh-possessing demons to save the family they never knew they had.", Rating = MPAARating.R },
+                new Movie { MovieId = 10, Title = "Dune: Part Two", Genre = "Action, Adventure, Sci-Fi", Description = "Paul Atreides unites with Chani and the Fremen while seeking revenge against those who destroyed his family.", Rating = MPAARating.PG13 }
+               );
+            modelBuilder.Entity<ShowTime>().HasData(
+                //Showtime sample data provided by ChatGPT
+                new ShowTime { ShowTimeId = 1, MovieId = 1, ViewingTime = new DateTime(2024, 10, 29, 14, 0, 0), Status = MovieStatus.Available },
+                new ShowTime { ShowTimeId = 2, MovieId = 1, ViewingTime = new DateTime(2024, 11, 1, 18, 30, 0), Status = MovieStatus.Available },
+                new ShowTime { ShowTimeId = 3, MovieId = 2, ViewingTime = new DateTime(2024, 11, 2, 15, 0, 0), Status = MovieStatus.Available },
+                new ShowTime { ShowTimeId = 4, MovieId = 3, ViewingTime = new DateTime(2024, 10, 30, 16, 15, 0), Status = MovieStatus.Available },
+                new ShowTime { ShowTimeId = 5, MovieId = 3, ViewingTime = new DateTime(2024, 11, 4, 19, 0, 0), Status = MovieStatus.Available },
+                new ShowTime { ShowTimeId = 6, MovieId = 4, ViewingTime = new DateTime(2024, 11, 6, 11, 30, 0), Status = MovieStatus.Available },
+                new ShowTime { ShowTimeId = 7, MovieId = 5, ViewingTime = new DateTime(2024, 11, 12, 17, 0, 0), Status = MovieStatus.Available },
+                new ShowTime { ShowTimeId = 8, MovieId = 5, ViewingTime = new DateTime(2024, 11, 14, 12, 30, 0), Status = MovieStatus.Available },
+                new ShowTime { ShowTimeId = 9, MovieId = 6, ViewingTime = new DateTime(2024, 11, 1, 10, 0, 0), Status = MovieStatus.Available },
+                new ShowTime { ShowTimeId = 10, MovieId = 7, ViewingTime = new DateTime(2024, 11, 5, 16, 0, 0), Status = MovieStatus.Available },
+                new ShowTime { ShowTimeId = 11, MovieId = 8, ViewingTime = new DateTime(2024, 10, 31, 15, 0, 0), Status = MovieStatus.Available },
+                new ShowTime { ShowTimeId = 12, MovieId = 8, ViewingTime = new DateTime(2024, 11, 3, 19, 0, 0), Status = MovieStatus.Available },
+                new ShowTime { ShowTimeId = 13, MovieId = 9, ViewingTime = new DateTime(2024, 11, 8, 11, 0, 0), Status = MovieStatus.Available },
+                new ShowTime { ShowTimeId = 14, MovieId = 10, ViewingTime = new DateTime(2024, 11, 10, 16, 30, 0), Status = MovieStatus.Available },
+                new ShowTime { ShowTimeId = 15, MovieId = 10, ViewingTime = new DateTime(2024, 11, 19, 18, 0, 0), Status = MovieStatus.Available }
+            );
+            modelBuilder.Entity<Ticket>().HasData(
+                //Ticket sample data provided by ChatGPT
+                new Ticket { TicketId = 1, ShowTimeId = 1, Price = 12.5, Quantity = 1, Availability = true },
+                new Ticket { TicketId = 2, ShowTimeId = 1, Price = 12.5, Quantity = 1, Availability = false },
+                new Ticket { TicketId = 3, ShowTimeId = 2, Price = 14.0, Quantity = 1, Availability = true },
+                new Ticket { TicketId = 4, ShowTimeId = 2, Price = 14.0, Quantity = 1, Availability = false },
+                new Ticket { TicketId = 5, ShowTimeId = 2, Price = 14.0, Quantity = 1, Availability = false },
+                new Ticket { TicketId = 6, ShowTimeId = 3, Price = 10.0, Quantity = 1, Availability = true },
+                new Ticket { TicketId = 7, ShowTimeId = 4, Price = 15.0, Quantity = 1, Availability = true },
+                new Ticket { TicketId = 8, ShowTimeId = 4, Price = 15.0, Quantity = 1, Availability = false },
+                new Ticket { TicketId = 9, ShowTimeId = 4, Price = 15.0, Quantity = 1, Availability = false },
+                new Ticket { TicketId = 10, ShowTimeId = 5, Price = 11.0, Quantity = 1, Availability = true },
+                new Ticket { TicketId = 11, ShowTimeId = 5, Price = 11.0, Quantity = 1, Availability = false },
+                new Ticket { TicketId = 12, ShowTimeId = 6, Price = 13.5, Quantity = 1, Availability = true },
+                new Ticket { TicketId = 13, ShowTimeId = 6, Price = 13.5, Quantity = 1, Availability = false },
+                new Ticket { TicketId = 14, ShowTimeId = 6, Price = 13.5, Quantity = 1, Availability = false },
+                new Ticket { TicketId = 15, ShowTimeId = 7, Price = 12.0, Quantity = 1, Availability = true },
+                new Ticket { TicketId = 16, ShowTimeId = 8, Price = 15.5, Quantity = 1, Availability = true },
+                new Ticket { TicketId = 17, ShowTimeId = 8, Price = 15.5, Quantity = 1, Availability = false },
+                new Ticket { TicketId = 18, ShowTimeId = 9, Price = 13.0, Quantity = 1, Availability = true },
+                new Ticket { TicketId = 19, ShowTimeId = 9, Price = 13.0, Quantity = 1, Availability = false },
+                new Ticket { TicketId = 20, ShowTimeId = 10, Price = 16.0, Quantity = 1, Availability = true },
+                new Ticket { TicketId = 21, ShowTimeId = 10, Price = 16.0, Quantity = 1, Availability = false },
+                new Ticket { TicketId = 22, ShowTimeId = 11, Price = 14.5, Quantity = 1, Availability = true },
+                new Ticket { TicketId = 23, ShowTimeId = 11, Price = 14.5, Quantity = 1, Availability = false },
+                new Ticket { TicketId = 24, ShowTimeId = 12, Price = 10.5, Quantity = 1, Availability = true },
+                new Ticket { TicketId = 25, ShowTimeId = 12, Price = 10.5, Quantity = 1, Availability = false },
+                new Ticket { TicketId = 26, ShowTimeId = 13, Price = 11.0, Quantity = 1, Availability = true },
+                new Ticket { TicketId = 27, ShowTimeId = 14, Price = 12.0, Quantity = 1, Availability = true },
+                new Ticket { TicketId = 28, ShowTimeId = 14, Price = 12.0, Quantity = 1, Availability = false },
+                new Ticket { TicketId = 29, ShowTimeId = 14, Price = 12.0, Quantity = 1, Availability = false },
+                new Ticket { TicketId = 30, ShowTimeId = 15, Price = 13.0, Quantity = 1, Availability = true },
+                new Ticket { TicketId = 31, ShowTimeId = 15, Price = 13.0, Quantity = 1, Availability = false }
+            );
         }
     }
 }
