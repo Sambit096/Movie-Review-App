@@ -30,7 +30,7 @@ namespace MovieReviewApp.Controllers
         public async Task<ActionResult<IEnumerable<Ticket>>> GetTickets(int movieId)
         {
             var tickets = await _ticketService.GetTickets(movieId);
-            if (tickets == null) return NotFound();
+            if (tickets == null || !tickets.Any()) return NotFound("No tickets found for the specified movie.");
 
             return Ok(tickets);
         }
@@ -40,7 +40,7 @@ namespace MovieReviewApp.Controllers
         public async Task<ActionResult<Ticket>> CreateTicket([FromBody] Ticket ticket)
         {
             var createdTicket = await _ticketService.AddTicket(ticket);
-            return CreatedAtAction(nameof(GetTickets), new { movieId = createdTicket.MovieId }, createdTicket);
+            return CreatedAtAction(nameof(GetAllTickets), new { ticketId = createdTicket.TicketId }, createdTicket);
         }
 
         // PUT: api/ticket/{id}
@@ -48,7 +48,7 @@ namespace MovieReviewApp.Controllers
         public async Task<IActionResult> UpdateTicket(int id, [FromBody] Ticket ticket)
         {
             var updated = await _ticketService.UpdateTicket(id, ticket);
-            if (!updated) return NotFound();
+            if (!updated) return NotFound("Ticket not found.");
 
             return NoContent();
         }
@@ -58,7 +58,7 @@ namespace MovieReviewApp.Controllers
         public async Task<IActionResult> DeleteTicket(int id)
         {
             var deleted = await _ticketService.DeleteTicket(id);
-            if (!deleted) return NotFound();
+            if (!deleted) return NotFound("Ticket not found.");
 
             return NoContent();
         }

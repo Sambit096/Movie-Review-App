@@ -19,9 +19,18 @@ namespace MovieReviewApp.Services {
         /// <exception cref="Exception"></exception>
         public async Task<IEnumerable<Ticket>> GetTickets(int movieId)
         {
-            return await _dbContext.Tickets
-                .Where(t => t.MovieId == movieId) 
+            // Step 1: Retrieve ShowTimeIds associated with the specified MovieId
+            var showTimeIds = await _dbContext.ShowTimes
+                .Where(st => st.MovieId == movieId)
+                .Select(st => st.ShowTimeId)
                 .ToListAsync();
+
+            // Step 2: Retrieve Tickets associated with those ShowTimeIds
+            var tickets = await _dbContext.Tickets
+                .Where(t => showTimeIds.Contains(t.ShowTimeId))
+                .ToListAsync();
+
+            return tickets;
         }
 
         /// <summary>
@@ -65,6 +74,7 @@ namespace MovieReviewApp.Services {
             existingTicket.ShowTimeId = updatedTicket.ShowTimeId;
             existingTicket.Price = updatedTicket.Price;
             existingTicket.Quantity = updatedTicket.Quantity;
+            existingTicket.Availability = updatedTicket.Availability;
             
             _dbContext.Tickets.Update(existingTicket);
             await _dbContext.SaveChangesAsync();

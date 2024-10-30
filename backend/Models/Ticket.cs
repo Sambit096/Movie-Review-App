@@ -3,7 +3,6 @@ namespace MovieReviewApp.Models{
         // Unique identifier for each ticket
         public int TicketId { get; set; }
 
-        public int MovieId { get; set; }
         // Foreign key linking this ticket to a specific showtime
         public int ShowTimeId { get; set; }
 
