@@ -8,13 +8,13 @@
       "sslPort": 44370
     }
   },
-  
   "profiles": {
-    "MovieReviewApp": {
+    "http": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5190;https://localhost:5191",
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:5190",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
