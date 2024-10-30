@@ -68,3 +68,6 @@
 }
 
 /** Movie Items **/
+.movie--item {
+  display:flex;
+}
