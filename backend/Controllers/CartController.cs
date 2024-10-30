@@ -13,19 +13,25 @@ public class CartController : ControllerBase {
         this.cartService = cartService;
     }
         [HttpPost("AddTicketToCart")]
-        public IActionResult AddTicketToCart(int cartId, int ticketId, int quantity)
+        public Task<IActionResult> AddTicketToCart(int cartId, int ticketId, int quantity)
         {
-            var cart = GetOrCreateCart(cartId);
-            var ticket = new Ticket { Id = ticketId, Quantity = quantity, Price = 10.0 }; 
-            cart.Tickets.Add(ticket);
-            cart.Total += ticket.Price * quantity;
-            return Ok(cart);
+            var result = await cartService.AddTicketToCart(cartId, ticketId, quantity);
+            if (result)
+            {
+                return Ok("Ticket added to cart successfully.");
+            }
+            return BadRequest("Unable to add ticket to cart.");
         }
 
         [HttpPost("RemoveTicketFromCart")]
-        public IActionResult RemoveTicketFromCart(int cartId, int ticketId)
+        public Task<IActionResult> RemoveTicketFromCart(int cartId, int ticketId)
         {
-            return cartService.RemoveTicketFromCart(cartId, ticketId);
+            var result = await cartService.RemoveTicketFromCart(cartId, ticketId);
+            if (result)
+            {
+                return Ok("Ticket removed from cart successfully.");
+            }
+            return BadRequest("Unable to remove ticket from cart.");
         }
 
     [HttpGet(nameof(GetCart))]
