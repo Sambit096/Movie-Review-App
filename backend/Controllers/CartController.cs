@@ -12,7 +12,7 @@ public class CartController : ControllerBase {
     public CartController(ICartService cartService) {
         this.cartService = cartService;
     }
-        [HttpPost("AddTicketToCart")]
+        [HttpPost(nameof(AddTicketToCart))]
         public Task<IActionResult> AddTicketToCart(int cartId, int ticketId, int quantity)
         {
             var result = await cartService.AddTicketToCart(cartId, ticketId, quantity);
@@ -23,7 +23,7 @@ public class CartController : ControllerBase {
             return BadRequest("Unable to add ticket to cart.");
         }
 
-        [HttpPost("RemoveTicketFromCart")]
+        [HttpPost(nameof(RemoveTicketFromCart))]
         public Task<IActionResult> RemoveTicketFromCart(int cartId, int ticketId)
         {
             var result = await cartService.RemoveTicketFromCart(cartId, ticketId);
