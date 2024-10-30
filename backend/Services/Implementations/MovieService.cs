@@ -10,6 +10,13 @@ namespace MovieReviewApp.Services {
             return movies.AsReadOnly();
         }
 
+        public Movie GetMovieById(int id) {
+            foreach(Movie movie in movies) {
+                if (movie.MovieId == id) return movie;
+            }
+            return null;
+        }
+
         public bool AddMovie(Movie newMovie) {
             movies.Add(newMovie);
             return true;

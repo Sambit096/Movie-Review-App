@@ -17,6 +17,11 @@ public class MovieController : ControllerBase {
         return movieService.GetMovies();
     }
 
+    [HttpGet(nameof(GetMovieById))]
+    public Movie GetMovieById(int id) {
+        return movieService.GetMovieById(id);
+    }
+
     [HttpPost(nameof(AddMovie))]
     public bool AddMovie(Movie movie) {
         return movieService.AddMovie(movie);
