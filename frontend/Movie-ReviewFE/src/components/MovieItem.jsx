@@ -1,6 +1,6 @@
 import MovieButton from "./MovieButton"
 
-const MovieItem = ({ title, movieId }) => {
+const MovieItem = ({ title, id }) => {
 
 
     return(

@@ -27,7 +27,7 @@ const Movies = () => {
         <div>
             <h1>Currently Playing:</h1>
             {movies.map(movie => (
-                <MovieItem key={movie.MovieId} title={movie.Title} movieId={movie.MovieId}/>
+                <MovieItem key={movie.movieId} id={movie.movieId} title={movie.title}/>
             ))}
         </div>
     )
