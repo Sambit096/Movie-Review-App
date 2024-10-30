@@ -52,7 +52,7 @@ public class ShowTimeController : ControllerBase {
     /// </summary>
     /// <param name="movieId"></param>
     /// <returns></returns>
-    [HttpGet("GetTickets/{movieId}")]
+    /*[HttpGet("GetTickets/{movieId}")]
     public async Task<IActionResult> GetTickets(int movieId) {
         try {
             var tickets = await this.showTimeService.GetTickets(movieId);
@@ -63,5 +63,5 @@ public class ShowTimeController : ControllerBase {
         } catch (Exception error) {
             return StatusCode(500, $"Error when receiving Ticket Data: {error}");
         }
-    }
+    }*/
 }
