@@ -5,7 +5,7 @@ const MovieButton = ({to, title}) => {
     const navigate = useNavigate();
 
     return(
-        <button onClick={() => {navigate(`/Movies/${to}`)}}>
+        <button className="buytickets--button" onClick={() => {navigate(`/Movies/${to}`)}}>
             <p>Buy Tickets</p>
         </button>
     )

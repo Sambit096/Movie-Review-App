@@ -70,4 +70,9 @@
 /** Movie Items **/
 .movie--item {
   display:flex;
+  justify-content:space-between;
+  height:6rem;
+}
+.buytickets--button {
+  margin-left: .5rem;
 }
