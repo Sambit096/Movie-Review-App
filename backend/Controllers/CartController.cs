@@ -12,6 +12,21 @@ public class CartController : ControllerBase {
     public CartController(ICartService cartService) {
         this.cartService = cartService;
     }
+        [HttpPost("AddTicketToCart")]
+        public IActionResult AddTicketToCart(int cartId, int ticketId, int quantity)
+        {
+            var cart = GetOrCreateCart(cartId);
+            var ticket = new Ticket { Id = ticketId, Quantity = quantity, Price = 10.0 }; 
+            cart.Tickets.Add(ticket);
+            cart.Total += ticket.Price * quantity;
+            return Ok(cart);
+        }
+
+        [HttpPost("RemoveTicketFromCart")]
+        public IActionResult RemoveTicketFromCart(int cartId, int ticketId)
+        {
+            return cartService.RemoveTicketFromCart(cartId, ticketId);
+        }
 
     [HttpGet(nameof(GetCart))]
     public async Task<IActionResult> GetCart(int cartId) {
@@ -40,3 +55,4 @@ public class CartController : ControllerBase {
         }
     }
 }
+
