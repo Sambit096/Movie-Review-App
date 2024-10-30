@@ -5,7 +5,8 @@ const MovieItem = ({ title, id }) => {
 
     return(
         <div className="movie--item">
-            <MovieButton to={id} title={title}/>
+            <h2>{title}</h2>
+            <MovieButton to={movieId} title={title}/>
         </div>
     )
 }

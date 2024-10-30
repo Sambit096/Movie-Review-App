@@ -26,6 +26,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 // Need to add ShowTimeService to Scope
 builder.Services.AddScoped<IShowTimeService, ShowTimeService>();
+builder.Services.AddScoped<ICartService, CartService>();
 
 builder.Services.AddSwaggerGen();
 /* builder.Services.AddSwaggerGen(c =>

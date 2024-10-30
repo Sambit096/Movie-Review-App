@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieReviewApp.Data;
 
@@ -11,9 +12,11 @@ using MovieReviewApp.Data;
 namespace MovieReviewApp.Migrations
 {
     [DbContext(typeof(MovieReviewDbContext))]
-    partial class MovieReviewDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241030012303_AddingMoreInitialData")]
+    partial class AddingMoreInitialData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,7 +87,7 @@ namespace MovieReviewApp.Migrations
                         {
                             MovieId = 3,
                             Description = "A dramatic portrayal of the life of J. Robert Oppenheimer and his role in the development of the atomic bomb.",
-                            Genre = "History",
+                            Genre = "Biography, Drama, History",
                             Rating = 3,
                             Title = "Oppenheimer"
                         },
@@ -92,7 +95,7 @@ namespace MovieReviewApp.Migrations
                         {
                             MovieId = 4,
                             Description = "The Guardians must protect Rocket, who is in grave danger, while dealing with their pasts and new threats to the galaxy.",
-                            Genre = "Comedy",
+                            Genre = "Action, Adventure, Comedy",
                             Rating = 2,
                             Title = "Guardians of the Galaxy Vol. 3"
                         },
@@ -100,7 +103,7 @@ namespace MovieReviewApp.Migrations
                         {
                             MovieId = 5,
                             Description = "Ethan Hunt and his IMF team must track down a dangerous new weapon before it falls into the wrong hands.",
-                            Genre = "Action",
+                            Genre = "Action, Adventure, Thriller",
                             Rating = 2,
                             Title = "Mission: Impossible - Dead Reckoning Part One"
                         },
@@ -108,7 +111,7 @@ namespace MovieReviewApp.Migrations
                         {
                             MovieId = 6,
                             Description = "Miles Morales returns for a new adventure across the multiverse, meeting other Spider-People along the way.",
-                            Genre = "Action",
+                            Genre = "Animation, Action, Adventure",
                             Rating = 1,
                             Title = "Spider-Man: Across the Spider-Verse"
                         },
@@ -116,7 +119,7 @@ namespace MovieReviewApp.Migrations
                         {
                             MovieId = 7,
                             Description = "Captain Marvel teams up with Ms. Marvel and Monica Rambeau to face a new cosmic threat.",
-                            Genre = "Action",
+                            Genre = "Action, Adventure, Fantasy",
                             Rating = 1,
                             Title = "The Marvels"
                         },
@@ -124,7 +127,7 @@ namespace MovieReviewApp.Migrations
                         {
                             MovieId = 8,
                             Description = "Mario and Luigi embark on a journey through the Mushroom Kingdom to rescue Princess Peach from Bowser.",
-                            Genre = "Adventure",
+                            Genre = "Animation, Adventure, Comedy",
                             Rating = 1,
                             Title = "The Super Mario Bros. Movie"
                         },
@@ -140,7 +143,7 @@ namespace MovieReviewApp.Migrations
                         {
                             MovieId = 10,
                             Description = "Paul Atreides unites with Chani and the Fremen while seeking revenge against those who destroyed his family.",
-                            Genre = "Sci-Fi",
+                            Genre = "Action, Adventure, Sci-Fi",
                             Rating = 2,
                             Title = "Dune: Part Two"
                         });

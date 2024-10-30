@@ -5,7 +5,6 @@ const Movies = () => {
 
     const [movies, setMovies] = useState([]);
 
-
     // Fetch data from the GetMovies api endpoint
     const fetchData = async () => {
         try {
@@ -19,14 +18,14 @@ const Movies = () => {
             console.log(err);
         }
     }
-
+    
     useEffect(() => {
         fetchData();
     }, []);
 
     return (
         <div>
-            <h1>TODO</h1>
+            <h1>Currently Playing:</h1>
             {movies.map(movie => (
                 <MovieItem key={movie.movieId} id={movie.movieId} title={movie.title}/>
             ))}
