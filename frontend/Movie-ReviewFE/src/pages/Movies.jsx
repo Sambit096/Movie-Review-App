@@ -28,7 +28,7 @@ const Movies = () => {
         <div>
             <h1>TODO</h1>
             {movies.map(movie => (
-                <MovieItem key={movie.movieId} title={movie.title} movieId={movie.movieId}/>
+                <MovieItem key={movie.movieId} id={movie.movieId} title={movie.title}/>
             ))}
         </div>
     )

@@ -16,7 +16,7 @@ const UseRoutes = () => {
             <Route path="/Checkout" element={<Checkout />}></Route>
             <Route path="/Login" element={<Login />}></Route>
             <Route path="/Settings" element={<Settings />}></Route>
-            <Route path="/Movie/:id" element={<Movie />}></Route>
+            <Route path='/Movies/:id' element={<Movie />}></Route>
         </Routes>
     )
 }
