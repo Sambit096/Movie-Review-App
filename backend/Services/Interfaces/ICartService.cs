@@ -1,15 +1,11 @@
 using MovieReviewApp.Models;
-namespace MovieReviewApp.interfaces
+namespace MovieReviewApp.Interfaces
 {
     public interface ICartService
     {
-        int CartId { get; set; }
-        List<Ticket> Tickets { get; set; }
-        double Total { get; set; }
-
-        bool AddTicketToCart(int cartId, int ticketId, int quantity);
-        bool RemoveTicketFromCart(int cartId, int ticketId);
-        Cart GetCart(int cartId);
-        bool ProcessPayment(int cartId, string cardNumber, string exp, string cardHolderName, string cvc);
+        public Task<bool> AddTicketToCart(int cartId, int ticketId, int quantity);
+        public Task<bool> RemoveTicketFromCart(int cartId, int ticketId);
+        public Task<Cart> GetCart(int cartId);
+        public Task<bool> ProcessPayment(int cartId, string cardNumber, string exp, string cardHolderName, string cvc);
     }
 }
