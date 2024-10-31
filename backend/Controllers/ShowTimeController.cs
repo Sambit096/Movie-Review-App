@@ -63,5 +63,5 @@ public class ShowTimeController : ControllerBase {
         } catch (Exception error) {
             return StatusCode(500, $"Error when receiving Ticket Data: {error}");
         }
-    }
+    }*/
 }

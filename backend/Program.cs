@@ -57,6 +57,15 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+
+// Add a minimal API endpoint to test ticket data
+app.MapGet("/testtickets", async (MovieReviewDbContext dbContext) =>
+{
+    var tickets = await dbContext.Tickets.ToListAsync();
+    return Results.Ok(tickets);
+})
+.WithName("GetTestTickets")
+.WithOpenApi();
 app.Run();
 /*var summaries = new[]
 {

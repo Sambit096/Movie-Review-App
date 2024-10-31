@@ -55,7 +55,7 @@ namespace MovieReviewApp.Services {
             } catch (Exception error) {
                 throw new Exception("Error when retrieving ShowTime Tickets from Database:", error);
             }
-        }
+        }*/
     
     }
 }
