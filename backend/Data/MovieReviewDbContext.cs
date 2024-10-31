@@ -83,6 +83,13 @@ namespace MovieReviewApp.Data
                 new Ticket { TicketId = 30, ShowTimeId = 15, Price = 13.0, Quantity = 1, Availability = true },
                 new Ticket { TicketId = 31, ShowTimeId = 15, Price = 13.0, Quantity = 1, Availability = false }
             );
+            modelBuilder.Entity<Cart>().HasData(
+                new Cart { CartId = 1, UserId = 1, Total = 50.0 },
+                new Cart { CartId = 2, UserId = 2, Total = 75.5 },
+                new Cart { CartId = 3, UserId = 3, Total = 100.0 },
+                new Cart { CartId = 4, UserId = 4, Total = 0.0 },
+                new Cart { CartId = 5, UserId = 5, Total = 20.0 },
+            )
         }
     }
 }

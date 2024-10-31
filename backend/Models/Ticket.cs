@@ -14,6 +14,8 @@ namespace MovieReviewApp.Models{
 
         // If ticket is purchased or not
         public bool Availability {get; set; }
+
+        public int CartId { get; set; }
         public Ticket(){}
         
     }
