@@ -50,14 +50,14 @@ public class ShowTimeController : ControllerBase {
     /// <summary>
     /// Gets all Tickets for a specific movie (adds all from ShowTimes)
     /// </summary>
-    /// <param name="showTimeId"></param>
+    /// <param name="movieId"></param>
     /// <returns></returns>
-    [HttpGet("GetTicketsForShowTime/{showTimeId}")]
-    public async Task<IActionResult> GetTicketsForShowTime(int showTimeId) {
+    [HttpGet("GetTickets/{movieId}")]
+    public async Task<IActionResult> GetTickets(int movieId) {
         try {
-            var tickets = await this.showTimeService.GetTicketsForShowTime(showTimeId);
+            var tickets = await this.showTimeService.GetTickets(movieId);
             if (tickets == null) {
-                return NotFound("No Tickets with this showTimeId were found.");
+                return NotFound("No Tickets with this movieId were found.");
             } 
             return Ok(tickets);
         } catch (Exception error) {

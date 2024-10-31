@@ -18,9 +18,9 @@ public class CartController : ControllerBase {
             var result = await cartService.AddTicketToCart(cartId, ticketId, quantity);
             if (result)
             {
-                return Ok("Ticket added to cart successfully.");
+                return Ok(result);
             }
-            return BadRequest("Unable to add ticket to cart.");
+            return StatusCode(500, $"Unable to add ticket to cart.");
         }
 
         [HttpPost(nameof(RemoveTicketFromCart))]
@@ -29,9 +29,9 @@ public class CartController : ControllerBase {
             var result = await cartService.RemoveTicketFromCart(cartId, ticketId);
             if (result)
             {
-                return Ok("Ticket removed from cart successfully.");
+                return Ok(result);
             }
-            return BadRequest("Unable to remove ticket from cart.");
+            return StatusCode(500, $"Unable to remove ticket from cart.");  
         }
 
     [HttpGet(nameof(GetCart))]

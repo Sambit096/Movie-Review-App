@@ -23,7 +23,7 @@ namespace MovieReviewApp.Services {
                 allShowTimes = await dbContext.ShowTimes.ToListAsync();
                 return allShowTimes;
             } catch (Exception error) {
-                throw new Exception("Error when retrieving ShowTimes from Database:", error);
+                throw new Exception("Error when retreiving ShowTimes from Database:", error);
             }
         }
         /// <summary>
@@ -37,23 +37,24 @@ namespace MovieReviewApp.Services {
                 var allShowTimes = await dbContext.ShowTimes.Where(st => st.MovieId == movieId).ToListAsync();
                 return allShowTimes;   
             } catch (Exception error) {
-                throw new Exception("Error when retrieving ShowTimes from Database:", error);
+                throw new Exception("Error when retreiving ShowTimes from Database:", error);
             }
         }
         /// <summary>
-        /// Gets all Tickets for a specific Showtime
+        /// Gets all Tickets for a specific movie based on ShowTimes for the movie (by Movie Id)
         /// </summary>
-        /// <param name="showTimeId"></param>
+        /// <param name="movieId"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<IList<Ticket>> GetTicketsForShowTime(int showTimeId) {   
+        public async Task<int> GetTickets(int movieId) {   
             try {
-                var allTickets = await (from ticket in dbContext.Tickets
-                where ticket.ShowTimeId == showTimeId
-                select ticket).ToListAsync();
-                return allTickets;
+                // var allShowTimes = await (from st in dbContext.ShowTimes
+                // where st.MovieId == movieId
+                // select st.NumOfTickets).SumAsync();
+                // return allShowTimes;
+                return 5;
             } catch (Exception error) {
-                throw new Exception("Error when retrieving ShowTime Tickets from Database:", error);
+                throw new Exception("Error when retreiving ShowTime Tickets from Database:", error);
             }
         }
     
