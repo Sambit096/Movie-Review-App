@@ -8,7 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddSingleton<IMovieService, MovieService>();
 
 // Register MovieReviewDbContext with dependency injection
 builder.Services.AddDbContext<MovieReviewDbContext>(options =>
@@ -27,6 +26,7 @@ builder.Services.AddEndpointsApiExplorer();
 // Need to add ShowTimeService to Scope
 builder.Services.AddScoped<IShowTimeService, ShowTimeService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IMovieService, MovieService>();
 
 builder.Services.AddSwaggerGen();
 /* builder.Services.AddSwaggerGen(c =>
