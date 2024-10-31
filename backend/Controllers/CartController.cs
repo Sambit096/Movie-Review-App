@@ -12,33 +12,27 @@ public class CartController : ControllerBase {
     public CartController(ICartService cartService) {
         this.cartService = cartService;
     }
+    
          [HttpPost(nameof(AddTicketToCart))]
         public async Task<IActionResult> AddTicketToCart(int cartId, int ticketId, int quantity)
         {
-            try {
-                var result = await cartService.AddTicketToCart(cartId, ticketId, quantity);
-                if (!result)
-                {
-                    return NotFound($"Ticket with ID {ticketId} not found in cart ID {cartId}.");
-                }
-                return Ok(result);
-            } catch (Exception error)
+            var result = await cartService.AddTicketToCart(cartId, ticketId, quantity);
+            if (result)
             {
-                return StatusCode(500, $"Error adding ticket to cart: {error}");
+                return Ok("Ticket added to cart successfully.");
             }
+            return BadRequest("Unable to add ticket to cart.");
         }
 
         [HttpPost(nameof(RemoveTicketFromCart))]
-        public async Task<IActionResult> RemoveTicketFromCart(int cartId, int ticketId) {
-        try {
+        public async Task<IActionResult> RemoveTicketFromCart(int cartId, int ticketId)
+        {
             var result = await cartService.RemoveTicketFromCart(cartId, ticketId);
-            if (!result) {
-                return NotFound($"Ticket with ID {ticketId} not found in cart ID {cartId}."); 
+            if (result)
+            {
+                return Ok("Ticket removed from cart successfully.");
             }
-            return Ok(result);  
-        } catch (Exception error) {
-            return StatusCode(500, $"Error removing ticket from cart: {error}");
-        }
+            return BadRequest("Unable to remove ticket from cart.");
         }
 
     [HttpGet(nameof(GetCart))]
