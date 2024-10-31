@@ -13,7 +13,7 @@ public class CartController : ControllerBase {
         this.cartService = cartService;
     }
         [HttpPost(nameof(AddTicketToCart))]
-        public Task<IActionResult> AddTicketToCart(int cartId, int ticketId, int quantity)
+        public async Task<IActionResult> AddTicketToCart(int cartId, int ticketId, int quantity)
         {
             var result = await cartService.AddTicketToCart(cartId, ticketId, quantity);
             if (result)
@@ -24,7 +24,7 @@ public class CartController : ControllerBase {
         }
 
         [HttpPost(nameof(RemoveTicketFromCart))]
-        public Task<IActionResult> RemoveTicketFromCart(int cartId, int ticketId)
+        public async Task<IActionResult> RemoveTicketFromCart(int cartId, int ticketId)
         {
             var result = await cartService.RemoveTicketFromCart(cartId, ticketId);
             if (result)
