@@ -88,7 +88,7 @@ namespace MovieReviewApp.Data
                 new Cart { CartId = 2, UserId = 2, Total = 75.5 },
                 new Cart { CartId = 3, UserId = 3, Total = 100.0 },
                 new Cart { CartId = 4, UserId = 4, Total = 0.0 },
-                new Cart { CartId = 5, UserId = 5, Total = 20.0 },
+                new Cart { CartId = 5, UserId = 5, Total = 20.0 }
             );
 
             modelBuilder.Entity<User>().HasData(
