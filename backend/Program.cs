@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MovieReviewApp.Data;
+using MovieReviewApp.Implementations;
 using MovieReviewApp.Interfaces;
 using MovieReviewApp.Services;
 
@@ -8,7 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddSingleton<IMovieService, MovieService>();
 
 // Register MovieReviewDbContext with dependency injection
 builder.Services.AddDbContext<MovieReviewDbContext>(options =>
@@ -26,8 +26,10 @@ builder.Services.AddEndpointsApiExplorer();
 
 // Need to add ShowTimeService to Scope
 builder.Services.AddScoped<IShowTimeService, ShowTimeService>();
-// Need to add TicketService to Scope
-builder.Services.AddScoped<ITicketService, TicketService>();
+builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 builder.Services.AddSwaggerGen();
 /* builder.Services.AddSwaggerGen(c =>
  {

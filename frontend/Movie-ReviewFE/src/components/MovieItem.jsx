@@ -1,11 +1,12 @@
 import MovieButton from "./MovieButton"
 
-const MovieItem = ({ title, movieId }) => {
+const MovieItem = ({ title, id }) => {
 
 
     return(
         <div className="movie--item">
-            <MovieButton to={movieId} title={title}/>
+            <h2>{title}</h2>
+            <MovieButton to={id} title={title}/>
         </div>
     )
 }
