@@ -13,17 +13,18 @@ namespace MovieReviewApp.Services {
             this.dbContext = dbContext;
         }
 
-        public async Task<Cart> GetCart(int cartId) {
+        public async Task<CartWithTickets> GetCart(int cartId) {
             try {
                 var cart = await dbContext.Carts.FirstOrDefaultAsync(c => c.CartId == cartId);
-
                 if(cart == null) {
                     cart = new Cart { Total = 0.0 };
                     await dbContext.Carts.AddAsync(cart);
                     await dbContext.SaveChangesAsync();
                 }
-
-                return cart;
+                List<Ticket> tickets = new List<Ticket>();
+                tickets = await dbContext.Tickets.Where(t => t.CartId == cart.CartId).ToListAsync();
+                var result = new CartWithTickets { Cart = cart, Tickets = tickets };
+                return result;
             } catch (Exception error) {
                 throw new Exception("Error when getting cart:", error);
             }
