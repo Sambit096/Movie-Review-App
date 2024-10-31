@@ -12,7 +12,7 @@ public class CartController : ControllerBase {
     public CartController(ICartService cartService) {
         this.cartService = cartService;
     }
-        [HttpPost(nameof(AddTicketToCart))]
+         [HttpPost(nameof(AddTicketToCart))]
         public async Task<IActionResult> AddTicketToCart(int cartId, int ticketId, int quantity)
         {
             var result = await cartService.AddTicketToCart(cartId, ticketId, quantity);
