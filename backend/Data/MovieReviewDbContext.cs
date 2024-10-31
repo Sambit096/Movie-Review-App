@@ -83,6 +83,49 @@ namespace MovieReviewApp.Data
                 new Ticket { TicketId = 30, ShowTimeId = 15, Price = 13.0, Quantity = 1, Availability = true },
                 new Ticket { TicketId = 31, ShowTimeId = 15, Price = 13.0, Quantity = 1, Availability = false }
             );
+
+            modelBuilder.Entity<User>().HasData(
+            new User{
+                UserId = 1,
+                email = "john.doe@example.com",
+                username = "johndoe",
+                firstName = "John",
+                lastName = "Doe",
+                password = "d1f23b1a4e5f6a7b8c9d0e"
+            },
+            new User{
+                UserId = 2,
+                email = "jane.smith@example.com",
+                username = "janesmith",
+                firstName = "Jane",
+                lastName = "Smith",
+                password = "e2f34c1b5g6h7i8j9k0l1m"
+            },
+            new User{
+                UserId = 3,
+                email = "michael.jones@example.com",
+                username = "mikejones",
+                firstName = "Michael",
+                lastName = "Jones",
+                password = "f3g45d2e6h7i8j9k0l1m2n"
+            },
+            new User{
+                UserId = 4,
+                email = "sarah.connor@example.com",
+                username = "sconnor",
+                firstName = "Sarah",
+                lastName = "Connor",
+                password = "g4h56e3f7i8j9k0l1m2n3o"
+            },
+            new User{
+                UserId = 5,
+                email = "david.lee@example.com",
+                username = "dlee",
+                firstName = "David",
+                lastName = "Lee",
+                password = "h5i67f4g8j9k0l1m2n3o4p"
+            }
+            );
         }
     }
 }
