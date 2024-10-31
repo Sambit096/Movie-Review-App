@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MovieReviewApp.Data;
+using MovieReviewApp.Implementations;
 using MovieReviewApp.Interfaces;
 using MovieReviewApp.Services;
 
@@ -27,6 +28,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IShowTimeService, ShowTimeService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddSwaggerGen();
 /* builder.Services.AddSwaggerGen(c =>
