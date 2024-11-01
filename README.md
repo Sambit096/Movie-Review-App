@@ -7,4 +7,6 @@ Navigate to `backend/Services/Implementations/MailService.cs` and copy the usern
 
 In the CLI, run `dotnet add packet System.Net.Mail`
 
+You will have to update a user email in your database to test.
+
 Build, and test the program.
