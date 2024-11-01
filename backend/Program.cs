@@ -29,6 +29,7 @@ builder.Services.AddScoped<IShowTimeService, ShowTimeService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IMailService, MailService>();
 
 builder.Services.AddSwaggerGen();
 /* builder.Services.AddSwaggerGen(c =>
