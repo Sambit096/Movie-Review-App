@@ -42,6 +42,9 @@ namespace MovieReviewApp.Services {
                 var ticket = await dbContext.Tickets.FirstOrDefaultAsync(t => t.TicketId == ticketId);
                 if(ticket == null) {
                     throw new ArgumentException("Ticket does not exist.");
+                    /*ticket = new Ticket { TicketId = ticketId, CartId = cart.CartId, Quantity = 0 };
+                    await dbContext.Tickets.AddAsync(ticket);
+                    await dbContext.SaveChangesAsync();*/
                 }
                 ticket.CartId = cart.CartId;
                 ticket.Quantity = quantity;
@@ -63,8 +66,8 @@ namespace MovieReviewApp.Services {
                 if(ticket == null) {
                     throw new ArgumentException("Ticket does not exist.");
                 }
-                //ticket.CartId = null;
-                ticket.CartId = 0;
+                ticket.CartId = null;
+                //ticket.CartId = 0;
                 ticket.Quantity = 0;
                 await dbContext.SaveChangesAsync();
                 return true;
