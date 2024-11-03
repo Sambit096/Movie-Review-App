@@ -31,11 +31,46 @@ namespace MovieReviewApp.Services {
         }
 
         public async Task<bool> AddTicketToCart(int cartId, int ticketId, int quantity) {
-            return true;
+            //return true;
+            try { 
+                var cart = await dbContext.Carts.FirstOrDefaultAsync(c => c.CartId == cartId);
+                if(cart == null) {
+                    cart = new Cart { Total = 0.0 };
+                    await dbContext.Carts.AddAsync(cart);
+                    await dbContext.SaveChangesAsync();
+                }
+                var ticket = await dbContext.Tickets.FirstOrDefaultAsync(t => t.TicketId == ticketId);
+                if(ticket == null) {
+                    throw new ArgumentException("Ticket does not exist.");
+                }
+                ticket.CartId = cart.CartId;
+                ticket.Quantity = quantity;
+                await dbContext.SaveChangesAsync();
+                return true;
+            } catch (Exception error) {
+                throw new Exception("Error when adding ticket to cart:", error);
+            }
         }
 
         public async Task<bool> RemoveTicketFromCart(int cartId, int ticketId) {
-            return true;
+            //return true;
+            try {
+                var cart = await dbContext.Carts.FirstOrDefaultAsync(c => c.CartId == cartId);
+                if(cart == null) {
+                    throw new ArgumentException("Cart does not exist.");
+                }
+                var ticket = await dbContext.Tickets.FirstOrDefaultAsync(t => t.TicketId == ticketId);
+                if(ticket == null) {
+                    throw new ArgumentException("Ticket does not exist.");
+                }
+                //ticket.CartId = null;
+                ticket.CartId = 0;
+                ticket.Quantity = 0;
+                await dbContext.SaveChangesAsync();
+                return true;
+            } catch (Exception error) {
+                throw new Exception("Error when removing ticket from cart:", error);
+            }
         }
 
         public async Task<bool> ProcessPayment(int cartId, string cardNumber, string exp, string cardHolderName, string cvc){
