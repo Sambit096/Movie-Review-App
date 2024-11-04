@@ -6,5 +6,11 @@
         public string firstName { get; set; }
         public string lastName { get; set; }
         public string password { get; set; }
+        //public NotificationPreference NotificationPref { get; set; }
+    }
+
+    public enum NotificationPreference {
+        Email,
+        SMS
     }
 }
