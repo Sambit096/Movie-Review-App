@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieReviewApp.Data;
 
@@ -11,9 +12,11 @@ using MovieReviewApp.Data;
 namespace MovieReviewApp.Migrations
 {
     [DbContext(typeof(MovieReviewDbContext))]
-    partial class MovieReviewDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241104171835_DatabaseRelationships")]
+    partial class DatabaseRelationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,12 +36,10 @@ namespace MovieReviewApp.Migrations
                     b.Property<double>("Total")
                         .HasColumnType("float");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("CartId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Carts");
 
@@ -739,16 +740,6 @@ namespace MovieReviewApp.Migrations
                             Password = "h5i67f4g8j9k0l1m2n3o4p",
                             Username = "dlee"
                         });
-                });
-
-            modelBuilder.Entity("MovieReviewApp.Models.Cart", b =>
-                {
-                    b.HasOne("MovieReviewApp.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MovieReviewApp.Models.ShowTime", b =>

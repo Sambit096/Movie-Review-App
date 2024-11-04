@@ -17,7 +17,36 @@ namespace MovieReviewApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ShowTime>()
+                .HasOne(t => t.Movie)
+                .WithMany()
+                .HasForeignKey(t => t.MovieId)
+                .OnDelete(DeleteBehavior.Cascade); 
+
+            modelBuilder.Entity<Cart>()
+                .HasOne(t => t.User)
+                .WithMany()
+                .HasForeignKey(t => t.UserId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict); 
+
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.ShowTime)
+                .WithMany()
+                .HasForeignKey(t => t.ShowTimeId)
+                .OnDelete(DeleteBehavior.Cascade); 
+
             modelBuilder.Entity<PaymentGateway>().HasKey(pg => pg.GatewayId); // Define primary key explicitly
+
+             modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.Cart)
+                .WithMany()
+                .HasForeignKey(t => t.CartId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
             modelBuilder.Entity<Movie>().HasData(
                 //Movie sample data provided by ChatGPT
                 new Movie { MovieId = 1, Title = "John Wick: Chapter 4", Genre = "Action", Description = "John Wick uncovers a path to defeating The High Table, but before he can earn his freedom, he must face a new enemy with powerful alliances across the globe.", Rating = MPAARating.R },
@@ -94,43 +123,43 @@ namespace MovieReviewApp.Data
             modelBuilder.Entity<User>().HasData(
             new User{
                 UserId = 1,
-                email = "john.doe@example.com",
-                username = "johndoe",
-                firstName = "John",
-                lastName = "Doe",
-                password = "d1f23b1a4e5f6a7b8c9d0e"
+                Email = "john.doe@example.com",
+                Username = "johndoe",
+                FirstName = "John",
+                LastName = "Doe",
+                Password = "d1f23b1a4e5f6a7b8c9d0e",
             },
             new User{
                 UserId = 2,
-                email = "jane.smith@example.com",
-                username = "janesmith",
-                firstName = "Jane",
-                lastName = "Smith",
-                password = "e2f34c1b5g6h7i8j9k0l1m"
+                Email = "jane.smith@example.com",
+                Username = "janesmith",
+                FirstName = "Jane",
+                LastName = "Smith",
+                Password = "e2f34c1b5g6h7i8j9k0l1m"
             },
             new User{
                 UserId = 3,
-                email = "michael.jones@example.com",
-                username = "mikejones",
-                firstName = "Michael",
-                lastName = "Jones",
-                password = "f3g45d2e6h7i8j9k0l1m2n"
+                Email = "michael.jones@example.com",
+                Username = "mikejones",
+                FirstName = "Michael",
+                LastName = "Jones",
+                Password = "f3g45d2e6h7i8j9k0l1m2n"
             },
             new User{
                 UserId = 4,
-                email = "sarah.connor@example.com",
-                username = "sconnor",
-                firstName = "Sarah",
-                lastName = "Connor",
-                password = "g4h56e3f7i8j9k0l1m2n3o"
+                Email = "sarah.connor@example.com",
+                Username = "sconnor",
+                FirstName = "Sarah",
+                LastName = "Connor",
+                Password = "g4h56e3f7i8j9k0l1m2n3o"
             },
             new User{
                 UserId = 5,
-                email = "david.lee@example.com",
-                username = "dlee",
-                firstName = "David",
-                lastName = "Lee",
-                password = "h5i67f4g8j9k0l1m2n3o4p"
+                Email = "david.lee@example.com",
+                Username = "dlee",
+                FirstName = "David",
+                LastName = "Lee",
+                Password = "h5i67f4g8j9k0l1m2n3o4p"
             }
             );
         }
