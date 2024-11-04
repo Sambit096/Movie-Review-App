@@ -5,6 +5,7 @@ import Movies from "../pages/Movies";
 import Checkout from "../pages/Checkout";
 import Login from "../pages/Login";
 import Settings from "../pages/Settings";
+import Showtimes from "../pages/Showtimes";
 import Movie from "./Movie";
 
 const UseRoutes = () => {
@@ -16,7 +17,7 @@ const UseRoutes = () => {
             <Route path="/Checkout" element={<Checkout />}></Route>
             <Route path="/Login" element={<Login />}></Route>
             <Route path="/Settings" element={<Settings />}></Route>
-            <Route path='/Movies/:id' element={<Movie />}></Route>
+            <Route path='/Movies/:id' element={<Showtimes />}></Route>
         </Routes>
     )
 }
