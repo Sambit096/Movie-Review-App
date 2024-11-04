@@ -18,6 +18,7 @@ const UseRoutes = () => {
             <Route path="/Login" element={<Login />}></Route>
             <Route path="/Settings" element={<Settings />}></Route>
             <Route path='/Movies/:id' element={<Showtimes />}></Route>
+            <Route path='/Tickets/:id' element={<Tickets />}></Route>
         </Routes>
     )
 }

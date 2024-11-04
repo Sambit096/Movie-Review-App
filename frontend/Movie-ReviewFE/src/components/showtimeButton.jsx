@@ -11,4 +11,4 @@ const showtimeButton = ({to, time}) => {
     )
 }
 
-export default MovieButton
+export default showtimeButton
