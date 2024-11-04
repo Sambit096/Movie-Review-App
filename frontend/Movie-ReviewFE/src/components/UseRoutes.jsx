@@ -6,6 +6,7 @@ import Checkout from "../pages/Checkout";
 import Login from "../pages/Login";
 import Settings from "../pages/Settings";
 import Showtimes from "../pages/Showtimes";
+import Tickets from "../pages/Tickets"
 import Movie from "./Movie";
 
 const UseRoutes = () => {
