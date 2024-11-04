@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 
-const showtimeButton = ({to, time}) => {
+const ShowtimeButton = ({to, time}) => {
 
     const navigate = useNavigate();
 
@@ -11,4 +11,4 @@ const showtimeButton = ({to, time}) => {
     )
 }
 
-export default showtimeButton
+export default ShowtimeButton

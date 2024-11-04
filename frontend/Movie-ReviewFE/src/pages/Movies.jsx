@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import MovieItem from "../components/MovieItem";
-import fetchData from "../utils/request-utils"
+import fetchData from "../utils/request-utils";
+
 
 const Movies = () => {
 
@@ -12,7 +13,7 @@ const Movies = () => {
                 const data = await fetchData('http://localhost:5190/api/Movie/GetMovies');
                 setMovies(data);
             } catch (err) {
-                setError('Failed to load movies.');
+                console.log(err);
             }
         };
 
