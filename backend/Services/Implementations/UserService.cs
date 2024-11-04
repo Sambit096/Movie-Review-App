@@ -73,11 +73,11 @@ namespace MovieReviewApp.Implementations {
             try {
                 var updateUser = await dbContext.Users.FindAsync(user.UserId);
                 if(updateUser != null) {
-                    updateUser.username = user.username;
-                    updateUser.email = user.email;
-                    updateUser.firstName = user.firstName;
-                    updateUser.lastName = user.lastName;
-                    updateUser.password = user.password;
+                    updateUser.Username = user.Username;
+                    updateUser.Email = user.Email;
+                    updateUser.FirstName = user.FirstName;
+                    updateUser.LastName = user.LastName;
+                    updateUser.Password = user.Password;
                     await dbContext.SaveChangesAsync();
                 }
             } catch (Exception ex) {
