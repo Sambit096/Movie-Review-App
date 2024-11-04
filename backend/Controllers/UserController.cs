@@ -2,6 +2,7 @@
 using MovieReviewApp.Models;
 using MovieReviewApp.Interfaces;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.AspNetCore.Identity.Data;
 
 namespace MovieReviewApp.Controllers {
     [ApiController]
@@ -39,24 +40,27 @@ namespace MovieReviewApp.Controllers {
             }
         }
 
-        [HttpPost(nameof(AddUser))]
-        public async Task<IActionResult> AddUser(User user) {
+        [HttpGet(nameof(GetUserByEmail))]
+        public async Task<IActionResult> GetUserByEmail(string email) {
             try {
-                await this.userService.AddUser(user);
+                var user = await this.userService.GetUserByEmail(email);
+                if(user == null) {
+                    return NotFound();
+                }
                 return Ok(user);
             } catch (Exception ex) {
-                return StatusCode(500, $"Error when adding User: {ex}");
+                return StatusCode(500, $"Error when getting the user: {ex}");
             }
         }
 
         [HttpPut(nameof(UpdateUser))]
-        public async Task<IActionResult> UpdateUser(int id, User user) {
+        public async Task<IActionResult> UpdateUser(User user) {
             try {
-                var updateUser = await this.userService.GetUserById(id);
+                var updateUser = await this.userService.GetUserById(user.UserId);
                 if (updateUser == null) {
                     return NotFound();
                 }
-                await this.userService.UpdateUser(id, user);
+                await this.userService.UpdateUser(user);
                 return NoContent(); // 204 no content
             } catch (Exception ex) {
                 return StatusCode(500, $"Error when updating user data: {ex}");
@@ -70,11 +74,56 @@ namespace MovieReviewApp.Controllers {
                 if (removeUser == null) {
                     return NotFound();
                 }
-                await this.userService.RemoveUser(id);
+                await this.userService.RemoveUser(removeUser.UserId);
                 return NoContent(); // 204 no content
             } catch (Exception ex) {
                 return StatusCode(500, $"Error when removing user: {ex}");
             }
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request) {
+            try {
+                if (!ModelState.IsValid) return BadRequest(ModelState);
+
+                var user = await this.userService.ValidateUser(request.Email, request.Password);
+                if (user == null) {
+                    return Unauthorized(new { message = "Invalid email or password." });
+                }
+                return Ok(new { message = "Login successful!" });
+            } catch (Exception ex) {
+                return StatusCode(500, $"Error when logging in user: {ex}");
+            }
+        }
+
+        [HttpPost("signup")]
+        public async Task<IActionResult> AddUser([FromBody] UserDTO userDTO) {
+            try {
+                if (!ModelState.IsValid) return BadRequest(ModelState);
+                var user = new User {
+                    email = userDTO.Email,
+                    username = userDTO.Username,
+                    firstName = "",
+                    lastName = "",
+                    password = userDTO.Password
+                };
+                await this.userService.AddUser(user);
+                return Ok(user);
+            } catch (Exception ex) {
+                return StatusCode(500, $"Error when adding User: {ex}");
+            }
+        }
+    }
+
+    public class LoginRequest {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+
+    // Used to pass data transfer object with expected data from front end to the model in backend
+    public class UserDTO {
+        public string Email { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }

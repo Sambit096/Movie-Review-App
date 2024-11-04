@@ -7,6 +7,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.ComponentModel;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Routing.Constraints;
+using System.Runtime.CompilerServices;
 
 
 namespace MovieReviewApp.Implementations {
@@ -33,7 +34,18 @@ namespace MovieReviewApp.Implementations {
                 }
                 return user;
             } catch (Exception ex) {
-                throw new Exception("Error when getting cart: ", ex);
+                throw new Exception("Error when getting user: ", ex);
+            }
+        }
+        public async Task<User> GetUserByEmail(string email) {
+            try {
+                var user = await dbContext.Users.SingleOrDefaultAsync(u => u.email == email);
+                if(user == null) {
+                    throw new Exception("This user does not exist");
+                }
+                return user;
+            } catch (Exception ex) {
+                throw new Exception("Error when getting user: ", ex);
             }
         }
 
@@ -57,9 +69,9 @@ namespace MovieReviewApp.Implementations {
             }
         }
 
-        public async Task UpdateUser(int id, User user) {
+        public async Task UpdateUser(User user) {
             try {
-                var updateUser = await dbContext.Users.FindAsync(id);
+                var updateUser = await dbContext.Users.FindAsync(user.UserId);
                 if(updateUser != null) {
                     updateUser.Username = user.Username;
                     updateUser.Email = user.Email;
@@ -70,6 +82,17 @@ namespace MovieReviewApp.Implementations {
                 }
             } catch (Exception ex) {
                 throw new Exception("Error when updating the user: ", ex);
+            }
+        }
+
+        public async Task<User> ValidateUser(string email, string password) {
+            try {
+                var user = await dbContext.Users.SingleOrDefaultAsync(u => u.email == email);
+                if (user == null) return null;
+                if (user.password == password) return user; // Hash for future security reasons
+                return null;
+            } catch (Exception ex) {
+                throw new Exception("Error when validating user: ", ex);
             }
         }
     }

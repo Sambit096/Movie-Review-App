@@ -14,5 +14,6 @@
         Email,
         Both,
         None
+        main
     }
 }
