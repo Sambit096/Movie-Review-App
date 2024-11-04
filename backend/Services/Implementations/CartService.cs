@@ -35,19 +35,16 @@ namespace MovieReviewApp.Services {
             try { 
                 var cart = await dbContext.Carts.FirstOrDefaultAsync(c => c.CartId == cartId);
                 if(cart == null) {
-                    cart = new Cart { Total = 0.0 };
-                    await dbContext.Carts.AddAsync(cart);
-                    await dbContext.SaveChangesAsync();
+                    throw new ArgumentException("Cart does not exist.");
                 }
                 var ticket = await dbContext.Tickets.FirstOrDefaultAsync(t => t.TicketId == ticketId);
                 if(ticket == null) {
-                    throw new ArgumentException("Ticket does not exist.");
-                    /*ticket = new Ticket { TicketId = ticketId, CartId = cart.CartId, Quantity = 0 };
+                    ticket = new Ticket { TicketId = ticketId, CartId = cart.CartId, Quantity = 0 };
                     await dbContext.Tickets.AddAsync(ticket);
-                    await dbContext.SaveChangesAsync();*/
+                } else {
+                    ticket.CartId = cart.CartId;
+                    ticket.Quantity = quantity;
                 }
-                ticket.CartId = cart.CartId;
-                ticket.Quantity = quantity;
                 await dbContext.SaveChangesAsync();
                 return true;
             } catch (Exception error) {
@@ -66,9 +63,9 @@ namespace MovieReviewApp.Services {
                 if(ticket == null) {
                     throw new ArgumentException("Ticket does not exist.");
                 }
-                //ticket.CartId = null;
-                ticket.CartId = 0;
-                ticket.Quantity = 0;
+                /*ticket.CartId = 0;
+                ticket.Quantity = 0;*/
+                dbContext.Tickets.Remove(ticket);
                 await dbContext.SaveChangesAsync();
                 return true;
             } catch (Exception error) {
