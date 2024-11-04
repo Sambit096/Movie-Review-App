@@ -66,8 +66,8 @@ namespace MovieReviewApp.Services {
                 if(ticket == null) {
                     throw new ArgumentException("Ticket does not exist.");
                 }
-                ticket.CartId = null;
-                //ticket.CartId = 0;
+                //ticket.CartId = null;
+                ticket.CartId = 0;
                 ticket.Quantity = 0;
                 await dbContext.SaveChangesAsync();
                 return true;
