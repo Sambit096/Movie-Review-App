@@ -13,7 +13,7 @@
         SMS,
         Email,
         Both,
-        None
+        None,
         main
     }
 }

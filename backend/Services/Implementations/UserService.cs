@@ -39,7 +39,7 @@ namespace MovieReviewApp.Implementations {
         }
         public async Task<User> GetUserByEmail(string email) {
             try {
-                var user = await dbContext.Users.SingleOrDefaultAsync(u => u.email == email);
+                var user = await dbContext.Users.SingleOrDefaultAsync(u => u.Email == email);
                 if(user == null) {
                     throw new Exception("This user does not exist");
                 }
@@ -87,9 +87,9 @@ namespace MovieReviewApp.Implementations {
 
         public async Task<User> ValidateUser(string email, string password) {
             try {
-                var user = await dbContext.Users.SingleOrDefaultAsync(u => u.email == email);
+                var user = await dbContext.Users.SingleOrDefaultAsync(u => u.Email == email);
                 if (user == null) return null;
-                if (user.password == password) return user; // Hash for future security reasons
+                if (user.Password == password) return user; // Hash for future security reasons
                 return null;
             } catch (Exception ex) {
                 throw new Exception("Error when validating user: ", ex);

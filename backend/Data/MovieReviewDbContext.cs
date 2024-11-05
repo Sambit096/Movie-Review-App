@@ -128,6 +128,7 @@ namespace MovieReviewApp.Data
                 FirstName = "John",
                 LastName = "Doe",
                 Password = "d1f23b1a4e5f6a7b8c9d0e",
+                NotiPreference = UserPreference.SMS
             },
             new User{
                 UserId = 2,
@@ -135,7 +136,8 @@ namespace MovieReviewApp.Data
                 Username = "janesmith",
                 FirstName = "Jane",
                 LastName = "Smith",
-                Password = "e2f34c1b5g6h7i8j9k0l1m"
+                Password = "e2f34c1b5g6h7i8j9k0l1m",
+                NotiPreference = UserPreference.Email
             },
             new User{
                 UserId = 3,
@@ -143,7 +145,8 @@ namespace MovieReviewApp.Data
                 Username = "mikejones",
                 FirstName = "Michael",
                 LastName = "Jones",
-                Password = "f3g45d2e6h7i8j9k0l1m2n"
+                Password = "f3g45d2e6h7i8j9k0l1m2n",
+                NotiPreference = UserPreference.Email
             },
             new User{
                 UserId = 4,
@@ -151,7 +154,8 @@ namespace MovieReviewApp.Data
                 Username = "sconnor",
                 FirstName = "Sarah",
                 LastName = "Connor",
-                Password = "g4h56e3f7i8j9k0l1m2n3o"
+                Password = "g4h56e3f7i8j9k0l1m2n3o",
+                NotiPreference = UserPreference.Email
             },
             new User{
                 UserId = 5,
@@ -159,7 +163,8 @@ namespace MovieReviewApp.Data
                 Username = "dlee",
                 FirstName = "David",
                 LastName = "Lee",
-                Password = "h5i67f4g8j9k0l1m2n3o4p"
+                Password = "h5i67f4g8j9k0l1m2n3o4p",
+                NotiPreference = UserPreference.Email
             }
             );
         }

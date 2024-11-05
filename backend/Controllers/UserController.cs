@@ -101,11 +101,11 @@ namespace MovieReviewApp.Controllers {
             try {
                 if (!ModelState.IsValid) return BadRequest(ModelState);
                 var user = new User {
-                    email = userDTO.Email,
-                    username = userDTO.Username,
-                    firstName = "",
-                    lastName = "",
-                    password = userDTO.Password
+                    Email = userDTO.Email,
+                    Username = userDTO.Username,
+                    FirstName = "",
+                    LastName = "",
+                    Password = userDTO.Password
                 };
                 await this.userService.AddUser(user);
                 return Ok(user);
