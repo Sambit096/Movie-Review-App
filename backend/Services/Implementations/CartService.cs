@@ -30,7 +30,7 @@ namespace MovieReviewApp.Services {
             }
         }
 
-        public async Task<bool> AddTicketToCart(int cartId, int ticketId, int quantity) {
+        public async Task<Cart> AddTicketToCart(int cartId, int ticketId, int quantity) {
             //return true;
             try { 
                 var cart = await dbContext.Carts.FirstOrDefaultAsync(c => c.CartId == cartId);
@@ -39,20 +39,25 @@ namespace MovieReviewApp.Services {
                 }
                 var ticket = await dbContext.Tickets.FirstOrDefaultAsync(t => t.TicketId == ticketId);
                 if(ticket == null) {
-                    ticket = new Ticket { TicketId = ticketId, CartId = cart.CartId, Quantity = 0 };
+                    //fix potential error add a nonexistent ticket
+                    ticket = new Ticket { CartId = cart.CartId, Quantity = 0 };
                     await dbContext.Tickets.AddAsync(ticket);
                 } else {
                     ticket.CartId = cart.CartId;
                     ticket.Quantity = quantity;
+                    //ticket availability updates when a ticket is in a cart. 
+                    ticket.Availability = false;
                 }
+                //updated the cart total price
+                cart.Total += ticket.Price * quantity;
                 await dbContext.SaveChangesAsync();
-                return true;
+                return cart;
             } catch (Exception error) {
                 throw new Exception("Error when adding ticket to cart:", error);
             }
         }
 
-        public async Task<bool> RemoveTicketFromCart(int cartId, int ticketId) {
+        public async Task<Cart> RemoveTicketFromCart(int cartId, int ticketId) {
             //return true;
             try {
                 var cart = await dbContext.Carts.FirstOrDefaultAsync(c => c.CartId == cartId);
@@ -67,7 +72,8 @@ namespace MovieReviewApp.Services {
                 ticket.Quantity = 0;*/
                 dbContext.Tickets.Remove(ticket);
                 await dbContext.SaveChangesAsync();
-                return true;
+                //return cart
+                return cart;
             } catch (Exception error) {
                 throw new Exception("Error when removing ticket from cart:", error);
             }
