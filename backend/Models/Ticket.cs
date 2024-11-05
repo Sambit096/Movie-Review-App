@@ -9,17 +9,11 @@ namespace MovieReviewApp.Models{
         // Price per ticket for the specified showtime
         public required double Price { get; set; }
 
-        // Number of tickets purchased in this transaction
-        public int Quantity { get; set; }
-
         // If ticket is purchased or not
         public required bool Availability {get; set; }
-
         public int? CartId { get; set; }
-
-
-        public ShowTime ShowTime { get; set; }
-        public Cart Cart { get; set; }
+        public ShowTime? ShowTime { get; set; }
+        public Cart? Cart { get; set; }
         public Ticket(){}
         
     }

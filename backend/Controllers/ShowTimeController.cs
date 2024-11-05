@@ -64,4 +64,15 @@ public class ShowTimeController : ControllerBase {
             return StatusCode(500, $"Error when receiving Ticket Data: {error}");
         }
     }
+
+    [HttpPost(nameof(AddShowTime))]
+    public async Task<IActionResult> AddShowTime(ShowTime showTime) {
+        try {
+            var result = await this.showTimeService.AddShowTime(showTime);
+            if (result) return Ok();
+            return NoContent();
+        } catch (Exception error) {
+            return StatusCode(500, $"Error when adding Showtime Data: {error}");
+        }
+    }
 }

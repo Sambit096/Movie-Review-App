@@ -73,7 +73,7 @@ namespace MovieReviewApp.Services {
 
             existingTicket.ShowTimeId = updatedTicket.ShowTimeId;
             existingTicket.Price = updatedTicket.Price;
-            existingTicket.Quantity = updatedTicket.Quantity;
+            // existingTicket.Quantity = updatedTicket.Quantity;
             existingTicket.Availability = updatedTicket.Availability;
             
             _dbContext.Tickets.Update(existingTicket);

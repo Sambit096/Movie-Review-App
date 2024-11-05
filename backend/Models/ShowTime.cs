@@ -20,7 +20,7 @@ namespace MovieReviewApp.Models
         // Current status of the showtime, indicating if it is available or sold out
         public required MovieStatus Status { get; set; }
 
-        public Movie Movie {get; set; }
+        public Movie? Movie {get; set; }
         public ShowTime(){}
         /*public ShowTime(int showTimeId,int movieId, DateTime viewingTime,int numOfTickets, MovieStatus status)
         {

@@ -18,7 +18,7 @@ namespace MovieReviewApp.Controllers
         }
 
         // GET: api/ticket
-        [HttpGet]
+        [HttpGet(nameof(GetAllTickets))]
         public async Task<ActionResult<IEnumerable<Ticket>>> GetAllTickets()
         {
             var tickets = await _ticketService.GetAllTickets();
@@ -26,7 +26,7 @@ namespace MovieReviewApp.Controllers
         }
 
         // GET: api/ticket/movie/{movieId}
-        [HttpGet("movie/{movieId}")]
+        [HttpGet("GetTickets/{movieId}")]
         public async Task<ActionResult<IEnumerable<Ticket>>> GetTickets(int movieId)
         {
             var tickets = await _ticketService.GetTickets(movieId);
@@ -36,7 +36,7 @@ namespace MovieReviewApp.Controllers
         }
 
         // POST: api/ticket
-        [HttpPost]
+        [HttpPost(nameof(CreateTicket))]
         public async Task<ActionResult<Ticket>> CreateTicket([FromBody] Ticket ticket)
         {
             var createdTicket = await _ticketService.AddTicket(ticket);
@@ -44,7 +44,7 @@ namespace MovieReviewApp.Controllers
         }
 
         // PUT: api/ticket/{id}
-        [HttpPut("{id}")]
+        [HttpPut("UpdateTicket/{id}")]
         public async Task<IActionResult> UpdateTicket(int id, [FromBody] Ticket ticket)
         {
             var updated = await _ticketService.UpdateTicket(id, ticket);
@@ -54,7 +54,7 @@ namespace MovieReviewApp.Controllers
         }
 
         // DELETE: api/ticket/{id}
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteTicket/{id}")]
         public async Task<IActionResult> DeleteTicket(int id)
         {
             var deleted = await _ticketService.DeleteTicket(id);

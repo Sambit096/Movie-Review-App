@@ -17,12 +17,14 @@ namespace MovieReviewApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Set MovieId as Foreign Key on ShowTime Table
             modelBuilder.Entity<ShowTime>()
                 .HasOne(t => t.Movie)
                 .WithMany()
                 .HasForeignKey(t => t.MovieId)
                 .OnDelete(DeleteBehavior.Cascade); 
 
+            //Set UserId as Foreign Key on ShowTime Table (not required, can be null)
             modelBuilder.Entity<Cart>()
                 .HasOne(t => t.User)
                 .WithMany()
@@ -30,7 +32,7 @@ namespace MovieReviewApp.Data
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict); 
 
-
+            //Set ShowTimeId as Foreign Key on Ticket Table
             modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.ShowTime)
                 .WithMany()
@@ -39,7 +41,8 @@ namespace MovieReviewApp.Data
 
             modelBuilder.Entity<PaymentGateway>().HasKey(pg => pg.GatewayId); // Define primary key explicitly
 
-             modelBuilder.Entity<Ticket>()
+            //Set CartId as Foreign Key on Ticket Table (not required, can be null)
+            modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.Cart)
                 .WithMany()
                 .HasForeignKey(t => t.CartId)
@@ -80,37 +83,37 @@ namespace MovieReviewApp.Data
             );
             modelBuilder.Entity<Ticket>().HasData(
                 //Ticket sample data provided by ChatGPT
-                new Ticket { TicketId = 1, ShowTimeId = 1, Price = 12.5, Quantity = 1, Availability = true, CartId = 1 },
-                new Ticket { TicketId = 2, ShowTimeId = 1, Price = 12.5, Quantity = 1, Availability = false, CartId = 1 },
-                new Ticket { TicketId = 3, ShowTimeId = 2, Price = 14.0, Quantity = 1, Availability = true, CartId = 1 },
-                new Ticket { TicketId = 4, ShowTimeId = 2, Price = 14.0, Quantity = 1, Availability = false, CartId = 1 },
-                new Ticket { TicketId = 5, ShowTimeId = 2, Price = 14.0, Quantity = 1, Availability = false, CartId = 1 },
-                new Ticket { TicketId = 6, ShowTimeId = 3, Price = 10.0, Quantity = 1, Availability = true, CartId = 2 },
-                new Ticket { TicketId = 7, ShowTimeId = 4, Price = 15.0, Quantity = 1, Availability = true, CartId = 2 },
-                new Ticket { TicketId = 8, ShowTimeId = 4, Price = 15.0, Quantity = 1, Availability = false, CartId = 2 },
-                new Ticket { TicketId = 9, ShowTimeId = 4, Price = 15.0, Quantity = 1, Availability = false, CartId = 2 },
-                new Ticket { TicketId = 10, ShowTimeId = 5, Price = 11.0, Quantity = 1, Availability = true, CartId = 2 },
-                new Ticket { TicketId = 11, ShowTimeId = 5, Price = 11.0, Quantity = 1, Availability = false, CartId = 3 },
-                new Ticket { TicketId = 12, ShowTimeId = 6, Price = 13.5, Quantity = 1, Availability = true, CartId = 3 },
-                new Ticket { TicketId = 13, ShowTimeId = 6, Price = 13.5, Quantity = 1, Availability = false, CartId = 4 },
-                new Ticket { TicketId = 14, ShowTimeId = 6, Price = 13.5, Quantity = 1, Availability = false, CartId = 4 },
-                new Ticket { TicketId = 15, ShowTimeId = 7, Price = 12.0, Quantity = 1, Availability = true, CartId = 4 },
-                new Ticket { TicketId = 16, ShowTimeId = 8, Price = 15.5, Quantity = 1, Availability = true, CartId = 4 },
-                new Ticket { TicketId = 17, ShowTimeId = 8, Price = 15.5, Quantity = 1, Availability = false, CartId = 4 },
-                new Ticket { TicketId = 18, ShowTimeId = 9, Price = 13.0, Quantity = 1, Availability = true, CartId = 4 },
-                new Ticket { TicketId = 19, ShowTimeId = 9, Price = 13.0, Quantity = 1, Availability = false, CartId = 5 },
-                new Ticket { TicketId = 20, ShowTimeId = 10, Price = 16.0, Quantity = 1, Availability = true, CartId = 1 },
-                new Ticket { TicketId = 21, ShowTimeId = 10, Price = 16.0, Quantity = 1, Availability = false, CartId = 1 },
-                new Ticket { TicketId = 22, ShowTimeId = 11, Price = 14.5, Quantity = 1, Availability = true, CartId = 2 },
-                new Ticket { TicketId = 23, ShowTimeId = 11, Price = 14.5, Quantity = 1, Availability = false, CartId = 2 },
-                new Ticket { TicketId = 24, ShowTimeId = 12, Price = 10.5, Quantity = 1, Availability = true, CartId = 1 },
-                new Ticket { TicketId = 25, ShowTimeId = 12, Price = 10.5, Quantity = 1, Availability = false, CartId = 5 },
-                new Ticket { TicketId = 26, ShowTimeId = 13, Price = 11.0, Quantity = 1, Availability = true, CartId = 5 },
-                new Ticket { TicketId = 27, ShowTimeId = 14, Price = 12.0, Quantity = 1, Availability = true, CartId = 5 },
-                new Ticket { TicketId = 28, ShowTimeId = 14, Price = 12.0, Quantity = 1, Availability = false, CartId = 5 },
-                new Ticket { TicketId = 29, ShowTimeId = 14, Price = 12.0, Quantity = 1, Availability = false, CartId = 5 },
-                new Ticket { TicketId = 30, ShowTimeId = 15, Price = 13.0, Quantity = 1, Availability = true, CartId = 5 },
-                new Ticket { TicketId = 31, ShowTimeId = 15, Price = 13.0, Quantity = 1, Availability = false, CartId = 5 }
+                new Ticket { TicketId = 1, ShowTimeId = 1, Price = 12.5, Availability = true, CartId = 1 },
+                new Ticket { TicketId = 2, ShowTimeId = 1, Price = 12.5, Availability = false, CartId = 1 },
+                new Ticket { TicketId = 3, ShowTimeId = 2, Price = 14.0, Availability = true, CartId = 1 },
+                new Ticket { TicketId = 4, ShowTimeId = 2, Price = 14.0, Availability = false, CartId = 1 },
+                new Ticket { TicketId = 5, ShowTimeId = 2, Price = 14.0, Availability = false, CartId = 1 },
+                new Ticket { TicketId = 6, ShowTimeId = 3, Price = 10.0, Availability = true, CartId = 2 },
+                new Ticket { TicketId = 7, ShowTimeId = 4, Price = 15.0, Availability = true, CartId = 2 },
+                new Ticket { TicketId = 8, ShowTimeId = 4, Price = 15.0, Availability = false, CartId = 2 },
+                new Ticket { TicketId = 9, ShowTimeId = 4, Price = 15.0, Availability = false, CartId = 2 },
+                new Ticket { TicketId = 10, ShowTimeId = 5, Price = 11.0, Availability = true, CartId = 2 },
+                new Ticket { TicketId = 11, ShowTimeId = 5, Price = 11.0, Availability = false, CartId = 3 },
+                new Ticket { TicketId = 12, ShowTimeId = 6, Price = 13.5, Availability = true, CartId = 3 },
+                new Ticket { TicketId = 13, ShowTimeId = 6, Price = 13.5, Availability = false, CartId = 4 },
+                new Ticket { TicketId = 14, ShowTimeId = 6, Price = 13.5, Availability = false, CartId = 4 },
+                new Ticket { TicketId = 15, ShowTimeId = 7, Price = 12.0, Availability = true, CartId = 4 },
+                new Ticket { TicketId = 16, ShowTimeId = 8, Price = 15.5, Availability = true, CartId = 4 },
+                new Ticket { TicketId = 17, ShowTimeId = 8, Price = 15.5, Availability = false, CartId = 4 },
+                new Ticket { TicketId = 18, ShowTimeId = 9, Price = 13.0, Availability = true, CartId = 4 },
+                new Ticket { TicketId = 19, ShowTimeId = 9, Price = 13.0, Availability = false, CartId = 5 },
+                new Ticket { TicketId = 20, ShowTimeId = 10, Price = 16.0, Availability = true, CartId = 1 },
+                new Ticket { TicketId = 21, ShowTimeId = 10, Price = 16.0, Availability = false, CartId = 1 },
+                new Ticket { TicketId = 22, ShowTimeId = 11, Price = 14.5, Availability = true, CartId = 2 },
+                new Ticket { TicketId = 23, ShowTimeId = 11, Price = 14.5, Availability = false, CartId = 2 },
+                new Ticket { TicketId = 24, ShowTimeId = 12, Price = 10.5, Availability = true, CartId = 1 },
+                new Ticket { TicketId = 25, ShowTimeId = 12, Price = 10.5, Availability = false, CartId = 5 },
+                new Ticket { TicketId = 26, ShowTimeId = 13, Price = 11.0, Availability = true, CartId = 5 },
+                new Ticket { TicketId = 27, ShowTimeId = 14, Price = 12.0, Availability = true, CartId = 5 },
+                new Ticket { TicketId = 28, ShowTimeId = 14, Price = 12.0, Availability = false, CartId = 5 },
+                new Ticket { TicketId = 29, ShowTimeId = 14, Price = 12.0, Availability = false, CartId = 5 },
+                new Ticket { TicketId = 30, ShowTimeId = 15, Price = 13.0, Availability = true, CartId = 5 },
+                new Ticket { TicketId = 31, ShowTimeId = 15, Price = 13.0, Availability = false, CartId = 5 }
             );
             modelBuilder.Entity<Cart>().HasData(
                 new Cart { CartId = 1, UserId = 1, Total = 50.0 },
