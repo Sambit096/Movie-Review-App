@@ -18,7 +18,7 @@ public class CartController : ControllerBase {
         {
             try {
                 var result = await cartService.AddTicketToCart(cartId, ticketId, quantity);
-                if (result)
+                if (result != null)
                 {
                     return Ok(result);
                 }
@@ -33,7 +33,7 @@ public class CartController : ControllerBase {
         {
             try {
                 var result = await cartService.RemoveTicketFromCart(cartId, ticketId);
-                if (result)
+                if (result != null)
                 {
                     return Ok(result);
                 }
@@ -66,6 +66,19 @@ public class CartController : ControllerBase {
             return Ok("Payment Processed!");
         } catch (Exception error) {
             return StatusCode(500, $"Error when processing payment: {error}");
+        }
+    }
+
+    [HttpPost(nameof(AddTicketsByShowtime))]
+    public async Task<IActionResult> AddTicketsByShowtime(int cartId, int showtimeId, int quantity) {
+        try {
+            var result = await this.cartService.AddTicketsByShowtime(cartId, showtimeId, quantity);
+            if(result) {
+                return Ok(result);
+            }
+            return StatusCode(500, "Unaable to add ticket to cart");
+        } catch (Exception error) {
+            return StatusCode(500, $"Error when adding ticket: {error}");
         }
     }
 }

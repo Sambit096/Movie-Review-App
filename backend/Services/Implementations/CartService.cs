@@ -35,25 +35,65 @@ namespace MovieReviewApp.Services {
             }
         }
 
-        public async Task<bool> AddTicketToCart(int cartId, int ticketId, int quantity) {
-            return true;
+        public async Task<Cart> AddTicketToCart(int cartId, int ticketId, int quantity) {
+                try { 
+                var cart = await dbContext.Carts.FirstOrDefaultAsync(c => c.CartId == cartId);
+                if(cart == null) {
+                    throw new ArgumentException("Cart does not exist.");
+                }
+                var ticket = await dbContext.Tickets.FirstOrDefaultAsync(t => t.TicketId == ticketId);
+                if(ticket == null) {
+                    //fix potential error add a nonexistent ticket
+                    ticket = new Ticket { CartId = cart.CartId, TicketId = ticketId, ShowTimeId = 0, Price = 0.0, Availability = true };
+                    await dbContext.Tickets.AddAsync(ticket);
+                } else {
+                    ticket.CartId = cart.CartId;
+                    //ticket availability updates when a ticket is in a cart. 
+                    ticket.Availability = false;
+                }
+                //updated the cart total price
+                cart.Total += ticket.Price * quantity;
+                await dbContext.SaveChangesAsync();
+                return cart;
+            } catch (Exception error) {
+                throw new Exception("Error when adding ticket to cart:", error);
+            }
+
         }
 
-        public async Task<bool> RemoveTicketFromCart(int cartId, int ticketId) {
-            return true;
+        public async Task<Cart> RemoveTicketFromCart(int cartId, int ticketId) {
+                try {
+                var cart = await dbContext.Carts.FirstOrDefaultAsync(c => c.CartId == cartId);
+                if(cart == null) {
+                    throw new ArgumentException("Cart does not exist.");
+                }
+                var ticket = await dbContext.Tickets.FirstOrDefaultAsync(t => t.TicketId == ticketId);
+                if(ticket == null) {
+                    throw new ArgumentException("Ticket does not exist.");
+                }
+                dbContext.Tickets.Remove(ticket);
+                await dbContext.SaveChangesAsync();
+                //return a cart
+                return cart;
+            } catch (Exception error) {
+                throw new Exception("Error when removing ticket from cart:", error);
+            }
+
         }
 
         public async Task<bool> ProcessPayment(int cartId, string cardNumber, string exp, string cardHolderName, string cvc){
 
+            //checking to see if a cart exists
             var cartExists = await dbContext.Carts.AnyAsync(c => c.CartId == cartId);
             if (!cartExists) {
                 throw new Exception("Cart does not exist.");
             }
 
+            //checking if card exists in database
             var paymentGateway = await dbContext.PaymentGateways.FirstOrDefaultAsync(p => p.CardNumber == cardNumber);
 
             if(paymentGateway == null) {
-            
+                //checking validity of new card and adding to database
                 if (string.IsNullOrWhiteSpace(cardNumber) || cardNumber.Length < 13 || cardNumber.Length > 19 || !cardNumber.All(char.IsDigit))  {
                     throw new Exception("Invalid card number");
                 }
@@ -81,6 +121,30 @@ namespace MovieReviewApp.Services {
                     throw new Exception("Invalid Credentials for card");
                 }
             }
+
+            return true;
+        }
+
+        /*
+        * Method to add a ticket to a cart by referencing showtime. This allows a single db fetch to be made instead of multiple
+        */
+        public async Task<bool> AddTicketsByShowtime(int cartId, int showtimeId, int quantity) {
+            var tickets = await dbContext.Tickets.Where(t => t.ShowTimeId == showtimeId && t.Availability == true)
+                            .Take(quantity)
+                            .ToListAsync();
+
+            if(tickets.Count < quantity)
+            {
+                throw new Exception("Not enough tickets available");
+            }
+
+            foreach(var ticket in tickets)
+            {
+                ticket.CartId = cartId;
+                ticket.Availability = false;
+            }
+
+            await dbContext.SaveChangesAsync();
 
             return true;
         }
