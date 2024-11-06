@@ -12,13 +12,15 @@ namespace MovieReviewApp.Models
         public int ShowTimeId { get; set; }
 
         // Foreign key linking this showtime to a specific movie
-        public int MovieId { get; set; }
+        public required int MovieId { get; set; }
 
         // Date and time for when the showtime occurs
-        public DateTime ViewingTime { get; set; }
+        public required DateTime ViewingTime { get; set; }
 
         // Current status of the showtime, indicating if it is available or sold out
-        public MovieStatus Status { get; set; }
+        public required MovieStatus Status { get; set; }
+
+        public Movie? Movie {get; set; }
         public ShowTime(){}
         /*public ShowTime(int showTimeId,int movieId, DateTime viewingTime,int numOfTickets, MovieStatus status)
         {

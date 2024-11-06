@@ -53,7 +53,17 @@ namespace MovieReviewApp.Services {
                 select ticket).ToListAsync();
                 return allTickets;
             } catch (Exception error) {
-                throw new Exception("Error when retrieving ShowTime Tickets from Database:", error);
+                throw new Exception("Error when retrieving ShowTime Tickets from Database: ", error);
+            }
+        }
+
+        public async Task<bool> AddShowTime(ShowTime showTime) {
+            try {
+                await this.dbContext.ShowTimes.AddAsync(showTime);
+                await this.dbContext.SaveChangesAsync();
+                return true;
+            } catch (Exception error) {
+                throw new Exception($"Error when adding ShowTime to Database: ", error);
             }
         }
     

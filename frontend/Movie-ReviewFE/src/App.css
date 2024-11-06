@@ -14,10 +14,7 @@
   top: 0px;
   box-shadow: 2px 2px 5px white;
   z-index: 2;
-}
-
-.navbar:active {
-
+  background-color: #242424;
 }
 
 #nav--left {
@@ -68,6 +65,10 @@
 }
 
 /** Movie Items **/
+.movie--list {
+  padding-top: 50px;
+}
+
 .movie--item {
   display:flex;
   justify-content:space-between;

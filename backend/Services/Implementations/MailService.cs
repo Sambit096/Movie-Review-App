@@ -21,7 +21,7 @@ namespace MovieReviewApp.Services {
                 var user = await dbContext.Users.FirstOrDefaultAsync(u => u.UserId == cart.UserId);
 
                 var fromAddress = new MailAddress("youremail@email.com", "Email Testing");
-                var toAddress = new MailAddress(user.email);
+                var toAddress = new MailAddress(user.Email);
                 var message = new MailMessage(fromAddress, toAddress)
                 {
                     Subject = "Order Confirmation",
@@ -47,7 +47,7 @@ namespace MovieReviewApp.Services {
         public string GenerateBody(User user)
         {
             var builder = new StringBuilder();
-            builder.AppendLine($"<h2>Hello {user.firstName}, your order has been confirmed. Thanks for shopping!</h2>");
+            builder.AppendLine($"<h2>Hello {user.FirstName}, your order has been confirmed. Thanks for shopping!</h2>");
             return builder.ToString();
         }
     }

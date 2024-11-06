@@ -7,6 +7,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.ComponentModel;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Routing.Constraints;
+using System.Runtime.CompilerServices;
 
 
 namespace MovieReviewApp.Implementations {
@@ -33,7 +34,18 @@ namespace MovieReviewApp.Implementations {
                 }
                 return user;
             } catch (Exception ex) {
-                throw new Exception("Error when getting cart: ", ex);
+                throw new Exception("Error when getting user: ", ex);
+            }
+        }
+        public async Task<User> GetUserByEmail(string email) {
+            try {
+                var user = await dbContext.Users.SingleOrDefaultAsync(u => u.Email == email);
+                if(user == null) {
+                    throw new Exception("This user does not exist");
+                }
+                return user;
+            } catch (Exception ex) {
+                throw new Exception("Error when getting user: ", ex);
             }
         }
 
@@ -57,19 +69,30 @@ namespace MovieReviewApp.Implementations {
             }
         }
 
-        public async Task UpdateUser(int id, User user) {
+        public async Task UpdateUser(User user) {
             try {
-                var updateUser = await dbContext.Users.FindAsync(id);
+                var updateUser = await dbContext.Users.FindAsync(user.UserId);
                 if(updateUser != null) {
-                    updateUser.username = user.username;
-                    updateUser.email = user.email;
-                    updateUser.firstName = user.firstName;
-                    updateUser.lastName = user.lastName;
-                    updateUser.password = user.password;
+                    updateUser.Username = user.Username;
+                    updateUser.Email = user.Email;
+                    updateUser.FirstName = user.FirstName;
+                    updateUser.LastName = user.LastName;
+                    updateUser.Password = user.Password;
                     await dbContext.SaveChangesAsync();
                 }
             } catch (Exception ex) {
                 throw new Exception("Error when updating the user: ", ex);
+            }
+        }
+
+        public async Task<User> ValidateUser(string email, string password) {
+            try {
+                var user = await dbContext.Users.SingleOrDefaultAsync(u => u.Email == email);
+                if (user == null) return null;
+                if (user.Password == password) return user; // Hash for future security reasons
+                return null;
+            } catch (Exception ex) {
+                throw new Exception("Error when validating user: ", ex);
             }
         }
     }

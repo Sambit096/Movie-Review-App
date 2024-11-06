@@ -48,7 +48,6 @@ public class CartController : ControllerBase {
         try {
             var cart = await this.cartService.GetCart(cartId);
             if(cart == null) {
-                ///create cart code
                 return NotFound();
             }
             return Ok(cart);

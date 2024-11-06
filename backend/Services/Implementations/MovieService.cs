@@ -29,7 +29,7 @@ namespace MovieReviewApp.Services {
                 select m).FirstOrDefaultAsync();
                 if (movie != null)
                     return movie;
-                return null;
+                throw new KeyNotFoundException($"Movie with Id {movieId} was not found in the Database.");
             } catch (Exception error) {
                 throw new Exception($"Error when retreiving Movie with Id {movieId} from Database: ", error);
             }

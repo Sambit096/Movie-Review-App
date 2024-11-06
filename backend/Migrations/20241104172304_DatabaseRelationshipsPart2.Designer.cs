@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieReviewApp.Data;
 
@@ -11,9 +12,11 @@ using MovieReviewApp.Data;
 namespace MovieReviewApp.Migrations
 {
     [DbContext(typeof(MovieReviewDbContext))]
-    partial class MovieReviewDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241104172304_DatabaseRelationshipsPart2")]
+    partial class DatabaseRelationshipsPart2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +36,7 @@ namespace MovieReviewApp.Migrations
                     b.Property<double>("Total")
                         .HasColumnType("float");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("CartId");
@@ -191,21 +194,18 @@ namespace MovieReviewApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GatewayId"));
 
-                    b.Property<string>("CVC")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CVC")
+                        .HasColumnType("int");
 
                     b.Property<string>("CardHolderName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CardNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CardNumber")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ExpirationDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("GatewayId");
 
@@ -360,6 +360,9 @@ namespace MovieReviewApp.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
                     b.Property<int>("ShowTimeId")
                         .HasColumnType("int");
 
@@ -378,6 +381,7 @@ namespace MovieReviewApp.Migrations
                             Availability = true,
                             CartId = 1,
                             Price = 12.5,
+                            Quantity = 1,
                             ShowTimeId = 1
                         },
                         new
@@ -386,6 +390,7 @@ namespace MovieReviewApp.Migrations
                             Availability = false,
                             CartId = 1,
                             Price = 12.5,
+                            Quantity = 1,
                             ShowTimeId = 1
                         },
                         new
@@ -394,6 +399,7 @@ namespace MovieReviewApp.Migrations
                             Availability = true,
                             CartId = 1,
                             Price = 14.0,
+                            Quantity = 1,
                             ShowTimeId = 2
                         },
                         new
@@ -402,6 +408,7 @@ namespace MovieReviewApp.Migrations
                             Availability = false,
                             CartId = 1,
                             Price = 14.0,
+                            Quantity = 1,
                             ShowTimeId = 2
                         },
                         new
@@ -410,6 +417,7 @@ namespace MovieReviewApp.Migrations
                             Availability = false,
                             CartId = 1,
                             Price = 14.0,
+                            Quantity = 1,
                             ShowTimeId = 2
                         },
                         new
@@ -418,6 +426,7 @@ namespace MovieReviewApp.Migrations
                             Availability = true,
                             CartId = 2,
                             Price = 10.0,
+                            Quantity = 1,
                             ShowTimeId = 3
                         },
                         new
@@ -426,6 +435,7 @@ namespace MovieReviewApp.Migrations
                             Availability = true,
                             CartId = 2,
                             Price = 15.0,
+                            Quantity = 1,
                             ShowTimeId = 4
                         },
                         new
@@ -434,6 +444,7 @@ namespace MovieReviewApp.Migrations
                             Availability = false,
                             CartId = 2,
                             Price = 15.0,
+                            Quantity = 1,
                             ShowTimeId = 4
                         },
                         new
@@ -442,6 +453,7 @@ namespace MovieReviewApp.Migrations
                             Availability = false,
                             CartId = 2,
                             Price = 15.0,
+                            Quantity = 1,
                             ShowTimeId = 4
                         },
                         new
@@ -450,6 +462,7 @@ namespace MovieReviewApp.Migrations
                             Availability = true,
                             CartId = 2,
                             Price = 11.0,
+                            Quantity = 1,
                             ShowTimeId = 5
                         },
                         new
@@ -458,6 +471,7 @@ namespace MovieReviewApp.Migrations
                             Availability = false,
                             CartId = 3,
                             Price = 11.0,
+                            Quantity = 1,
                             ShowTimeId = 5
                         },
                         new
@@ -466,6 +480,7 @@ namespace MovieReviewApp.Migrations
                             Availability = true,
                             CartId = 3,
                             Price = 13.5,
+                            Quantity = 1,
                             ShowTimeId = 6
                         },
                         new
@@ -474,6 +489,7 @@ namespace MovieReviewApp.Migrations
                             Availability = false,
                             CartId = 4,
                             Price = 13.5,
+                            Quantity = 1,
                             ShowTimeId = 6
                         },
                         new
@@ -482,6 +498,7 @@ namespace MovieReviewApp.Migrations
                             Availability = false,
                             CartId = 4,
                             Price = 13.5,
+                            Quantity = 1,
                             ShowTimeId = 6
                         },
                         new
@@ -490,6 +507,7 @@ namespace MovieReviewApp.Migrations
                             Availability = true,
                             CartId = 4,
                             Price = 12.0,
+                            Quantity = 1,
                             ShowTimeId = 7
                         },
                         new
@@ -498,6 +516,7 @@ namespace MovieReviewApp.Migrations
                             Availability = true,
                             CartId = 4,
                             Price = 15.5,
+                            Quantity = 1,
                             ShowTimeId = 8
                         },
                         new
@@ -506,6 +525,7 @@ namespace MovieReviewApp.Migrations
                             Availability = false,
                             CartId = 4,
                             Price = 15.5,
+                            Quantity = 1,
                             ShowTimeId = 8
                         },
                         new
@@ -514,6 +534,7 @@ namespace MovieReviewApp.Migrations
                             Availability = true,
                             CartId = 4,
                             Price = 13.0,
+                            Quantity = 1,
                             ShowTimeId = 9
                         },
                         new
@@ -522,6 +543,7 @@ namespace MovieReviewApp.Migrations
                             Availability = false,
                             CartId = 5,
                             Price = 13.0,
+                            Quantity = 1,
                             ShowTimeId = 9
                         },
                         new
@@ -530,6 +552,7 @@ namespace MovieReviewApp.Migrations
                             Availability = true,
                             CartId = 1,
                             Price = 16.0,
+                            Quantity = 1,
                             ShowTimeId = 10
                         },
                         new
@@ -538,6 +561,7 @@ namespace MovieReviewApp.Migrations
                             Availability = false,
                             CartId = 1,
                             Price = 16.0,
+                            Quantity = 1,
                             ShowTimeId = 10
                         },
                         new
@@ -546,6 +570,7 @@ namespace MovieReviewApp.Migrations
                             Availability = true,
                             CartId = 2,
                             Price = 14.5,
+                            Quantity = 1,
                             ShowTimeId = 11
                         },
                         new
@@ -554,6 +579,7 @@ namespace MovieReviewApp.Migrations
                             Availability = false,
                             CartId = 2,
                             Price = 14.5,
+                            Quantity = 1,
                             ShowTimeId = 11
                         },
                         new
@@ -562,6 +588,7 @@ namespace MovieReviewApp.Migrations
                             Availability = true,
                             CartId = 1,
                             Price = 10.5,
+                            Quantity = 1,
                             ShowTimeId = 12
                         },
                         new
@@ -570,6 +597,7 @@ namespace MovieReviewApp.Migrations
                             Availability = false,
                             CartId = 5,
                             Price = 10.5,
+                            Quantity = 1,
                             ShowTimeId = 12
                         },
                         new
@@ -578,6 +606,7 @@ namespace MovieReviewApp.Migrations
                             Availability = true,
                             CartId = 5,
                             Price = 11.0,
+                            Quantity = 1,
                             ShowTimeId = 13
                         },
                         new
@@ -586,6 +615,7 @@ namespace MovieReviewApp.Migrations
                             Availability = true,
                             CartId = 5,
                             Price = 12.0,
+                            Quantity = 1,
                             ShowTimeId = 14
                         },
                         new
@@ -594,6 +624,7 @@ namespace MovieReviewApp.Migrations
                             Availability = false,
                             CartId = 5,
                             Price = 12.0,
+                            Quantity = 1,
                             ShowTimeId = 14
                         },
                         new
@@ -602,6 +633,7 @@ namespace MovieReviewApp.Migrations
                             Availability = false,
                             CartId = 5,
                             Price = 12.0,
+                            Quantity = 1,
                             ShowTimeId = 14
                         },
                         new
@@ -610,6 +642,7 @@ namespace MovieReviewApp.Migrations
                             Availability = true,
                             CartId = 5,
                             Price = 13.0,
+                            Quantity = 1,
                             ShowTimeId = 15
                         },
                         new
@@ -618,6 +651,7 @@ namespace MovieReviewApp.Migrations
                             Availability = false,
                             CartId = 5,
                             Price = 13.0,
+                            Quantity = 1,
                             ShowTimeId = 15
                         });
                 });
@@ -674,7 +708,7 @@ namespace MovieReviewApp.Migrations
                             Email = "jane.smith@example.com",
                             FirstName = "Jane",
                             LastName = "Smith",
-                            NotiPreference = 1,
+                            NotiPreference = 0,
                             Password = "e2f34c1b5g6h7i8j9k0l1m",
                             Username = "janesmith"
                         },
@@ -684,7 +718,7 @@ namespace MovieReviewApp.Migrations
                             Email = "michael.jones@example.com",
                             FirstName = "Michael",
                             LastName = "Jones",
-                            NotiPreference = 1,
+                            NotiPreference = 0,
                             Password = "f3g45d2e6h7i8j9k0l1m2n",
                             Username = "mikejones"
                         },
@@ -694,7 +728,7 @@ namespace MovieReviewApp.Migrations
                             Email = "sarah.connor@example.com",
                             FirstName = "Sarah",
                             LastName = "Connor",
-                            NotiPreference = 1,
+                            NotiPreference = 0,
                             Password = "g4h56e3f7i8j9k0l1m2n3o",
                             Username = "sconnor"
                         },
@@ -704,7 +738,7 @@ namespace MovieReviewApp.Migrations
                             Email = "david.lee@example.com",
                             FirstName = "David",
                             LastName = "Lee",
-                            NotiPreference = 1,
+                            NotiPreference = 0,
                             Password = "h5i67f4g8j9k0l1m2n3o4p",
                             Username = "dlee"
                         });

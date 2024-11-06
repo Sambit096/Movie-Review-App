@@ -17,7 +17,39 @@ namespace MovieReviewApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Set MovieId as Foreign Key on ShowTime Table
+            modelBuilder.Entity<ShowTime>()
+                .HasOne(t => t.Movie)
+                .WithMany()
+                .HasForeignKey(t => t.MovieId)
+                .OnDelete(DeleteBehavior.Cascade); 
+
+            //Set UserId as Foreign Key on ShowTime Table (not required, can be null)
+            modelBuilder.Entity<Cart>()
+                .HasOne(t => t.User)
+                .WithMany()
+                .HasForeignKey(t => t.UserId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict); 
+
+            //Set ShowTimeId as Foreign Key on Ticket Table
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.ShowTime)
+                .WithMany()
+                .HasForeignKey(t => t.ShowTimeId)
+                .OnDelete(DeleteBehavior.Cascade); 
+
             modelBuilder.Entity<PaymentGateway>().HasKey(pg => pg.GatewayId); // Define primary key explicitly
+
+            //Set CartId as Foreign Key on Ticket Table (not required, can be null)
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.Cart)
+                .WithMany()
+                .HasForeignKey(t => t.CartId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
             modelBuilder.Entity<Movie>().HasData(
                 //Movie sample data provided by ChatGPT
                 new Movie { MovieId = 1, Title = "John Wick: Chapter 4", Genre = "Action", Description = "John Wick uncovers a path to defeating The High Table, but before he can earn his freedom, he must face a new enemy with powerful alliances across the globe.", Rating = MPAARating.R },
@@ -51,37 +83,37 @@ namespace MovieReviewApp.Data
             );
             modelBuilder.Entity<Ticket>().HasData(
                 //Ticket sample data provided by ChatGPT
-                new Ticket { TicketId = 1, ShowTimeId = 1, Price = 12.5, Quantity = 1, Availability = true, CartId = 1 },
-                new Ticket { TicketId = 2, ShowTimeId = 1, Price = 12.5, Quantity = 1, Availability = false, CartId = 1 },
-                new Ticket { TicketId = 3, ShowTimeId = 2, Price = 14.0, Quantity = 1, Availability = true, CartId = 1 },
-                new Ticket { TicketId = 4, ShowTimeId = 2, Price = 14.0, Quantity = 1, Availability = false, CartId = 1 },
-                new Ticket { TicketId = 5, ShowTimeId = 2, Price = 14.0, Quantity = 1, Availability = false, CartId = 1 },
-                new Ticket { TicketId = 6, ShowTimeId = 3, Price = 10.0, Quantity = 1, Availability = true, CartId = 2 },
-                new Ticket { TicketId = 7, ShowTimeId = 4, Price = 15.0, Quantity = 1, Availability = true, CartId = 2 },
-                new Ticket { TicketId = 8, ShowTimeId = 4, Price = 15.0, Quantity = 1, Availability = false, CartId = 2 },
-                new Ticket { TicketId = 9, ShowTimeId = 4, Price = 15.0, Quantity = 1, Availability = false, CartId = 2 },
-                new Ticket { TicketId = 10, ShowTimeId = 5, Price = 11.0, Quantity = 1, Availability = true, CartId = 2 },
-                new Ticket { TicketId = 11, ShowTimeId = 5, Price = 11.0, Quantity = 1, Availability = false, CartId = 3 },
-                new Ticket { TicketId = 12, ShowTimeId = 6, Price = 13.5, Quantity = 1, Availability = true, CartId = 3 },
-                new Ticket { TicketId = 13, ShowTimeId = 6, Price = 13.5, Quantity = 1, Availability = false, CartId = 4 },
-                new Ticket { TicketId = 14, ShowTimeId = 6, Price = 13.5, Quantity = 1, Availability = false, CartId = 4 },
-                new Ticket { TicketId = 15, ShowTimeId = 7, Price = 12.0, Quantity = 1, Availability = true, CartId = 4 },
-                new Ticket { TicketId = 16, ShowTimeId = 8, Price = 15.5, Quantity = 1, Availability = true, CartId = 4 },
-                new Ticket { TicketId = 17, ShowTimeId = 8, Price = 15.5, Quantity = 1, Availability = false, CartId = 4 },
-                new Ticket { TicketId = 18, ShowTimeId = 9, Price = 13.0, Quantity = 1, Availability = true, CartId = 4 },
-                new Ticket { TicketId = 19, ShowTimeId = 9, Price = 13.0, Quantity = 1, Availability = false, CartId = 5 },
-                new Ticket { TicketId = 20, ShowTimeId = 10, Price = 16.0, Quantity = 1, Availability = true, CartId = 1 },
-                new Ticket { TicketId = 21, ShowTimeId = 10, Price = 16.0, Quantity = 1, Availability = false, CartId = 1 },
-                new Ticket { TicketId = 22, ShowTimeId = 11, Price = 14.5, Quantity = 1, Availability = true, CartId = 2 },
-                new Ticket { TicketId = 23, ShowTimeId = 11, Price = 14.5, Quantity = 1, Availability = false, CartId = 2 },
-                new Ticket { TicketId = 24, ShowTimeId = 12, Price = 10.5, Quantity = 1, Availability = true, CartId = 1 },
-                new Ticket { TicketId = 25, ShowTimeId = 12, Price = 10.5, Quantity = 1, Availability = false, CartId = 5 },
-                new Ticket { TicketId = 26, ShowTimeId = 13, Price = 11.0, Quantity = 1, Availability = true, CartId = 5 },
-                new Ticket { TicketId = 27, ShowTimeId = 14, Price = 12.0, Quantity = 1, Availability = true, CartId = 5 },
-                new Ticket { TicketId = 28, ShowTimeId = 14, Price = 12.0, Quantity = 1, Availability = false, CartId = 5 },
-                new Ticket { TicketId = 29, ShowTimeId = 14, Price = 12.0, Quantity = 1, Availability = false, CartId = 5 },
-                new Ticket { TicketId = 30, ShowTimeId = 15, Price = 13.0, Quantity = 1, Availability = true, CartId = 5 },
-                new Ticket { TicketId = 31, ShowTimeId = 15, Price = 13.0, Quantity = 1, Availability = false, CartId = 5 }
+                new Ticket { TicketId = 1, ShowTimeId = 1, Price = 12.5, Availability = true, CartId = 1 },
+                new Ticket { TicketId = 2, ShowTimeId = 1, Price = 12.5, Availability = false, CartId = 1 },
+                new Ticket { TicketId = 3, ShowTimeId = 2, Price = 14.0, Availability = true, CartId = 1 },
+                new Ticket { TicketId = 4, ShowTimeId = 2, Price = 14.0, Availability = false, CartId = 1 },
+                new Ticket { TicketId = 5, ShowTimeId = 2, Price = 14.0, Availability = false, CartId = 1 },
+                new Ticket { TicketId = 6, ShowTimeId = 3, Price = 10.0, Availability = true, CartId = 2 },
+                new Ticket { TicketId = 7, ShowTimeId = 4, Price = 15.0, Availability = true, CartId = 2 },
+                new Ticket { TicketId = 8, ShowTimeId = 4, Price = 15.0, Availability = false, CartId = 2 },
+                new Ticket { TicketId = 9, ShowTimeId = 4, Price = 15.0, Availability = false, CartId = 2 },
+                new Ticket { TicketId = 10, ShowTimeId = 5, Price = 11.0, Availability = true, CartId = 2 },
+                new Ticket { TicketId = 11, ShowTimeId = 5, Price = 11.0, Availability = false, CartId = 3 },
+                new Ticket { TicketId = 12, ShowTimeId = 6, Price = 13.5, Availability = true, CartId = 3 },
+                new Ticket { TicketId = 13, ShowTimeId = 6, Price = 13.5, Availability = false, CartId = 4 },
+                new Ticket { TicketId = 14, ShowTimeId = 6, Price = 13.5, Availability = false, CartId = 4 },
+                new Ticket { TicketId = 15, ShowTimeId = 7, Price = 12.0, Availability = true, CartId = 4 },
+                new Ticket { TicketId = 16, ShowTimeId = 8, Price = 15.5, Availability = true, CartId = 4 },
+                new Ticket { TicketId = 17, ShowTimeId = 8, Price = 15.5, Availability = false, CartId = 4 },
+                new Ticket { TicketId = 18, ShowTimeId = 9, Price = 13.0, Availability = true, CartId = 4 },
+                new Ticket { TicketId = 19, ShowTimeId = 9, Price = 13.0, Availability = false, CartId = 5 },
+                new Ticket { TicketId = 20, ShowTimeId = 10, Price = 16.0, Availability = true, CartId = 1 },
+                new Ticket { TicketId = 21, ShowTimeId = 10, Price = 16.0, Availability = false, CartId = 1 },
+                new Ticket { TicketId = 22, ShowTimeId = 11, Price = 14.5, Availability = true, CartId = 2 },
+                new Ticket { TicketId = 23, ShowTimeId = 11, Price = 14.5, Availability = false, CartId = 2 },
+                new Ticket { TicketId = 24, ShowTimeId = 12, Price = 10.5, Availability = true, CartId = 1 },
+                new Ticket { TicketId = 25, ShowTimeId = 12, Price = 10.5, Availability = false, CartId = 5 },
+                new Ticket { TicketId = 26, ShowTimeId = 13, Price = 11.0, Availability = true, CartId = 5 },
+                new Ticket { TicketId = 27, ShowTimeId = 14, Price = 12.0, Availability = true, CartId = 5 },
+                new Ticket { TicketId = 28, ShowTimeId = 14, Price = 12.0, Availability = false, CartId = 5 },
+                new Ticket { TicketId = 29, ShowTimeId = 14, Price = 12.0, Availability = false, CartId = 5 },
+                new Ticket { TicketId = 30, ShowTimeId = 15, Price = 13.0, Availability = true, CartId = 5 },
+                new Ticket { TicketId = 31, ShowTimeId = 15, Price = 13.0, Availability = false, CartId = 5 }
             );
             modelBuilder.Entity<Cart>().HasData(
                 new Cart { CartId = 1, UserId = 1, Total = 50.0 },
@@ -94,43 +126,48 @@ namespace MovieReviewApp.Data
             modelBuilder.Entity<User>().HasData(
             new User{
                 UserId = 1,
-                email = "john.doe@example.com",
-                username = "johndoe",
-                firstName = "John",
-                lastName = "Doe",
-                password = "d1f23b1a4e5f6a7b8c9d0e"
+                Email = "john.doe@example.com",
+                Username = "johndoe",
+                FirstName = "John",
+                LastName = "Doe",
+                Password = "d1f23b1a4e5f6a7b8c9d0e",
+                NotiPreference = UserPreference.SMS
             },
             new User{
                 UserId = 2,
-                email = "jane.smith@example.com",
-                username = "janesmith",
-                firstName = "Jane",
-                lastName = "Smith",
-                password = "e2f34c1b5g6h7i8j9k0l1m"
+                Email = "jane.smith@example.com",
+                Username = "janesmith",
+                FirstName = "Jane",
+                LastName = "Smith",
+                Password = "e2f34c1b5g6h7i8j9k0l1m",
+                NotiPreference = UserPreference.Email
             },
             new User{
                 UserId = 3,
-                email = "michael.jones@example.com",
-                username = "mikejones",
-                firstName = "Michael",
-                lastName = "Jones",
-                password = "f3g45d2e6h7i8j9k0l1m2n"
+                Email = "michael.jones@example.com",
+                Username = "mikejones",
+                FirstName = "Michael",
+                LastName = "Jones",
+                Password = "f3g45d2e6h7i8j9k0l1m2n",
+                NotiPreference = UserPreference.Email
             },
             new User{
                 UserId = 4,
-                email = "sarah.connor@example.com",
-                username = "sconnor",
-                firstName = "Sarah",
-                lastName = "Connor",
-                password = "g4h56e3f7i8j9k0l1m2n3o"
+                Email = "sarah.connor@example.com",
+                Username = "sconnor",
+                FirstName = "Sarah",
+                LastName = "Connor",
+                Password = "g4h56e3f7i8j9k0l1m2n3o",
+                NotiPreference = UserPreference.Email
             },
             new User{
                 UserId = 5,
-                email = "david.lee@example.com",
-                username = "dlee",
-                firstName = "David",
-                lastName = "Lee",
-                password = "h5i67f4g8j9k0l1m2n3o4p"
+                Email = "david.lee@example.com",
+                Username = "dlee",
+                FirstName = "David",
+                LastName = "Lee",
+                Password = "h5i67f4g8j9k0l1m2n3o4p",
+                NotiPreference = UserPreference.Email
             }
             );
         }
