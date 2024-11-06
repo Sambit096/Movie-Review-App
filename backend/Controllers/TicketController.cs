@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieReviewApp.Models;
 using MovieReviewApp.Interfaces;
+using MovieReviewApp.Tools; // Include the ErrorDictionary namespace
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -19,48 +20,97 @@ namespace MovieReviewApp.Controllers
 
         // GET: api/ticket
         [HttpGet(nameof(GetAllTickets))]
-        public async Task<ActionResult<IEnumerable<Ticket>>> GetAllTickets()
+        public async Task<IActionResult> GetAllTickets()
         {
-            var tickets = await _ticketService.GetAllTickets();
-            return Ok(tickets);
+            try
+            {
+                var tickets = await _ticketService.GetAllTickets();
+                if (tickets == null || !tickets.Any())
+                {
+                    return StatusCode(404, ErrorDictionary.ErrorLibrary[404]);
+                }
+                return Ok(tickets);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+            }
         }
 
         // GET: api/ticket/movie/{movieId}
         [HttpGet("GetTickets/{movieId}")]
-        public async Task<ActionResult<IEnumerable<Ticket>>> GetTickets(int movieId)
+        public async Task<IActionResult> GetTickets(int movieId)
         {
-            var tickets = await _ticketService.GetTickets(movieId);
-            if (tickets == null || !tickets.Any()) return NotFound("No tickets found for the specified movie.");
-
-            return Ok(tickets);
+            try
+            {
+                var tickets = await _ticketService.GetTickets(movieId);
+                if (tickets == null || !tickets.Any())
+                {
+                    return StatusCode(404, ErrorDictionary.ErrorLibrary[404]);
+                }
+                return Ok(tickets);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+            }
         }
 
         // POST: api/ticket
         [HttpPost(nameof(CreateTicket))]
-        public async Task<ActionResult<Ticket>> CreateTicket([FromBody] Ticket ticket)
+        public async Task<IActionResult> CreateTicket([FromBody] Ticket ticket)
         {
-            var createdTicket = await _ticketService.AddTicket(ticket);
-            return CreatedAtAction(nameof(GetAllTickets), new { ticketId = createdTicket.TicketId }, createdTicket);
+            try
+            {
+                var createdTicket = await _ticketService.AddTicket(ticket);
+                if (createdTicket == null)
+                {
+                    return StatusCode(409, ErrorDictionary.ErrorLibrary[409]);
+                }
+                return CreatedAtAction(nameof(GetAllTickets), new { ticketId = createdTicket.TicketId }, createdTicket);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+            }
         }
 
         // PUT: api/ticket/{id}
         [HttpPut("UpdateTicket/{id}")]
         public async Task<IActionResult> UpdateTicket(int id, [FromBody] Ticket ticket)
         {
-            var updated = await _ticketService.UpdateTicket(id, ticket);
-            if (!updated) return NotFound("Ticket not found.");
-
-            return NoContent();
+            try
+            {
+                var updated = await _ticketService.UpdateTicket(id, ticket);
+                if (!updated)
+                {
+                    return StatusCode(404, ErrorDictionary.ErrorLibrary[404]);
+                }
+                return NoContent();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+            }
         }
 
         // DELETE: api/ticket/{id}
         [HttpDelete("DeleteTicket/{id}")]
         public async Task<IActionResult> DeleteTicket(int id)
         {
-            var deleted = await _ticketService.DeleteTicket(id);
-            if (!deleted) return NotFound("Ticket not found.");
-
-            return NoContent();
+            try
+            {
+                var deleted = await _ticketService.DeleteTicket(id);
+                if (!deleted)
+                {
+                    return StatusCode(404, ErrorDictionary.ErrorLibrary[404]);
+                }
+                return NoContent();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+            }
         }
     }
 }
