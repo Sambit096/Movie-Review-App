@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieReviewApp.Models;
 using MovieReviewApp.Interfaces;
+using MovieReviewApp.Tools;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.AspNetCore.Identity.Data;
 
@@ -19,11 +20,11 @@ namespace MovieReviewApp.Controllers {
             try {
                 var users = await this.userService.GetUsers();
                 if(users == null || !users.Any()) {
-                    return NotFound();
+                     return NotFound(ErrorDictionary.ErrorLibrary[404] + "No users found.");
                 }
                 return Ok(users);
             } catch (Exception ex) {
-                return StatusCode(500, $"Error when recieving User data: {ex}");
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + ex.Message);
             }
         }
 
@@ -32,11 +33,11 @@ namespace MovieReviewApp.Controllers {
             try {
                 var user = await this.userService.GetUserById(id);
                 if(user == null) {
-                    return NotFound();
+                    return NotFound(ErrorDictionary.ErrorLibrary[400]);
                 }
                 return Ok(user);
             } catch (Exception ex) {
-                return StatusCode(500, $"Error when recieving user Data: {ex}");
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + ex.Message);
             }
         }
 
@@ -45,11 +46,11 @@ namespace MovieReviewApp.Controllers {
             try {
                 var user = await this.userService.GetUserByEmail(email);
                 if(user == null) {
-                    return NotFound();
+                     return NotFound(ErrorDictionary.ErrorLibrary[400]);
                 }
                 return Ok(user);
             } catch (Exception ex) {
-                return StatusCode(500, $"Error when getting the user: {ex}");
+                 return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + ex.Message);
             }
         }
 
@@ -58,12 +59,12 @@ namespace MovieReviewApp.Controllers {
             try {
                 var updateUser = await this.userService.GetUserById(user.UserId);
                 if (updateUser == null) {
-                    return NotFound();
+                    return NotFound(ErrorDictionary.ErrorLibrary[400]);
                 }
                 await this.userService.UpdateUser(user);
                 return NoContent(); // 204 no content
             } catch (Exception ex) {
-                return StatusCode(500, $"Error when updating user data: {ex}");
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + ex.Message);
             }
         }
 
@@ -72,19 +73,19 @@ namespace MovieReviewApp.Controllers {
             try {
                 var removeUser = await this.userService.GetUserById(id);
                 if (removeUser == null) {
-                    return NotFound();
+                    return NotFound(ErrorDictionary.ErrorLibrary[400]);
                 }
                 await this.userService.RemoveUser(removeUser.UserId);
                 return NoContent(); // 204 no content
             } catch (Exception ex) {
-                return StatusCode(500, $"Error when removing user: {ex}");
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[502] + ex.Message);
             }
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request) {
             try {
-                if (!ModelState.IsValid) return BadRequest(ModelState);
+                if (!ModelState.IsValid) return BadRequest(ErrorDictionary.ErrorLibrary[400]);
 
                 var user = await this.userService.ValidateUser(request.Email, request.Password);
                 if (user == null) {
@@ -92,14 +93,14 @@ namespace MovieReviewApp.Controllers {
                 }
                 return Ok(new { message = "Login successful!" });
             } catch (Exception ex) {
-                return StatusCode(500, $"Error when logging in user: {ex}");
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + ex.Message);
             }
         }
 
         [HttpPost("signup")]
         public async Task<IActionResult> AddUser([FromBody] UserDTO userDTO) {
             try {
-                if (!ModelState.IsValid) return BadRequest(ModelState);
+                if (!ModelState.IsValid) return BadRequest(ErrorDictionary.ErrorLibrary[400]);
                 var user = new User {
                     Email = userDTO.Email,
                     Username = userDTO.Username,
@@ -110,7 +111,7 @@ namespace MovieReviewApp.Controllers {
                 await this.userService.AddUser(user);
                 return Ok(user);
             } catch (Exception ex) {
-                return StatusCode(500, $"Error when adding User: {ex}");
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[501] + ex.Message);
             }
         }
     }

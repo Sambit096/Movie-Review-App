@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieReviewApp.Models;
 using MovieReviewApp.Interfaces;
+using MovieReviewApp.Tools;
 
 namespace MovieReviewApp.Controllers;
 [ApiController]
@@ -20,11 +21,11 @@ public class MovieController : ControllerBase {
          try {
             var movies = await this.movieService.GetMovies();
             if (movies == null || !movies.Any()) {
-                return NotFound();
+                return NotFound(ErrorDictionary.ErrorLibrary[404] + "No movies found.");
             }
             return Ok(movies);
         } catch (Exception error) {
-            return StatusCode(500, $"Error when receiving Movie Data: {error}");
+            return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + error.Message);
         }
     }
     /// <summary>
@@ -37,10 +38,10 @@ public class MovieController : ControllerBase {
         try {
             var movie = await this.movieService.GetMovieById(id);
             if (movie == null) 
-                return NotFound();
+                return NotFound(ErrorDictionary.ErrorLibrary[400]);
             return Ok(movie);
         } catch (Exception error) {
-             return StatusCode(500, $"Error when receiving Movie Data: {error}");
+             return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + error.Message);
         }
         
     }
@@ -56,7 +57,7 @@ public class MovieController : ControllerBase {
             if (result) return Ok();
             return NoContent();
         } catch (Exception error) {
-            return StatusCode(500, $"Error when adding Movie Data: {error}");
+            return StatusCode(500, ErrorDictionary.ErrorLibrary[501] + error.Message);
         }
     }
     /// <summary>
@@ -71,7 +72,7 @@ public class MovieController : ControllerBase {
             if (result) return Ok();
             return NoContent();
         } catch (Exception error) {
-            return StatusCode(500, $"Error when removing Movie Data: {error}");
+            return StatusCode(500, ErrorDictionary.ErrorLibrary[502] + error.Message);
         }
     }
     /// <summary>
@@ -86,7 +87,7 @@ public class MovieController : ControllerBase {
             if (result) return Ok();
             return NoContent();
         } catch (Exception error) {
-            return StatusCode(500, $"Error when editing Movie Data: {error}");
+            return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + error.Message);
         }
     }
 }

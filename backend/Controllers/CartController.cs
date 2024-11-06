@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieReviewApp.Models;
 using MovieReviewApp.Interfaces;
+using MovieReviewApp.Tools;
 using MovieReviewApp.Data;
 
 namespace MovieReviewApp.Controllers;
@@ -22,9 +23,9 @@ public class CartController : ControllerBase {
                 {
                     return Ok(result);
                 }
-                return StatusCode(500, $"Unable to add ticket to cart.");
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + "Unable to add ticket to cart.");
             } catch (Exception error) {
-                return StatusCode(500, $"Error adding ticket to cart: {error}");
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + error.Message);
             }
         }
 
@@ -37,9 +38,9 @@ public class CartController : ControllerBase {
                 {
                     return Ok(result);
                 }
-                return StatusCode(500, $"Unable to remove ticket from cart.");
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + "Unable to remove ticket from cart.");
             } catch (Exception error) {
-                return StatusCode(500, $"Error removing ticket from cart: {error}");
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + error.Message);
             }
         }
 
@@ -48,11 +49,11 @@ public class CartController : ControllerBase {
         try {
             var cart = await this.cartService.GetCart(cartId);
             if(cart == null) {
-                return NotFound();
+                return NotFound(ErrorDictionary.ErrorLibrary[404] + "Cart not found.");
             }
             return Ok(cart);
         } catch (Exception error) {
-            return StatusCode(500, $"Error gathering cart data: {error}");
+            return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + error.Message);
         }
     }
 
@@ -61,11 +62,11 @@ public class CartController : ControllerBase {
         try {
             var success = await this.cartService.ProcessPayment(cartId, cardNumber, exp, cardHolderName, cvc);
             if(!success) {
-                return StatusCode(500, $"Payment failed");
+               return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + "Payment failed.");
             }
             return Ok("Payment Processed!");
         } catch (Exception error) {
-            return StatusCode(500, $"Error when processing payment: {error}");
+             return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + error.Message);
         }
     }
 
@@ -76,9 +77,9 @@ public class CartController : ControllerBase {
             if(result) {
                 return Ok(result);
             }
-            return StatusCode(500, "Unaable to add ticket to cart");
+            return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + "Unable to add ticket to cart.");
         } catch (Exception error) {
-            return StatusCode(500, $"Error when adding ticket: {error}");
+            return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + error.Message);
         }
     }
 }

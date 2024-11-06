@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieReviewApp.Models;
 using MovieReviewApp.Interfaces;
+using MovieReviewApp.Tools;
 using MovieReviewApp.Data;
 
 namespace MovieReviewApp.Controllers {
@@ -19,11 +20,11 @@ namespace MovieReviewApp.Controllers {
             try {
                 var result = await mailService.SendEmail(cartId);
                 if(!result) {
-                    return StatusCode(500, $"Email send failed");
+                    return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + "Email send failed.");
                 }
                 return Ok("Email Sent!");
             } catch (Exception error) {
-                return StatusCode(500, $"Error sending email: {error}");
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + error.Message);
             }
         }
     }
