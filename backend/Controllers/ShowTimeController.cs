@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MovieReviewApp.Models;
 using MovieReviewApp.Interfaces;
 using MovieReviewApp.Data;
+using MovieReviewApp.Tools;
 
 namespace MovieReviewApp.Controllers;
 [ApiController]
@@ -22,11 +23,11 @@ public class ShowTimeController : ControllerBase {
         try {
             var showTimes = await this.showTimeService.GetAllShowTimes();
             if (showTimes == null || !showTimes.Any()) {
-                return NotFound();
+                return NotFound(ErrorDictionary.ErrorLibrary.GetValueOrDefault(400));
             }
             return Ok(showTimes);
         } catch (Exception error) {
-            return StatusCode(500, $"Error when receiving ShowTime Data: {error}");
+            return StatusCode(500, ErrorDictionary.ErrorLibrary.GetValueOrDefault(500) + error);
         }
     }
     /// <summary>
@@ -39,11 +40,11 @@ public class ShowTimeController : ControllerBase {
         try {
             var showTimes = await this.showTimeService.GetShowTimes(movieId);
             if (showTimes == null || !showTimes.Any()) {
-                return NotFound();
+                return NotFound(ErrorDictionary.ErrorLibrary.GetValueOrDefault(400));
             }
             return Ok(showTimes);
         } catch (Exception error) {
-            return StatusCode(500, $"Error when receiving ShowTime Data for movieId: {error}");
+            return StatusCode(500, ErrorDictionary.ErrorLibrary.GetValueOrDefault(500) + error);
         }
         
     }
@@ -57,11 +58,11 @@ public class ShowTimeController : ControllerBase {
         try {
             var tickets = await this.showTimeService.GetTicketsForShowTime(showTimeId);
             if (tickets == null) {
-                return NotFound("No Tickets with this showTimeId were found.");
+                return NotFound(ErrorDictionary.ErrorLibrary.GetValueOrDefault(400));
             } 
             return Ok(tickets);
         } catch (Exception error) {
-            return StatusCode(500, $"Error when receiving Ticket Data: {error}");
+            return StatusCode(500, ErrorDictionary.ErrorLibrary.GetValueOrDefault(500) + error);
         }
     }
 
@@ -72,7 +73,7 @@ public class ShowTimeController : ControllerBase {
             if (result) return Ok();
             return NoContent();
         } catch (Exception error) {
-            return StatusCode(500, $"Error when adding Showtime Data: {error}");
+            return StatusCode(500, ErrorDictionary.ErrorLibrary.GetValueOrDefault(500) + error);
         }
     }
 }
