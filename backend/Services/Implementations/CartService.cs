@@ -45,15 +45,17 @@ namespace MovieReviewApp.Services {
 
         public async Task<bool> ProcessPayment(int cartId, string cardNumber, string exp, string cardHolderName, string cvc){
 
+            //checking to see if a cart exists
             var cartExists = await dbContext.Carts.AnyAsync(c => c.CartId == cartId);
             if (!cartExists) {
                 throw new Exception("Cart does not exist.");
             }
 
+            //checking if card exists in database
             var paymentGateway = await dbContext.PaymentGateways.FirstOrDefaultAsync(p => p.CardNumber == cardNumber);
 
             if(paymentGateway == null) {
-            
+                //checking validity of new card and adding to database
                 if (string.IsNullOrWhiteSpace(cardNumber) || cardNumber.Length < 13 || cardNumber.Length > 19 || !cardNumber.All(char.IsDigit))  {
                     throw new Exception("Invalid card number");
                 }
@@ -81,6 +83,30 @@ namespace MovieReviewApp.Services {
                     throw new Exception("Invalid Credentials for card");
                 }
             }
+
+            return true;
+        }
+
+        /*
+        * Method to add a ticket to a cart by referencing showtime. This allows a single db fetch to be made instead of multiple
+        */
+        public async Task<bool> AddTicketsByShowtime(int cartId, int showtimeId, int quantity) {
+            var tickets = await dbContext.Tickets.Where(t => t.ShowTimeId == showtimeId && t.Availability == true)
+                            .Take(quantity)
+                            .ToListAsync();
+
+            if(tickets.Count < quantity)
+            {
+                throw new Exception("Not enough tickets available");
+            }
+
+            foreach(var ticket in tickets)
+            {
+                ticket.CartId = cartId;
+                ticket.Availability = false;
+            }
+
+            await dbContext.SaveChangesAsync();
 
             return true;
         }
