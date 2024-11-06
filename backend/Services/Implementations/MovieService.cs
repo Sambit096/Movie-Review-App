@@ -3,6 +3,7 @@ using MovieReviewApp.Models;
 using System.Linq;
 using MovieReviewApp.Data;
 using Microsoft.EntityFrameworkCore;
+using MovieReviewApp.Tools;
 
 namespace MovieReviewApp.Services {
     public class MovieService : IMovieService {
@@ -18,20 +19,21 @@ namespace MovieReviewApp.Services {
                 var movies = await this.dbContext.Movies.ToListAsync();
                 return movies;
             } catch (Exception error) {
-                throw new Exception("Error when retreiving Movies from Database: ", error);
+                throw new Exception(ErrorDictionary.ErrorLibrary[500] + "Error when retrieving Movies from Database.", error);
             }
         }
 
         public async Task<Movie> GetMovieById(int movieId) {
             try {
-                var movie = await (from m in dbContext.Movies
-                where m.MovieId == movieId
-                select m).FirstOrDefaultAsync();
-                if (movie != null)
-                    return movie;
-                throw new KeyNotFoundException($"Movie with Id {movieId} was not found in the Database.");
+                var movie = await dbContext.Movies.FirstOrDefaultAsync(m => m.MovieId == movieId);
+                if (movie == null)
+                    throw new KeyNotFoundException(ErrorDictionary.ErrorLibrary[404] + $"Movie with Id {movieId} not found.");
+                
+                return movie;
+            } catch (KeyNotFoundException keyError) {
+                throw keyError; // Retain specific KeyNotFoundException for higher-level handling if needed
             } catch (Exception error) {
-                throw new Exception($"Error when retreiving Movie with Id {movieId} from Database: ", error);
+                throw new Exception(ErrorDictionary.ErrorLibrary[500] + $"Error when retrieving Movie with Id {movieId} from Database.", error);
             }
         }
 
@@ -41,7 +43,7 @@ namespace MovieReviewApp.Services {
                 await this.dbContext.SaveChangesAsync();
                 return true;
             } catch (Exception error) {
-                throw new Exception($"Error when adding Movie to Database: ", error);
+                throw new Exception(ErrorDictionary.ErrorLibrary[501] + "Error when adding Movie to Database.", error);
             }
         }
 
@@ -51,14 +53,15 @@ namespace MovieReviewApp.Services {
                 await this.dbContext.SaveChangesAsync();
                 return true;
             } catch (Exception error) {
-                throw new Exception($"Error when removing Movie from Database: ", error);
+                throw new Exception(ErrorDictionary.ErrorLibrary[502] + "Error when removing Movie from Database.", error);
             }
         }
 
-        public async Task<bool> EditMovie (Movie editedMovie) {
+        public async Task<bool> EditMovie(Movie editedMovie) {
             try {
                 var existingMovie = await this.dbContext.Movies.FindAsync(editedMovie.MovieId);
-                if (existingMovie == null) return false;
+                if (existingMovie == null) 
+                    throw new KeyNotFoundException(ErrorDictionary.ErrorLibrary[404] + $"Movie with Id {editedMovie.MovieId} not found.");
 
                 existingMovie.Title = editedMovie.Title;
                 existingMovie.Genre = editedMovie.Genre;
@@ -68,8 +71,10 @@ namespace MovieReviewApp.Services {
                 this.dbContext.Movies.Update(existingMovie);
                 await this.dbContext.SaveChangesAsync();
                 return true;
+            } catch (KeyNotFoundException keyError) {
+                throw keyError; // Handle specific not-found error gracefully
             } catch (Exception error) {
-                throw new Exception($"Error when editing Movie: ", error);
+                throw new Exception(ErrorDictionary.ErrorLibrary[500] + "Error when editing Movie.", error);
             }
         }
     }
