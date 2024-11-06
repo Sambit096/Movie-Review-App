@@ -18,7 +18,7 @@ public class CartController : ControllerBase {
         {
             try {
                 var result = await cartService.AddTicketToCart(cartId, ticketId, quantity);
-                if (result)
+                if (result != null)
                 {
                     return Ok(result);
                 }
@@ -33,7 +33,7 @@ public class CartController : ControllerBase {
         {
             try {
                 var result = await cartService.RemoveTicketFromCart(cartId, ticketId);
-                if (result)
+                if (result != null)
                 {
                     return Ok(result);
                 }
