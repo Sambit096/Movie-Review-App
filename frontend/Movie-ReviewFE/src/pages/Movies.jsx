@@ -9,17 +9,17 @@ const Movies = () => {
     const { user } = useUser();
 
     // Fetch data from the GetMovies api endpoint
-    const fetchData = async () => {
-        try {
-            const res = await fetch('http://localhost:5190/api/Movie/GetMovies');
-            if(res.ok) {
-                const data = await res.json();
-                setMovies(data);
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    }
+    // const fetchData = async () => {
+    //     try {
+    //         const res = await fetch('http://localhost:5190/api/Movie/GetMovies');
+    //         if(res.ok) {
+    //             const data = await res.json();
+    //             setMovies(data);
+    //         }
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // }
     
     useEffect(() => {
         const fetchMovies = async () => {
