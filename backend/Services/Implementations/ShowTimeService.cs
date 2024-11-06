@@ -3,6 +3,7 @@ using MovieReviewApp.Models;
 using System.Linq;
 using MovieReviewApp.Data;
 using Microsoft.EntityFrameworkCore;
+using MovieReviewApp.Tools;
 
 namespace MovieReviewApp.Services {
     public class ShowTimeService : IShowTimeService {
@@ -23,7 +24,7 @@ namespace MovieReviewApp.Services {
                 allShowTimes = await dbContext.ShowTimes.ToListAsync();
                 return allShowTimes;
             } catch (Exception error) {
-                throw new Exception("Error when retrieving ShowTimes from Database:", error);
+                throw new Exception(ErrorDictionary.ErrorLibrary.GetValueOrDefault(404), error);
             }
         }
         /// <summary>
@@ -37,7 +38,7 @@ namespace MovieReviewApp.Services {
                 var allShowTimes = await dbContext.ShowTimes.Where(st => st.MovieId == movieId).ToListAsync();
                 return allShowTimes;   
             } catch (Exception error) {
-                throw new Exception("Error when retrieving ShowTimes from Database:", error);
+                throw new Exception(ErrorDictionary.ErrorLibrary.GetValueOrDefault(404), error);
             }
         }
         /// <summary>
@@ -53,7 +54,7 @@ namespace MovieReviewApp.Services {
                 select ticket).ToListAsync();
                 return allTickets;
             } catch (Exception error) {
-                throw new Exception("Error when retrieving ShowTime Tickets from Database: ", error);
+                throw new Exception(ErrorDictionary.ErrorLibrary.GetValueOrDefault(400), error);
             }
         }
 
@@ -63,7 +64,7 @@ namespace MovieReviewApp.Services {
                 await this.dbContext.SaveChangesAsync();
                 return true;
             } catch (Exception error) {
-                throw new Exception($"Error when adding ShowTime to Database: ", error);
+                throw new Exception(ErrorDictionary.ErrorLibrary.GetValueOrDefault(501), error);
             }
         }
     
