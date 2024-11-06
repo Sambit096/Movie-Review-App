@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using MovieReviewApp.Models;
 using MovieReviewApp.Interfaces;
-using MovieReviewApp.Data;
+using MovieReviewApp.Tools;
 
 namespace MovieReviewApp.Controllers {
     [ApiController]
@@ -14,16 +13,17 @@ namespace MovieReviewApp.Controllers {
         }
 
         [HttpPost(nameof(SendEmail))]
-        public async Task<IActionResult> SendEmail(int cartId)
-        {
+        public async Task<IActionResult> SendEmail(int cartId) {
             try {
                 var result = await mailService.SendEmail(cartId);
-                if(!result) {
-                    return StatusCode(500, $"Email send failed");
+                if (!result) {
+                    return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
                 }
                 return Ok("Email Sent!");
-            } catch (Exception error) {
-                return StatusCode(500, $"Error sending email: {error}");
+            } catch (KeyNotFoundException) {
+                return NotFound(ErrorDictionary.ErrorLibrary[400]);
+            } catch (Exception) {
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
             }
         }
     }

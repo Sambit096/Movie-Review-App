@@ -2,6 +2,7 @@
 using MovieReviewApp.Interfaces;
 using MovieReviewApp.Models;
 using MovieReviewApp.Data;
+using MovieReviewApp.Tools;
 using System.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.ComponentModel;
@@ -22,30 +23,29 @@ namespace MovieReviewApp.Implementations {
             try {
                 return await dbContext.Users.ToListAsync();
             } catch (Exception ex) {
-                throw new Exception("There was a problem retrieving users from the database: ", ex);
+                throw new Exception(ErrorDictionary.ErrorLibrary[500]);
             }
 
         }
         public async Task<User> GetUserById(int id) {
-            try {
+             try
+            {
                 var user = await dbContext.Users.SingleOrDefaultAsync(u => u.UserId == id);
-                if (user == null) {
-                    throw new Exception("This user does not exist");
-                }
                 return user;
-            } catch (Exception ex) {
-                throw new Exception("Error when getting user: ", ex);
+            }
+             catch (Exception ex) {
+                throw new Exception(ErrorDictionary.ErrorLibrary[500]);
             }
         }
         public async Task<User> GetUserByEmail(string email) {
-            try {
+            try
+            {
                 var user = await dbContext.Users.SingleOrDefaultAsync(u => u.Email == email);
-                if(user == null) {
-                    throw new Exception("This user does not exist");
-                }
                 return user;
-            } catch (Exception ex) {
-                throw new Exception("Error when getting user: ", ex);
+            }
+            catch (Exception)
+            {
+                throw new Exception(ErrorDictionary.ErrorLibrary[500]);
             }
         }
 
@@ -54,7 +54,7 @@ namespace MovieReviewApp.Implementations {
                 await dbContext.Users.AddAsync(user);
                 await dbContext.SaveChangesAsync();
             } catch (Exception ex) {
-                throw new Exception("Error when adding new user: ", ex);
+               throw new Exception(ErrorDictionary.ErrorLibrary[500]);
             }
         }
         public async Task RemoveUser(int id) {
@@ -65,7 +65,7 @@ namespace MovieReviewApp.Implementations {
                     await dbContext.SaveChangesAsync();
                 }
             } catch (Exception ex) {
-                throw new Exception("Error when removing the user: ", ex);
+                throw new Exception(ErrorDictionary.ErrorLibrary[500]);
             }
         }
 
@@ -81,7 +81,7 @@ namespace MovieReviewApp.Implementations {
                     await dbContext.SaveChangesAsync();
                 }
             } catch (Exception ex) {
-                throw new Exception("Error when updating the user: ", ex);
+                throw new Exception(ErrorDictionary.ErrorLibrary[500]);
             }
         }
 
@@ -92,7 +92,7 @@ namespace MovieReviewApp.Implementations {
                 if (user.Password == password) return user; // Hash for future security reasons
                 return null;
             } catch (Exception ex) {
-                throw new Exception("Error when validating user: ", ex);
+                throw new Exception(ErrorDictionary.ErrorLibrary[500]);
             }
         }
     }
