@@ -50,13 +50,20 @@ namespace MovieReviewApp.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             //Set MovieId as Foreign Key on Review Table (not required, can be null)
-            modelBuilder.Entity<Movie>()
-                .HasOne<Movie>()
-                .WithMany() 
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Movie)
+                .WithMany()
                 .HasForeignKey(r => r.MovieId)
                 .IsRequired(false)  
-                .OnDelete(DeleteBehavior.Cascade);    
+                .OnDelete(DeleteBehavior.Cascade);       
 
+            //Set UserId as Foreign Key on Review Table (not required, can be null)
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.User)
+                .WithMany()
+                .HasForeignKey(r => r.UserId)
+                .IsRequired(false)  
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Movie>().HasData(
                 //Movie sample data provided by ChatGPT
@@ -133,11 +140,11 @@ namespace MovieReviewApp.Data
 
             // //Ticket sample review provided by ChatGPT
             modelBuilder.Entity<Review>().HasData(
-                new Review { ReviewId = 1, MovieId = 1, Content = "An incredible journey through dreams.", ReviewerName = "Alice", CreatedAt = DateTime.Now.AddDays(-10),  Rating = 5 },
-                new Review { ReviewId = 2, MovieId = 1, Content = "A masterpiece in modern cinema.", ReviewerName = "Bob", CreatedAt = DateTime.Now.AddDays(-9), Rating = 5 },
-                new Review { ReviewId = 3, MovieId = 2, Content = "Great for kids and adults alike.", ReviewerName = "Charlie", CreatedAt = DateTime.Now.AddDays(-5), Rating = 2 },
-                new Review { ReviewId = 4, MovieId = 3, Content = "A compelling story about loyalty and power.", ReviewerName = "Dave", CreatedAt = DateTime.Now.AddDays(-2), Rating = 3 },
-                new Review { ReviewId = 5, MovieId = 3, Content = "One of the best films ever made.", ReviewerName = "Eve", CreatedAt = DateTime.Now.AddDays(-1), Rating = 5 }
+                new Review { ReviewId = 1, MovieId = 1, UserId = 1, Content = "An incredible journey through dreams.", ReviewerName = "Alice", CreatedAt = DateTime.Now.AddDays(-10), Rating = 5 },
+                new Review { ReviewId = 2, MovieId = 1, UserId = 1, Content = "A masterpiece in modern cinema.", ReviewerName = "Bob", CreatedAt = DateTime.Now.AddDays(-9), Rating = 5 },
+                new Review { ReviewId = 3, MovieId = 2, UserId = 2, Content = "Great for kids and adults alike.", ReviewerName = "Charlie", CreatedAt = DateTime.Now.AddDays(-5), Rating = 2 },
+                new Review { ReviewId = 4, MovieId = 3, UserId = 3, Content = "A compelling story about loyalty and power.", ReviewerName = "Dave", CreatedAt = DateTime.Now.AddDays(-2), Rating = 3 },
+                new Review { ReviewId = 5, MovieId = 3, UserId = 4, Content = "One of the best films ever made.", ReviewerName = "Eve", CreatedAt = DateTime.Now.AddDays(-1), Rating = 5 }
             );
             modelBuilder.Entity<User>().HasData(
             new User{

@@ -8,6 +8,8 @@ namespace MovieReviewApp.Models{
         public int ReviewId{get; set;} // Primary Key for each review
 
         public int MovieId { get; set; } // Foreign Key referencing the Movie
+
+         public int UserId { get; set; } // Foreign Key referencing the User
         
         [StringLength(1000)]
         public string? Content { get; set; }  // Content of the review, optional
@@ -18,10 +20,14 @@ namespace MovieReviewApp.Models{
 
         public DateTime? CreatedAt { get; set; } = DateTime.Now;  // Date the review was created
 
-        public Movie Movie { get; set; } = null!;  // Ensures Movie is required for Review
-
         [Range(1, 5, ErrorMessage = "Rating must be between 1 and 5.")]
         public int Rating { get; set; }  // Rating (1-5), ensures a positive rating
+
+        
+        public Movie? Movie { get; set; }   // Navigation property to the Movie for which the review was posted
+
+       
+        public User? User { get; set; }   // Navigation property to the User who posted the review
 
         public Review() {}
     }
