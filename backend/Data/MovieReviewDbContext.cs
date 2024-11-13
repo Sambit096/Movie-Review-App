@@ -13,7 +13,7 @@ namespace MovieReviewApp.Data
         public DbSet<Cart> Carts { get; set; }
         public DbSet<PaymentGateway> PaymentGateways { get; set; }
         public DbSet<User> Users { get; set; }
-        // public DbSet<Review> Reviews { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,6 +48,14 @@ namespace MovieReviewApp.Data
                 .HasForeignKey(t => t.CartId)
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            //Set MovieId as Foreign Key on Review Table (not required, can be null)
+            modelBuilder.Entity<Movie>()
+                .HasOne<Movie>()
+                .WithMany() 
+                .HasForeignKey(r => r.MovieId)
+                .IsRequired(false)  
+                .OnDelete(DeleteBehavior.Cascade);    
 
 
             modelBuilder.Entity<Movie>().HasData(
