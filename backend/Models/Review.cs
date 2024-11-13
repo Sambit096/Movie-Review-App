@@ -19,7 +19,10 @@ namespace MovieReviewApp.Models{
         public DateTime? CreatedAt { get; set; } = DateTime.Now;  // Date the review was created
 
         public Movie Movie { get; set; } = null!;  // Ensures Movie is required for Review
-        
+
+        [Range(1, 5, ErrorMessage = "Rating must be between 1 and 5.")]
+        public int Rating { get; set; }  // Rating (1-5), ensures a positive rating
+
         public Review() {}
     }
 }
