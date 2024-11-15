@@ -19,10 +19,8 @@ namespace MovieReviewApp.Services
         /// Gets all ShowTimes from the database
         /// </summary>
         /// <returns></returns>
-        public async Task<IList<ShowTime>> GetAllShowTimes()
-        {
-            try
-            {
+        public async Task<IList<ShowTime>> GetAllShowTimes() {
+            try{
                 var allShowTimes = await dbContext.ShowTimes.ToListAsync();
                 return allShowTimes;
             }
@@ -37,10 +35,8 @@ namespace MovieReviewApp.Services
         /// </summary>
         /// <param name="movieId"></param>
         /// <returns></returns>
-        public async Task<IList<ShowTime>> GetShowTimes(int movieId)
-        {
-            try
-            {
+        public async Task<IList<ShowTime>> GetShowTimes(int movieId){
+            try {
                 var allShowTimes = await dbContext.ShowTimes.Where(st => st.MovieId == movieId).ToListAsync();
                 return allShowTimes;
             }

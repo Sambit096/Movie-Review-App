@@ -14,7 +14,6 @@ namespace MovieReviewApp.Models{
         [StringLength(1000)]
         public string? Content { get; set; }  // Content of the review, optional
 
-        
         [StringLength(100)]
         public string? ReviewerName { get; set; }  // Name of the reviewer(Optional) 
 
@@ -23,7 +22,7 @@ namespace MovieReviewApp.Models{
         [Range(1, 5, ErrorMessage = "Rating must be between 1 and 5.")]
         public int Rating { get; set; }  // Rating (1-5), ensures a positive rating
 
-        
+        public int Likes {get; set; } = 0; // Likes for the review
         public Movie? Movie { get; set; }   // Navigation property to the Movie for which the review was posted
 
        
