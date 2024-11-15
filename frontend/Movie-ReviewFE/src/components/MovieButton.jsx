@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom"
+import Showtimes from "../pages/Showtimes";
 
 const MovieButton = ({to, title}) => {
 
@@ -6,7 +7,7 @@ const MovieButton = ({to, title}) => {
 
     return(
         <button className="buytickets--button" onClick={() => {navigate(`/Movies/${to}`)}}>
-            <p>Buy Tickets</p>
+            <p>See Showtimes</p>
         </button>
     )
 }
