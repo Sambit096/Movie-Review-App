@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using MovieReviewApp.Tools;
 
-namespace MovieReviewApp.Tests {
+namespace MovieReviewApp.Tests.Controllers {
     [TestFixture]
     public class UserControllerTests {
         private Mock<IUserService> _mockUserService;
@@ -20,7 +20,8 @@ namespace MovieReviewApp.Tests {
             _userController = new UserController(_mockUserService.Object);
         }
 
-        // Test for GetUsers (happy)
+        #region GetAllUsers Tests
+
         [Test]
         public async Task GetUsers_ReturnsOk_WhenUsersExist() {
             // Arrange
@@ -56,7 +57,10 @@ namespace MovieReviewApp.Tests {
             Assert.AreEqual(404, notFoundResult.StatusCode);
         }
 
-        // Test for GetUserById (happy)
+        #endregion
+
+        #region GetUsersByID Tests
+
         [Test]
         public async Task GetUserById_ReturnsOk_WhenUserExists() {
             // Arrange
@@ -86,6 +90,10 @@ namespace MovieReviewApp.Tests {
             Assert.IsNotNull(notFoundResult);
             Assert.AreEqual(404, notFoundResult.StatusCode);
         }
+
+        #endregion
+
+        #region GetUsersByEmail Tests
 
         // Test for GetUserByEmail
         [Test]
@@ -118,6 +126,10 @@ namespace MovieReviewApp.Tests {
             Assert.AreEqual(404, notFoundResult.StatusCode);
         }
 
+        #endregion
+
+        #region UpdateUser Tests
+
         // Test for UpdateUser
         [Test]
         public async Task UpdateUser_ReturnsNoContent_WhenUserIsUpdated() {
@@ -148,6 +160,10 @@ namespace MovieReviewApp.Tests {
             Assert.AreEqual(404, notFoundResult.StatusCode);
         }
 
+        #endregion
+
+        #region RemoveUser Tests
+
         // Test for RemoveUser
         [Test]
         public async Task RemoveUser_ReturnsNoContent_WhenUserIsRemoved() {
@@ -176,6 +192,10 @@ namespace MovieReviewApp.Tests {
             Assert.IsNotNull(notFoundResult);
             Assert.AreEqual(404, notFoundResult.StatusCode);
         }
+
+        #endregion
+
+        #region LoginValidation Tests
 
         // Test for Login
         [Test]
@@ -210,6 +230,10 @@ namespace MovieReviewApp.Tests {
             Assert.AreEqual(401, unauthorizedResult.StatusCode);
         }
 
+        #endregion
+
+        #region AddUser Tests
+
         // Test for AddUser (SignUp)
         [Test]
         public async Task AddUser_ReturnsCreated_WhenUserIsAdded() {
@@ -241,6 +265,8 @@ namespace MovieReviewApp.Tests {
             Assert.IsNotNull(badRequestResult);
             Assert.AreEqual(400, badRequestResult.StatusCode);
         }
+
+        #endregion
     }
 }
 

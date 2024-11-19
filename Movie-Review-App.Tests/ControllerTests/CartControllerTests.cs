@@ -7,7 +7,7 @@ using MovieReviewApp.Models;
 using System;
 using System.Threading.Tasks;
 
-namespace MovieReviewApp.Tests {
+namespace MovieReviewApp.Tests.Controllers {
     [TestFixture]
     public class CartControllerTests {
         private Mock<ICartService> _mockCartService;
@@ -19,7 +19,8 @@ namespace MovieReviewApp.Tests {
             _cartController = new CartController(_mockCartService.Object);
         }
 
-        // Test AddTicketToCart
+        #region AddTicket Tests
+
         [Test]
         public async Task AddTicketToCart_ReturnsOk_WhenTicketIsAdded() {
             // Arrange
@@ -53,7 +54,10 @@ namespace MovieReviewApp.Tests {
             Assert.AreEqual(500, statusCodeResult.StatusCode);
         }
 
-        // Test RemoveTicketFromCart
+        #endregion
+
+        #region RemoveTicket Tests
+
         [Test]
         public async Task RemoveTicketFromCart_ReturnsOk_WhenTicketIsRemoved() {
             // Arrange
@@ -87,6 +91,10 @@ namespace MovieReviewApp.Tests {
             Assert.IsNotNull(statusCodeResult);
             Assert.AreEqual(500, statusCodeResult.StatusCode);
         }
+
+        #endregion
+
+        #region GetCart Tests
 
         // Test GetCart
         //[Test]
@@ -123,7 +131,10 @@ namespace MovieReviewApp.Tests {
         //    Assert.AreEqual(404, notFoundResult.StatusCode);
         //}
 
-        // Test ProcessPayment
+        #endregion
+
+        #region ProcessPayment Tests
+
         [Test]
         public async Task ProcessPayment_ReturnsOk_WhenPaymentIsProcessed() {
             // Arrange
@@ -160,6 +171,10 @@ namespace MovieReviewApp.Tests {
             Assert.AreEqual(500, statusCodeResult.StatusCode);
         }
 
+        #endregion
+
+        #region AddTicketsByShowtime Tests
+
         // Test AddTicketsByShowtime
         [Test]
         public async Task AddTicketsByShowtime_ReturnsOk_WhenTicketsAreAdded() {
@@ -194,6 +209,8 @@ namespace MovieReviewApp.Tests {
             Assert.IsNotNull(statusCodeResult);
             Assert.AreEqual(500, statusCodeResult.StatusCode);
         }
+
+        #endregion
     }
 }
 
