@@ -57,59 +57,58 @@ namespace MovieReviewApp.Controllers
         }
 
         // POST: api/ticket
-        [HttpPost(nameof(CreateTicket))]
-        public async Task<IActionResult> CreateTicket([FromBody] Ticket ticket)
-        {
-            try
-            {
-                var createdTicket = await _ticketService.AddTicket(ticket);
-                if (createdTicket == null)
-                {
-                    return StatusCode(409, ErrorDictionary.ErrorLibrary[409]);
-                }
-                return CreatedAtAction(nameof(GetAllTickets), new { ticketId = createdTicket.TicketId }, createdTicket);
-            }
-            catch (Exception)
-            {
+        // Add a ticket for a specific movie
+        [HttpPost(nameof(AddTicket))]
+        public async Task<IActionResult> AddTicket(int movieId, [FromBody] Ticket ticket) {
+            try {
+                var addedTicket = await _ticketService.AddTicket(movieId, ticket);
+                return CreatedAtAction(nameof(GetTickets), new { movieId = movieId }, addedTicket);
+            } 
+            
+            catch (KeyNotFoundException) {
+                return NotFound(ErrorDictionary.ErrorLibrary[404]);
+            } 
+            
+            catch (Exception) {
                 return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
             }
         }
 
         // PUT: api/ticket/{id}
-        [HttpPut("UpdateTicket/{id}")]
-        public async Task<IActionResult> UpdateTicket(int id, [FromBody] Ticket ticket)
+        [HttpPut("EditTicket/{movieId}")]
+        public async Task<IActionResult> EditTicket(int movieId, [FromBody] Ticket ticket)
         {
             try
             {
-                var updated = await _ticketService.UpdateTicket(id, ticket);
+                var updated = await _ticketService.EditTicket(movieId, ticket);
                 if (!updated)
                 {
-                    return StatusCode(404, ErrorDictionary.ErrorLibrary[404]);
+                    return StatusCode(404, ErrorDictionary.ErrorLibrary[404]); // Not Found
                 }
-                return NoContent();
+                return NoContent(); // Successful update, no content to return
             }
             catch (Exception)
             {
-                return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500]); // Internal Server Error
             }
         }
 
         // DELETE: api/ticket/{id}
-        [HttpDelete("DeleteTicket/{id}")]
-        public async Task<IActionResult> DeleteTicket(int id)
+        [HttpDelete("RemoveTickets/{movieId}/{numberOfTickets}")]
+        public async Task<IActionResult> RemoveTickets(int movieId, int numberOfTickets)
         {
             try
             {
-                var deleted = await _ticketService.DeleteTicket(id);
-                if (!deleted)
+                var removed = await _ticketService.RemoveTickets(movieId, numberOfTickets);
+                if (!removed)
                 {
-                    return StatusCode(404, ErrorDictionary.ErrorLibrary[404]);
+                    return StatusCode(404, ErrorDictionary.ErrorLibrary[404]); // Not Found
                 }
-                return NoContent();
+                return NoContent(); // Successful deletion, no content to return
             }
             catch (Exception)
             {
-                return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500]); // Internal Server Error
             }
         }
     }

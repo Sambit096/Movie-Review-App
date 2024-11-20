@@ -66,61 +66,53 @@ namespace MovieReviewApp.Services
         /// Adds a new ticket to the database
         /// </summary>
         /// <param name="ticket">The ticket to add</param>
+        ///<param name="movieId">The The movie ID for which to add the ticket for</param>
         /// <returns>The added ticket</returns>
-        public async Task<Ticket> AddTicket(Ticket ticket)
-        {
-            try
-            {
-                // Set default availability to true if not specified
-                if (ticket.Availability == default)
-                {
-                    ticket.Availability = true;
+        public async Task<Ticket> AddTicket(int movieId, Ticket ticket) {
+            try {
+                var showTime = await _dbContext.ShowTimes
+                    .FirstOrDefaultAsync(st => st.MovieId == movieId);
+
+                if (showTime == null) {
+                    throw new KeyNotFoundException(ErrorDictionary.ErrorLibrary[404]);
                 }
+
+                ticket.ShowTimeId = showTime.ShowTimeId;
+                ticket.Availability = true;
 
                 await _dbContext.Tickets.AddAsync(ticket);
                 await _dbContext.SaveChangesAsync();
+
                 return ticket;
-            }
-            catch (DbUpdateException)
-            {
-                return null; // Conflict - item already exists or validation error
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 throw new Exception(ErrorDictionary.ErrorLibrary[500]);
             }
         }
 
+
         /// <summary>
         /// Updates an existing ticket in the database
         /// </summary>
-        /// <param name="ticketId">The ID of the ticket to update</param>
-        /// <param name="updatedTicket">The updated ticket information</param>
+        /// <param name="movieId">The movie ID of the ticket to update</param>
+        /// <param name="ticket">The updated ticket information</param>
         /// <returns>True if the ticket was updated, otherwise false</returns>
-        public async Task<bool> UpdateTicket(int ticketId, Ticket updatedTicket)
-        {
-            try
-            {
-                var existingTicket = await _dbContext.Tickets.FindAsync(ticketId);
-                if (existingTicket == null)
-                {
-                    return false;
+        public async Task<bool> EditTicket(int movieId, Ticket ticket) {
+            try {
+                var existingTicket = await _dbContext.Tickets
+                    .FirstOrDefaultAsync(t => t.ShowTime.MovieId == movieId);
+
+                if (existingTicket == null) {
+                    throw new KeyNotFoundException(ErrorDictionary.ErrorLibrary[404]);
                 }
 
-                existingTicket.ShowTimeId = updatedTicket.ShowTimeId;
-                existingTicket.Price = updatedTicket.Price;
-                existingTicket.Availability = updatedTicket.Availability;
+                existingTicket.Price = ticket.Price;
+                existingTicket.Availability = ticket.Availability;
 
                 _dbContext.Tickets.Update(existingTicket);
                 await _dbContext.SaveChangesAsync();
+
                 return true;
-            }
-            catch (DbUpdateException)
-            {
-                return false; // Unprocessable Entity - validation error
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 throw new Exception(ErrorDictionary.ErrorLibrary[500]);
             }
         }
@@ -129,23 +121,24 @@ namespace MovieReviewApp.Services
         /// Deletes a ticket by its ID from the database
         /// </summary>
         /// <param name="ticketId">The ID of the ticket to delete</param>
+        ///<param name="movieId">The movie ID of the ticket to delete</param>
         /// <returns>True if the ticket was deleted, otherwise false</returns>
-        public async Task<bool> DeleteTicket(int ticketId)
-        {
-            try
-            {
-                var ticket = await _dbContext.Tickets.FindAsync(ticketId);
-                if (ticket == null)
-                {
-                    return false;
+         public async Task<bool> RemoveTickets(int movieId, int numberOfTickets) {
+            try {
+                var tickets = await _dbContext.Tickets
+                    .Where(t => t.ShowTime.MovieId == movieId && t.Availability)
+                    .Take(numberOfTickets)
+                    .ToListAsync();
+
+                if (tickets.Count < numberOfTickets) {
+                    throw new KeyNotFoundException(ErrorDictionary.ErrorLibrary[404]);
                 }
 
-                _dbContext.Tickets.Remove(ticket);
+                _dbContext.Tickets.RemoveRange(tickets);
                 await _dbContext.SaveChangesAsync();
+
                 return true;
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 throw new Exception(ErrorDictionary.ErrorLibrary[500]);
             }
         }

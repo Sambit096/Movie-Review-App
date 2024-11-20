@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MovieReviewApp.Data;
 using MovieReviewApp.Implementations;
 using MovieReviewApp.Interfaces;
+using MovieReviewApp.Models;
 using MovieReviewApp.Services;
 
 
@@ -31,6 +32,7 @@ builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITicketService, TicketService>();
 builder.Services.AddScoped<IMailService, MailService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
 
 builder.Services.AddSwaggerGen();
 /* builder.Services.AddSwaggerGen(c =>
