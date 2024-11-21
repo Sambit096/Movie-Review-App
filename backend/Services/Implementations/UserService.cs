@@ -37,7 +37,7 @@ namespace MovieReviewApp.Implementations {
                 throw new Exception(ErrorDictionary.ErrorLibrary[500]);
             }
         }
-        public async Task<User> GetUserByEmail(string email) {
+        public async Task<User?> GetUserByEmail(string email) {
             try
             {
                 var user = await dbContext.Users.SingleOrDefaultAsync(u => u.Email == email);

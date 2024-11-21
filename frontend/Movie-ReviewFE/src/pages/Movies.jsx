@@ -6,26 +6,16 @@ import { useUser } from '../UserContext';
 const Movies = () => {
 
     const [movies, setMovies] = useState([]);
+    const [filteredMovies, setFilteredMovies] = useState([]);
+    const [selectedGenre, setSelectedGenre] = useState('');
     const { user } = useUser();
-
-    // Fetch data from the GetMovies api endpoint
-    // const fetchData = async () => {
-    //     try {
-    //         const res = await fetch('http://localhost:5190/api/Movie/GetMovies');
-    //         if(res.ok) {
-    //             const data = await res.json();
-    //             setMovies(data);
-    //         }
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // }
     
     useEffect(() => {
         const fetchMovies = async () => {
             try {
                 const data = await fetchData('http://localhost:5190/api/Movie/GetMovies');
                 setMovies(data);
+                setFilteredMovies(data);
             } catch (err) {
                 console.log(err);
             }
@@ -34,13 +24,42 @@ const Movies = () => {
         fetchMovies();
     }, []);
 
+    const handleGenreChange = (event) => {
+        const genre = event.target.value;
+        setSelectedGenre(genre);
+
+        // Filter movies by genre or show all if no genre selected
+        if (genre === '') {
+            setFilteredMovies(movies);
+        } else {
+            setFilteredMovies(movies.filter(movie => movie.genre === genre));
+        }
+    };
+
+
     return (
-        <div className='movie--list'>
+        <div>
+            <div className='heading--filter'>
             {user && <h1>Welcome, {user.username}!</h1>}
             <h2>Currently Playing:</h2>
-            {movies.map(movie => (
-                <MovieItem key={movie.movieId} id={movie.movieId} title={movie.title}/>
-            ))}
+
+            {/* Genre Filter */}
+            <div>
+                <label htmlFor="genre-filter">Filter by Genre: </label>
+                <select id="genre-filter" value={selectedGenre} onChange={handleGenreChange}>
+                    <option value="">All</option>
+                    {/* Create unique genre options dynamically */}
+                    {[...new Set(movies.map(movie => movie.genre))].map(genre => (
+                        <option key={genre} value={genre}>{genre}</option>
+                    ))}
+                </select>
+            </div>
+            </div>
+            <div className="movie--list">
+                {filteredMovies.map(movie => (
+                    <MovieItem key={movie.movieId} id={movie.movieId} title={movie.title} desc={movie.description} genre={movie.genre}/>
+                ))}
+            </div>
         </div>
     )
 }
