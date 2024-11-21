@@ -4,6 +4,7 @@ using MovieReviewApp.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using MovieReviewApp.Tools;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MovieReviewApp.Services
 {
@@ -20,7 +21,11 @@ namespace MovieReviewApp.Services
         {
             try
             {
-                return await this.dbContext.Reviews.Where(r => r.MovieId == movieId).ToListAsync();
+                var reviews = await this.dbContext.Reviews.Where(r => r.MovieId == movieId).ToListAsync();
+                if (reviews.IsNullOrEmpty()) {
+                    return new List<Review>();
+                }
+                return reviews;
             } catch (Exception e) 
             {
                 throw new Exception("Error when getting reviews:", e);

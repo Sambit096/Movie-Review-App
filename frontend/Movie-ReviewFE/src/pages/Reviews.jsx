@@ -1,11 +1,12 @@
 import fetchData from "../utils/request-utils"
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate  } from 'react-router-dom'; 
-import ShowtimeItem from "../components/ShowtimeItem";
+import { useParams, useNavigate, useLocation  } from 'react-router-dom'; 
 
 const Reviews = () => {
   const { movieId } = useParams();
   const nav = useNavigate();
+  const location = useLocation();
+  const { title } = location.state || {};
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,7 +15,7 @@ const Reviews = () => {
     const fetchReviews = async () => {
       try {
         const response = await fetchData(`http://localhost:5190/api/Review/GetReviews?movieId=${movieId}`);
-        setReviews(response); // Assuming response.data is an array of reviews
+        setReviews(response);
         setLoading(false);
       } catch (err) {
         setError('Failed to fetch reviews');
@@ -36,7 +37,7 @@ const Reviews = () => {
         Back to Movies
       </button>
 
-      <h2>Reviews for Movie ID: {movieId}</h2>
+      <h2>Reviews for {title}</h2>
       {reviews.length === 0 ? (
         <p>No reviews available.</p>
       ) : (

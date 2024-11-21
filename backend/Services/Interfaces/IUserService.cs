@@ -5,7 +5,7 @@ namespace MovieReviewApp.Interfaces {
     public interface IUserService {
         Task<IList<User>> GetUsers();
         Task<User> GetUserById(int id);
-        Task<User> GetUserByEmail(string email);
+        Task<User?> GetUserByEmail(string email);
         Task AddUser(User user);
         Task RemoveUser(int id);
         Task UpdateUser(User user);
