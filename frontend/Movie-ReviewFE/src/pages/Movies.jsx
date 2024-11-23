@@ -2,13 +2,15 @@ import { useState, useEffect } from 'react';
 import MovieItem from "../components/MovieItem";
 import fetchData from "../utils/request-utils";
 import { useUser } from '../UserContext';
+import { useNavigate  } from 'react-router-dom'; 
 
 const Movies = () => {
-
+    const nav = useNavigate();
     const [movies, setMovies] = useState([]);
     const [filteredMovies, setFilteredMovies] = useState([]);
     const [selectedGenre, setSelectedGenre] = useState('');
     const { user } = useUser();
+    const [userData, setUserData] = useState(null);
     
     useEffect(() => {
         const fetchMovies = async () => {
@@ -22,6 +24,11 @@ const Movies = () => {
         };
 
         fetchMovies();
+        const storedValue = localStorage.getItem('user');
+        if (storedValue) {
+            const parse = JSON.parse(storedValue);
+            setUserData(parse);
+        }
     }, []);
 
     const handleGenreChange = (event) => {
@@ -40,19 +47,18 @@ const Movies = () => {
     return (
         <div>
             <div className='heading--filter'>
-            {user && <h1>Welcome, {user.username}!</h1>}
+            {userData && <h1>Welcome, {userData.username}!</h1>}
             <h2>Currently Playing:</h2>
 
-            {/* Genre Filter */}
             <div>
                 <label htmlFor="genre-filter">Filter by Genre: </label>
                 <select id="genre-filter" value={selectedGenre} onChange={handleGenreChange}>
                     <option value="">All</option>
-                    {/* Create unique genre options dynamically */}
                     {[...new Set(movies.map(movie => movie.genre))].map(genre => (
                         <option key={genre} value={genre}>{genre}</option>
                     ))}
                 </select>
+                <div className="my-reviews"><button onClick={() => nav('/MyReviews')}>View My Reviews</button></div>
             </div>
             </div>
             <div className="movie--list">

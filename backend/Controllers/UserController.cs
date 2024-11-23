@@ -91,7 +91,7 @@ namespace MovieReviewApp.Controllers {
                 if (user == null) {
                     return StatusCode(401, ErrorDictionary.ErrorLibrary[401]);
                 }
-                return Ok(new { message = "Login successful!", username = user.Username });
+                return Ok(new { message = "Login successful!", username = user.Username, userId = user.UserId, firstName = user.FirstName, lastName = user.LastName });
             } catch (Exception ex) {
                  return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
             }
