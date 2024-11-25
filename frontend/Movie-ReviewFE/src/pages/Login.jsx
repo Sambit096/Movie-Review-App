@@ -8,6 +8,8 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
+    const [firstname, setFirstName] = useState('')
+    const [lastname, setLastName] = useState('')
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
 
@@ -29,7 +31,7 @@ const Login = () => {
             if(!res.ok) throw new Error('Login Failed')
             const data = await res.json()
             setSuccess(data.message)
-            localStorage.setItem('user', JSON.stringify({email}))
+            localStorage.setItem('user', JSON.stringify({email: email, username: data.username}))
             navigate('/Movies')
         } catch (err) {
             setError(err.message);
@@ -46,9 +48,12 @@ const Login = () => {
             const res = await fetch('http://localhost:5190/api/User/signup', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({email, username, password}),
+                body: JSON.stringify({email: email, username: username, password: password, firstname: firstname, lastname: lastname}),
             });
-            if(!res.ok) throw new Error('Signup Failed')
+            if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.message || 'Signup Failed');
+            }
             const data = await res.json()
             setSuccess(data.message)
             setIsLogin(true)
@@ -72,6 +77,34 @@ const Login = () => {
                             value={username}
                             onChange={(e) => {setUsername(e.target.value)
                                 console.log(username)
+                            }}
+                            required
+                            style={{width: '100%', padding: '8px'}}
+                        />
+                    </div>
+                )}
+                {!isLogin && (
+                    <div style={{marginBottom: '15px'}}>
+                        <label htmlFor="firstname">First Name:</label>
+                        <input 
+                            type="text"
+                            id="firstname"
+                            value={firstname}
+                            onChange={(e) => {setFirstName(e.target.value)
+                            }}
+                            required
+                            style={{width: '100%', padding: '8px'}}
+                        />
+                    </div>
+                )}
+                {!isLogin && (
+                    <div style={{marginBottom: '15px'}}>
+                        <label htmlFor="lastname">Last Name:</label>
+                        <input 
+                            type="text"
+                            id="lastname"
+                            value={lastname}
+                            onChange={(e) => {setLastName(e.target.value)
                             }}
                             required
                             style={{width: '100%', padding: '8px'}}

@@ -64,16 +64,43 @@
     transform-origin: 0% 50%;
 }
 
+.heading--filter {
+  top: 200px;
+  width: 100%;
+  z-index: 100; 
+  margin-top: 100px;
+}
+
+.heading--filter h1,
+.heading--filter h2 {
+  margin: 5px;
+}
+
+.heading--filter select {
+  margin-top: 10px;
+}
+
 /** Movie Items **/
 .movie--list {
   padding-top: 50px;
 }
 
 .movie--item {
-  display:flex;
-  justify-content:space-between;
-  height:6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: auto;
+  padding: 1rem;
+  border-bottom: 1px solid #ccc; 
 }
+
+.movie--details {
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;
+  text-align: left;}
+
 .buytickets--button {
+  margin-top: 5em;
   margin-left: .5rem;
 }

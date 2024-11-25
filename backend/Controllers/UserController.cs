@@ -91,7 +91,7 @@ namespace MovieReviewApp.Controllers {
                 if (user == null) {
                     return StatusCode(401, ErrorDictionary.ErrorLibrary[401]);
                 }
-                return Ok(new { message = "Login successful!" });
+                return Ok(new { message = "Login successful!", username = user.Username });
             } catch (Exception ex) {
                  return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
             }
@@ -104,12 +104,16 @@ namespace MovieReviewApp.Controllers {
                 var user = new User {
                     Email = userDTO.Email,
                     Username = userDTO.Username,
-                    FirstName = "",
-                    LastName = "",
+                    FirstName = userDTO.FirstName,
+                    LastName = userDTO.LastName,
                     Password = userDTO.Password
                 };
+                var exists = await this.userService.GetUserByEmail(user.Email);
+                if(exists != null) {
+                    return StatusCode(500, new {message = "User already exists"});
+                }
                 await this.userService.AddUser(user);
-                return StatusCode(201);
+                return Ok(new { message = "Sign up Successful" });
             } catch (Exception ex) {
                 return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
             }
@@ -126,5 +130,7 @@ namespace MovieReviewApp.Controllers {
         public string Email { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+        public string FirstName {get; set; }
+        public string LastName {get; set; }
     }
 }

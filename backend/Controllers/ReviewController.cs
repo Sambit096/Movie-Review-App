@@ -59,7 +59,7 @@ public class ReviewController: ControllerBase
             var reviews = await this.reviewService.GetReviews(movieId);
             if(reviews == null || !reviews.Any())
             {
-                return StatusCode(404, ErrorDictionary.ErrorLibrary[404]);
+                return Ok(reviews); 
             }
             return Ok(reviews);
         }
