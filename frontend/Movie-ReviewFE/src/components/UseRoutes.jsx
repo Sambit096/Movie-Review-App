@@ -8,6 +8,7 @@ import Settings from "../pages/Settings";
 import Showtimes from "../pages/Showtimes";
 import Tickets from "../pages/Tickets"
 import Movie from "./Movie";
+import Management from "../pages/Management";
 
 const UseRoutes = () => {
     return(
@@ -20,6 +21,7 @@ const UseRoutes = () => {
             <Route path="/Settings" element={<Settings />}></Route>
             <Route path='/Movies/:movieId' element={<Showtimes />}></Route>
             <Route path='/Tickets/:id' element={<Tickets />}></Route>
+            <Route path="/Management" element={<Management />}></Route>
         </Routes>
     )
 }

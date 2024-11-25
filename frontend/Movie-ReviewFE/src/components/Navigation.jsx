@@ -13,6 +13,7 @@ const Navigation = () => {
                     <NavbarButton to="Movies" />
                     <NavbarButton to="Cart" />
                     <NavbarButton to="Settings" />
+                    <NavbarButton to="Management" />
                 </div>
             </nav>
         </div>

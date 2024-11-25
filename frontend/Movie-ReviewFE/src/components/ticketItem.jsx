@@ -1,3 +1,5 @@
+
+
 const showtimeItem = ({ ticketID }) => {
 
   const addTicket = async () => {
@@ -22,4 +24,6 @@ const showtimeItem = ({ ticketID }) => {
     )
 }
 
+
 export default showtimeItem
+

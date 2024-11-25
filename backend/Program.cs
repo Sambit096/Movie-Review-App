@@ -15,11 +15,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MovieReviewDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddCors(options => {
-    options.AddPolicy(name: "MyAllowSpecificOrigins",
-                        policy => {
-                            policy.WithOrigins("http://localhost:5173").WithHeaders("*").WithMethods("*");
-                        });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyAllowSpecificOrigins",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
 });
 
 builder.Services.AddControllers();
