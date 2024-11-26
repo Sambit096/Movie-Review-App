@@ -1,6 +1,6 @@
-import fetchData from "../utils/request-utils"
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate, useLocation  } from 'react-router-dom'; 
+import fetchData from "../utils/request-utils";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 const Reviews = () => {
   const { movieId } = useParams();
@@ -14,11 +14,13 @@ const Reviews = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await fetchData(`http://localhost:5190/api/Review/GetReviews?movieId=${movieId}`);
+        const response = await fetchData(
+          `http://localhost:5190/api/Review/GetReviews?movieId=${movieId}`
+        );
         setReviews(response);
         setLoading(false);
       } catch (err) {
-        setError('Failed to fetch reviews');
+        setError("Failed to fetch reviews");
         setLoading(false);
       }
     };
@@ -31,36 +33,47 @@ const Reviews = () => {
 
   return (
     <div>
-      <button
-        onClick={() => nav('/Movies')}
-      >
-        Back to Movies
-      </button>
+      <button onClick={() => nav("/Movies")}>Back to Movies</button>
 
       <h2>Reviews for {title}</h2>
       {reviews.length === 0 ? (
         <p>No reviews available.</p>
       ) : (
         reviews.map((review) => (
-          <div key={review.reviewId} style={{ border: '1px solid #ccc', margin: '10px', padding: '10px' }}>
-            <h4 style={{ textDecoration: 'bold', }}>Reviewer: {review.reviewerName || 'Anonymous'}</h4>
-            <p><strong>Rating:</strong> {review.rating} / 5</p>
+          <div
+            key={review.reviewId}
+            style={{
+              border: "1px solid #ccc",
+              margin: "10px",
+              padding: "10px",
+            }}
+          >
+            <h4 style={{ textDecoration: "bold" }}>
+              Reviewer: {review.reviewerName || "Anonymous"}
+            </h4>
+            <p>
+              <strong>Rating:</strong> {review.rating} / 5
+            </p>
             <p>{review.content}</p>
             <div>
               <button
                 onClick={() => handleLike(review.reviewId)}
-                style={{ marginRight: '10px', cursor: 'pointer' }}
+                style={{ marginRight: "10px", cursor: "pointer" }}
               >
                 👍 {review.likes}
               </button>
               <button
                 onClick={() => handleDislike(review.reviewId)}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: "pointer" }}
               >
                 👎
               </button>
             </div>
-            <p><em>Reviewed on: {new Date(review.createdAt).toLocaleDateString()}</em></p>
+            <p>
+              <em>
+                Reviewed on: {new Date(review.createdAt).toLocaleDateString()}
+              </em>
+            </p>
           </div>
         ))
       )}
