@@ -65,7 +65,7 @@ const Movies = () => {
             ))}
           </select>
           <div className="my-reviews">
-            <button onClick={() => nav("/MyReviews")}>View My Reviews</button>
+            {userData && (<button onClick={() => nav("/MyReviews")}>View My Reviews</button>)}
           </div>
         </div>
       </div>
