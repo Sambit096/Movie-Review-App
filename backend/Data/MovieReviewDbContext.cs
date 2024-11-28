@@ -140,8 +140,8 @@ namespace MovieReviewApp.Data
 
             // //Ticket sample review provided by ChatGPT
             modelBuilder.Entity<Review>().HasData(
-                new Review { ReviewId = 1, MovieId = 1, UserId = 1, Content = "An incredible journey through dreams.", ReviewerName = "Alice", CreatedAt = DateTime.Now.AddDays(-10), Rating = 5 },
-                new Review { ReviewId = 2, MovieId = 1, UserId = 1, Content = "A masterpiece in modern cinema.", ReviewerName = "Bob", CreatedAt = DateTime.Now.AddDays(-9), Rating = 5 },
+                new Review { ReviewId = 1, MovieId = 1, UserId = 1, Content = "An incredible journey through dreams.", ReviewerName = "Anonymous", CreatedAt = DateTime.Now.AddDays(-10), Rating = 5 },
+                new Review { ReviewId = 2, MovieId = 4, UserId = 1, Content = "A masterpiece in modern cinema.", ReviewerName = "johndoe", CreatedAt = DateTime.Now.AddDays(-9), Rating = 5 },
                 new Review { ReviewId = 3, MovieId = 2, UserId = 2, Content = "Great for kids and adults alike.", ReviewerName = "Charlie", CreatedAt = DateTime.Now.AddDays(-5), Rating = 2 },
                 new Review { ReviewId = 4, MovieId = 3, UserId = 3, Content = "A compelling story about loyalty and power.", ReviewerName = "Dave", CreatedAt = DateTime.Now.AddDays(-2), Rating = 3 },
                 new Review { ReviewId = 5, MovieId = 3, UserId = 4, Content = "One of the best films ever made.", ReviewerName = "Eve", CreatedAt = DateTime.Now.AddDays(-1), Rating = 5 }
