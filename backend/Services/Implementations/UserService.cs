@@ -78,6 +78,10 @@ namespace MovieReviewApp.Implementations {
                     updateUser.FirstName = user.FirstName;
                     updateUser.LastName = user.LastName;
                     updateUser.Password = user.Password;
+                    updateUser.AgeGroup = user.AgeGroup;
+                    updateUser.Gender = user.Gender;
+                    updateUser.NotiPreference = user.NotiPreference;
+                    updateUser.UserType = user.UserType;
                     await dbContext.SaveChangesAsync();
                 }
             } catch (Exception ex) {
