@@ -32,6 +32,21 @@ namespace MovieReviewApp.Services
             }
         }
 
+        public async Task<IList<Review>> GetReviewsByUser(int userId)
+        {
+            try
+            {
+                var reviews = await this.dbContext.Reviews.Where(r => r.UserId == userId).ToListAsync();
+                if (reviews.IsNullOrEmpty()) {
+                    return new List<Review>();
+                }
+                return reviews;
+            } catch (Exception e) 
+            {
+                throw new Exception("Error when getting reviews:", e);
+            }
+        }
+
         public async Task<bool> AddReview(Movie movie, Review review)
         {
             try
@@ -85,6 +100,30 @@ namespace MovieReviewApp.Services
                 return true; 
             } catch (Exception e) {
                 throw new Exception("Error deleting review", e);
+            }
+        }
+
+        public async Task<bool> AddLike(int reviewId) {
+            try {
+                var result = await dbContext.Reviews
+                    .Where(r => r.ReviewId == reviewId)
+                    .ExecuteUpdateAsync(s =>
+                    s.SetProperty(r => r.Likes, r => r.Likes + 1));
+                return true;
+            } catch (Exception e) {
+                throw new Exception("Error adding Like", e);
+            }
+        }
+
+        public async Task<bool> RemoveLike(int reviewId) {
+            try {
+                var result = await dbContext.Reviews
+                    .Where(r => r.ReviewId == reviewId)
+                    .ExecuteUpdateAsync(s =>
+                    s.SetProperty(r => r.Likes, r => r.Likes > 0 ? r.Likes - 1 : 0));
+                return true;
+            } catch (Exception e) {
+                throw new Exception("Error adding Like", e);
             }
         }
     }

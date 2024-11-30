@@ -24,7 +24,11 @@ builder.Services.AddCors(options => {
     });
 });
 
-
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+    });
 builder.Services.AddEndpointsApiExplorer();
 
 // Need to add ShowTimeService to Scope

@@ -55,7 +55,7 @@ namespace MovieReviewApp.Controllers {
         }
 
         [HttpPut(nameof(UpdateUser))]
-        public async Task<IActionResult> UpdateUser(User user) {
+        public async Task<IActionResult> UpdateUser([FromBody] User user) {
             try {
                 var updateUser = await this.userService.GetUserById(user.UserId);
                 if (updateUser == null) {
@@ -91,7 +91,7 @@ namespace MovieReviewApp.Controllers {
                 if (user == null) {
                     return StatusCode(401, ErrorDictionary.ErrorLibrary[401]);
                 }
-                return Ok(new { message = "Login successful!", username = user.Username });
+                return Ok(new { message = "Login successful!", username = user.Username, userId = user.UserId, firstName = user.FirstName, lastName = user.LastName, userType = user.UserType });
             } catch (Exception ex) {
                  return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
             }

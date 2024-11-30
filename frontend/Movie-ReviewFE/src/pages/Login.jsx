@@ -31,7 +31,8 @@ const Login = () => {
             if(!res.ok) throw new Error('Login Failed')
             const data = await res.json()
             setSuccess(data.message)
-            localStorage.setItem('user', JSON.stringify({email: email, username: data.username}))
+            localStorage.removeItem('user');
+            localStorage.setItem('user', JSON.stringify({email: email, username: data.username, userId: data.userId, firstName: data.firstName, lastName: data.lastName, userType: data.userType}))
             navigate('/Movies')
         } catch (err) {
             setError(err.message);
