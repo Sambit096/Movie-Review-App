@@ -3,9 +3,12 @@ namespace MovieReviewApp.Interfaces {
     public interface ITicketService {                  // Retrieve a single ticket by ID
         Task<IEnumerable<Ticket>> GetTickets(int movieId); // Get all tickets for a specific movie
         Task<IEnumerable<Ticket>> GetAllTickets();                  // Retrieve all tickets
-        Task<Ticket> AddTicket(int movieId, Ticket ticket);                      // Create a new ticket
-        Task<bool> RemoveTickets(int movieId, int numberOfTickets);
-        Task<bool> EditTicket(int movieId, Ticket ticket);
+        
+        Task<bool> AddTicketsToMovie(int movieId, int numberOfTickets);
+        Task<bool> RemoveTicketsFromMovie(int movieId, int numberOfTickets);
+        Task<bool> EditTickets(int movieId, Ticket newTicketData);
+        Task<int> GetAvailableTicketsByMovie(int movieId);
+        
 
     }
 }

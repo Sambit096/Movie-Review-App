@@ -82,5 +82,26 @@ namespace MovieReviewApp.Services
                 throw new Exception(ErrorDictionary.ErrorLibrary[500]);
             }
         }
+
+        /// <summary>
+        /// Gets a ShowTime by its unique identifier.
+        /// </summary>
+        /// <param name="showTimeId">The unique identifier of the ShowTime.</param>
+        /// <returns>The ShowTime object if found; otherwise, null.</returns>
+        public async Task<ShowTime> GetShowTimeById(int showTimeId)
+        {
+            try
+            {
+                var showTime = await dbContext.ShowTimes
+                    .FirstOrDefaultAsync(st => st.ShowTimeId == showTimeId);
+                return showTime;
+            }
+            catch (Exception)
+            {
+                throw new Exception(ErrorDictionary.ErrorLibrary[500]);
+            }
+        }
+
+        
     }
 }

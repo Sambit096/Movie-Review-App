@@ -9,7 +9,7 @@ import Showtimes from "../pages/Showtimes";
 import Tickets from "../pages/Tickets"
 import Movie from "./Movie";
 import Reviews from "../pages/Reviews";
-
+import Management from "../pages/Management";
 const UseRoutes = () => {
     return(
         <Routes>

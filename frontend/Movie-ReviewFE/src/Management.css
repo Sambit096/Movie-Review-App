@@ -1,0 +1,130 @@
+/* Management.css */
+
+/* Set the entire page background to black */
+body {
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Container Styles */
+  .management-container {
+    background-color: #ffffff; /* White background */
+    color: #000000; /* Black text for contrast */
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Headings */
+  .management-container h1,
+  .management-container h2 {
+    text-align: center;
+    color: #333333;
+  }
+  
+  .management-container h1 {
+    margin-bottom: 40px;
+  }
+  
+  .management-container h2 {
+    margin-bottom: 20px;
+  }
+  
+  /* Section Styles */
+  section {
+    margin-bottom: 30px;
+  }
+  
+  /* Form Styles */
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555555;
+  }
+  
+  form input[type="text"],
+  form input[type="number"],
+  form input[type="datetime-local"],
+  form textarea,
+  form select {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  form textarea {
+    resize: vertical;
+    height: 80px;
+  }
+  
+  form input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  /* Button Styles */
+  button {
+    padding: 10px 15px;
+    background-color: #007BFF; /* Blue color */
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  button:disabled {
+    background-color: #cccccc; /* Grey for disabled state */
+    cursor: not-allowed;
+  }
+  
+  /* Checkbox Label */
+  .checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .checkbox-container label {
+    color: #555555;
+    font-weight: normal;
+  }
+  
+  /* Responsive Layout */
+  @media (min-width: 768px) {
+    .flex-row {
+      display: flex;
+      justify-content: space-between;
+    }
+  
+    .flex-row > section {
+      width: 48%;
+    }
+  }
+  
+  /* Additional Styling */
+  input::placeholder,
+  textarea::placeholder {
+    color: #aaaaaa;
+  }
+  
+  select option {
+    color: #000000;
+    background-color: #ffffff;
+  }
+  

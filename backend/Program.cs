@@ -8,6 +8,7 @@ using MovieReviewApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
@@ -15,18 +16,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MovieReviewDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("MyAllowSpecificOrigins",
-        policy =>
-        {
-            policy.AllowAnyOrigin()
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
-        });
+builder.Services.AddCors(options => {
+    options.AddPolicy("MyAllowSpecificOrigins", policy => {
+        policy.AllowAnyOrigin() // Use specific origin for production
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
 });
 
-builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
 
 // Need to add ShowTimeService to Scope
@@ -37,7 +35,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITicketService, TicketService>();
 builder.Services.AddScoped<IMailService, MailService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
-
+// Add logging if not already added
+builder.Services.AddLogging();
 builder.Services.AddSwaggerGen();
 /* builder.Services.AddSwaggerGen(c =>
  {
@@ -65,15 +64,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-
-// Add a minimal API endpoint to test ticket data
-app.MapGet("/testtickets", async (MovieReviewDbContext dbContext) =>
-{
-    var tickets = await dbContext.Tickets.ToListAsync();
-    return Results.Ok(tickets);
-})
-.WithName("GetTestTickets")
-.WithOpenApi();
 app.Run();
 /*var summaries = new[]
 {
