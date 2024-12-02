@@ -21,7 +21,6 @@ const ShowtimeItem = ({title, time, id }) => {
 
     return(
         <div className="showtime--item">
-            <h2>{title}</h2>
             <h2>{date}</h2>
             <ShowtimeButton to={id} />
         </div>
