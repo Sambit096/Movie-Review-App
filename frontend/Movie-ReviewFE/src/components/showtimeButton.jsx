@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom"
+import "../showtime.css"; // Import the CSS file
+
 
 const ShowtimeButton = ({to, time}) => {
 

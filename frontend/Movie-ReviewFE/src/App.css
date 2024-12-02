@@ -121,12 +121,6 @@
   max-width: 70%;
   text-align: left;}
 
-.buytickets--button {
-  margin-top: 5em;
-  margin-left: .5rem;
-}
-
-
 .modal {
   display: flex;
   justify-content: center;
