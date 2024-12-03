@@ -166,7 +166,9 @@ const Management = () => {
           method: "GET",
         }
       );
-
+  
+      console.log("API Response for Available Tickets:", response); // Added log
+  
       if (response && response.AvailableTickets !== undefined) {
         setAvailableTickets(response.AvailableTickets);
         return response.AvailableTickets;
@@ -189,7 +191,7 @@ const Management = () => {
   const addMovie = async (e) => {
     e.preventDefault(); // Prevents the default form submission behavior
     console.log("addMovie called");
-
+  
     // Validate inputs
     if (!movie.title.trim()) {
       alert("Please add a title.");
@@ -211,19 +213,31 @@ const Management = () => {
       console.error("Validation failed: Missing rating");
       return;
     }
-
+  
+    // Check for duplicate movie titles (case-insensitive)
+    const duplicateMovie = movieList.find(
+      (existingMovie) =>
+        existingMovie.title.trim().toLowerCase() === movie.title.trim().toLowerCase()
+    );
+  
+    if (duplicateMovie) {
+      alert("A movie with this title already exists. Please choose a different title.");
+      console.error("Validation failed: Duplicate title");
+      return;
+    }
+  
     console.log("All validations passed. Proceeding to API call.");
-
+  
     try {
       const movieData = {
-        title: movie.title,
-        genre: movie.genre,
-        description: movie.description,
+        title: movie.title.trim(),
+        genre: movie.genre.trim(),
+        description: movie.description.trim(),
         rating: Number(movie.rating),
       };
-
+  
       console.log("Making API call with data:", movieData);
-
+  
       const response = await fetchData("http://localhost:5190/api/Management/AddMovie", {
         method: "POST",
         headers: {
@@ -231,7 +245,7 @@ const Management = () => {
         },
         body: JSON.stringify(movieData),
       });
-
+  
       console.log("API call successful:", response);
       alert("Movie added successfully!");
       // Reset the form only after successful submission
@@ -240,9 +254,15 @@ const Management = () => {
       fetchMovies();
     } catch (err) {
       console.error("Error adding movie:", err.message);
-      alert("Failed to add movie. Please try again.");
+      // Handle specific error scenarios based on backend response
+      if (err.message.includes("duplicate")) {
+        alert("A movie with this title already exists. Please choose a different title.");
+      } else {
+        alert("Failed to add movie. Please try again.");
+      }
     }
   };
+  
 
   // Edit an existing movie
   const editMovie = async () => {
@@ -420,25 +440,26 @@ const Management = () => {
       console.error("Validation failed: Invalid number of tickets");
       return;
     }
-
+  
     const numberOfTickets = Number(ticketData.numberOfTickets);
     const movieId = Number(ticketData.movieId);
-
+  
     try {
-      // Check if the selected movie has showtimes by verifying available tickets
-      const tickets = await fetchAvailableTickets(movieId);
-
-      if (tickets === 0) {
+      // Check if the selected movie has showtimes
+      const showtimesExist = await hasShowtimes(movieId);
+  
+      if (!showtimesExist) {
         alert("No showtimes associated with this movie. Please add a showtime first.");
         console.error("No showtimes found for Movie ID:", movieId);
         return;
       }
-
+  
+      // Proceed to add tickets regardless of the current number of available tickets
       const requestData = {
         movieId: movieId,
         numberOfTickets: numberOfTickets,
       };
-
+  
       await fetchData(
         "http://localhost:5190/api/Management/AddTicketsToMovie",
         {
@@ -449,7 +470,7 @@ const Management = () => {
           body: JSON.stringify(requestData),
         }
       );
-
+  
       alert("Tickets added successfully!");
       // Reset the form
       setTicketData({ movieId: "", numberOfTickets: "" });
@@ -459,7 +480,7 @@ const Management = () => {
       console.error("Error adding tickets:", err);
       alert("Failed to add tickets. Please try again.");
     }
-  };
+  };  
 
   // Remove Tickets from Movie
   const removeTicketsFromMovie = async () => {
