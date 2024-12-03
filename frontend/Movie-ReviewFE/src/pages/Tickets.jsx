@@ -33,7 +33,7 @@ return (
   <>
     <h1>Available Tickets</h1>
     {tickets.length == 0 ? <p>Sold Out</p>: tickets.map(ticket => (
-      <TicketItem key={ticket.ticketID} ticketID={ticket.ticketID} showtimeID={showtimeID} movieID={movieID}/>
+      <TicketItem key={ticket.ticketID} ticketID={ticket.ticketID}/>
   ))}
   </>
 )

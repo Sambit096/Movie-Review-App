@@ -1,24 +1,29 @@
+import { useState, useEffect } from "react";
+import fetchData from "../utils/request-utils";
+import { useParams } from 'react-router-dom'; 
 
 
-const TicketItem = ({ ticketID, movieId }) => {
+const TicketItem = ({ ticketID }) => {
+  const [movie, setMovie] = useState([]);
+  const { movieId } = useParams();
+
+  const fetchMovie = async () => {
+    try {
+      const res = await fetch(`http://localhost:5190/api/Movie/GetMovieById?id=${movieId}`);
+      const data = await res.json();
+      console.log(data);
+      setMovie(data);
+  } catch (err) {
+      console.log(err);
+  }
+  }
+
+  useEffect(() => {
+    fetchMovie();
+  }, []);
 
   const addTicket = async () => {
 
-    const fetchMovie = async () => {
-      try {
-        const res = await fetch(`http://localhost:5190/api/Movie/GetMovieById?id=${movieId}`);
-        const data = await res.json();
-        console.log(data);
-        setMovie(data);
-    } catch (err) {
-        console.log(err);
-    }
-    }
-
-    useEffect(() => {
-      fetchMovie();
-    }, []);
-  
 // Needs an addTicket API request
     // try {
     //     const response = await fetch('https://api.example.com/data'); // Replace with your API endpoint
