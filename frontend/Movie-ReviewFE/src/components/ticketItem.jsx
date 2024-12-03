@@ -22,7 +22,27 @@ const TicketItem = ({ ticketID, ticketPrice }) => {
   }, []);
 
   const addTicket = async () => {
-
+    const url = `http://localhost:5190/api/Cart/AddTicketToCart`
+    const data = {
+      cartId: 5,
+      ticketId: ticketID,
+      quantity: 1,
+    };
+    fetch(url, {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data), 
+    })
+      .then(response => response.json()) // Parse the JSON response
+      .then(data => {
+        console.log('Success:', data); // Handle the response data
+      })
+      .catch(error => {
+        console.error('Error:', error); // Handle any errors that occur
+      });
+    
 // Needs an addTicket API request
     // try {
     //     const response = await fetch('https://api.example.com/data'); // Replace with your API endpoint

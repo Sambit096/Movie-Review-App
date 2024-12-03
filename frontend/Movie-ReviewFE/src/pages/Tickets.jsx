@@ -34,7 +34,7 @@ return (
     <h1>Available Tickets</h1>
     <div className="tickets--container">
       {tickets.length == 0 ? <p>Sold Out</p>: tickets.map(ticket => (
-        <TicketItem key={ticket.ticketID} ticketID={ticket.ticketID} ticketPrice={ticket.price}/>
+        <TicketItem key={ticket.ticketID} ticketID={ticket.ticketId} ticketPrice={ticket.price}/>
       ))}     
     </div>
   </>
