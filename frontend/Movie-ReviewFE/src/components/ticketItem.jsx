@@ -1,6 +1,6 @@
 
 
-const showtimeItem = ({ ticketID }) => {
+const TicketItem = ({ ticketID }) => {
 
   const addTicket = async () => {
 // Needs an addTicket API request
@@ -25,5 +25,5 @@ const showtimeItem = ({ ticketID }) => {
 }
 
 
-export default showtimeItem
+export default TicketItem
 
