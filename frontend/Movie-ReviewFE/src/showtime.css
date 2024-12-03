@@ -19,5 +19,30 @@
   justify-content: center; 
 }
 .ticket--item {
-  
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top:.25rem;
+
+}
+.tickets--container {
+  align-items: center;
+  display:flex;
+  flex-direction: column;
+  justify-content: center; 
+}
+.item--title {
+  font-weight: bold;
+  margin-right:.25rem;
+}
+.ticket--simple--list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+p{
+  margin:auto;
+}
+.add--to--cart {
+  width: 6rem;
 }

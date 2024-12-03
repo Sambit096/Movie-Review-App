@@ -3,7 +3,7 @@ import fetchData from "../utils/request-utils";
 import { useParams } from 'react-router-dom'; 
 
 
-const TicketItem = ({ ticketID }) => {
+const TicketItem = ({ ticketID, ticketPrice }) => {
   const [movie, setMovie] = useState([]);
   const { movieId } = useParams();
 
@@ -11,7 +11,6 @@ const TicketItem = ({ ticketID }) => {
     try {
       const res = await fetch(`http://localhost:5190/api/Movie/GetMovieById?id=${movieId}`);
       const data = await res.json();
-      console.log(data);
       setMovie(data);
   } catch (err) {
       console.log(err);
@@ -40,8 +39,11 @@ const TicketItem = ({ ticketID }) => {
 };
   return(
     <div className="ticket--item">
-      <p>{}</p>
-      <button onClick={addTicket}> Buy Ticket </button>
+      <div className="ticket--simple--list">
+        <p className="item--title">{movie.title}</p>
+        <p>Price: ${ticketPrice}</p>
+      </div>
+        <button className="add--to--cart" onClick={addTicket}> Add to Cart </button>
     </div>
   )
 }

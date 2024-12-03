@@ -32,9 +32,11 @@ useEffect(() => {
 return (
   <>
     <h1>Available Tickets</h1>
-    {tickets.length == 0 ? <p>Sold Out</p>: tickets.map(ticket => (
-      <TicketItem key={ticket.ticketID} ticketID={ticket.ticketID}/>
-  ))}
+    <div className="tickets--container">
+      {tickets.length == 0 ? <p>Sold Out</p>: tickets.map(ticket => (
+        <TicketItem key={ticket.ticketID} ticketID={ticket.ticketID} ticketPrice={ticket.price}/>
+      ))}     
+    </div>
   </>
 )
 }
