@@ -21,7 +21,7 @@ const UseRoutes = () => {
             <Route path="/Settings" element={<Settings />}></Route>
             <Route path='/Movies/:movieId' element={<Showtimes />}></Route>
             <Route path='/Reviews/:movieId' element={<Reviews />}></Route>
-            <Route path='/Tickets/:showtimeID' element={<Tickets />}></Route>
+            <Route path='/Movies/:movieId/Tickets/:showtimeID' element={<Tickets />}></Route>
         </Routes>
     )
 }

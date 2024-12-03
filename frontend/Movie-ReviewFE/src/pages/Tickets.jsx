@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom'; 
 import fetchData from "../utils/request-utils";
 import TicketItem from "../components/TicketItem.jsx";
+import "../showtime.css"; // Import the CSS file
 
 const Tickets = () => {
   const { showtimeID } = useParams();
+  const { movieID } = useParams();
   const [tickets, setTickets] = useState([]);
 
 // Fetch data from the GetShowtimes api endpoint
@@ -12,7 +14,8 @@ const fetchTickets = async (showtimeID) => {
   //Should be an API call to return all tickets for a showtimeID
   try { 
     const data = await fetchData(`http://localhost:5190/api/ShowTime/GetTicketsForShowTime/${showtimeID}`);
-    setTickets(data);    
+    setTickets(data);
+    console.log(data);
   } catch (err) {
     setTickets([])
   }  
@@ -28,9 +31,9 @@ useEffect(() => {
 
 return (
   <>
-    <h1>Tickets</h1>
+    <h1>Available Tickets</h1>
     {tickets.length == 0 ? <p>Sold Out</p>: tickets.map(ticket => (
-      <TicketItem key={ticket.ticketID} id={ticket.ticketID} />
+      <TicketItem key={ticket.ticketID} ticketID={ticket.ticketID} showtimeID={showtimeID} movieID={movieID}/>
   ))}
   </>
 )

@@ -24,8 +24,6 @@ const Showtimes = () => {
     try {
         const data = await fetchData(`http://localhost:5190/api/ShowTime/GetShowTimes/${movieId}`);
         setShowtimes(data);
-        console.log('poop');
-        console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -36,9 +34,6 @@ const Showtimes = () => {
     fetchShowtimes();
     console.log(showtimes)
   }, []);
-  useEffect(() => {
-
-  })
 
   return (
     <>

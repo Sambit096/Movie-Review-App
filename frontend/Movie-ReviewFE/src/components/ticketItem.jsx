@@ -1,8 +1,24 @@
 
 
-const TicketItem = ({ ticketID }) => {
+const TicketItem = ({ ticketID, movieId }) => {
 
   const addTicket = async () => {
+
+    const fetchMovie = async () => {
+      try {
+        const res = await fetch(`http://localhost:5190/api/Movie/GetMovieById?id=${movieId}`);
+        const data = await res.json();
+        console.log(data);
+        setMovie(data);
+    } catch (err) {
+        console.log(err);
+    }
+    }
+
+    useEffect(() => {
+      fetchMovie();
+    }, []);
+  
 // Needs an addTicket API request
     // try {
     //     const response = await fetch('https://api.example.com/data'); // Replace with your API endpoint
@@ -17,11 +33,12 @@ const TicketItem = ({ ticketID }) => {
     //     setLoading(false); // Reset loading state
     // }
 };
-    return(
-        <div className="movie--item">
-          <button onClick={addTicket}> Buy Ticket </button>
-        </div>
-    )
+  return(
+    <div className="ticket--item">
+      <p>{}</p>
+      <button onClick={addTicket}> Buy Ticket </button>
+    </div>
+  )
 }
 
 
