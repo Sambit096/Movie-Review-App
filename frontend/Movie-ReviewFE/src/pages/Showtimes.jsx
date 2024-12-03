@@ -1,4 +1,4 @@
-import fetchData from "../utils/request-utils"
+import fetchData from "../utils/request-utils";
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom'; 
 import ShowtimeItem from "../components/ShowtimeItem";
@@ -24,6 +24,7 @@ const Showtimes = () => {
     try {
         const data = await fetchData(`http://localhost:5190/api/ShowTime/GetShowTimes/${movieId}`);
         setShowtimes(data);
+        console.log('poop');
         console.log(data);
     } catch (err) {
       console.log(err);
