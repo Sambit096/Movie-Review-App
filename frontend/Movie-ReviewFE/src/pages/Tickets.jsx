@@ -1,34 +1,44 @@
-const Showtimes = () => {
+import { useState, useEffect } from "react";
+import { useParams } from 'react-router-dom'; 
+import fetchData from "../utils/request-utils";
+import TicketItem from "../components/TicketItem.jsx";
+import "../showtime.css"; // Import the CSS file
+
+const Tickets = () => {
   const { showtimeID } = useParams();
+  const { movieID } = useParams();
   const [tickets, setTickets] = useState([]);
 
-  // Fetch data from the GetShowtimes api endpoint
-// const fetchData = async () => {
-//   //Should be an API call to return all tickets for a showtimeID
-//     try { 
-//         const res = await fetch('http://localhost:5190/api/ShowTime/GetShowTimes/${movieId}');
-//         if(res.ok) {
-//             const data = await res.json();
-//             console.log(data);
-//             setShowtimes(data);
-//         }
-//     } catch (err) {
-//         console.log(err);
-//     }  
-// }
+// Fetch data from the GetShowtimes api endpoint
+const fetchTickets = async (showtimeID) => {
+  //Should be an API call to return all tickets for a showtimeID
+  try { 
+    const data = await fetchData(`http://localhost:5190/api/ShowTime/GetTicketsForShowTime/${showtimeID}`);
+    setTickets(data);
+    console.log(data);
+  } catch (err) {
+    setTickets([])
+  }  
+}
 
-// useEffect(() => {
-//   fetchData();
-// })
+useEffect(() => {  
+  if (showtimeID) {
+    fetchTickets(showtimeID);
+  } else {
+    console.log("Error: showtimeID is undefined");
+  }
+}, [showtimeID]);
 
 return (
   <>
-    <h1>{movie.title}</h1>
-    {tickets.map(ticket => (
-      <ticketItem key={ticket.ticketID} id={ticket.ticketID} />
-  ))}
+    <h1>Available Tickets</h1>
+    <div className="tickets--container">
+      {tickets.length == 0 ? <p>Sold Out</p>: tickets.map(ticket => (
+        <TicketItem key={ticket.ticketID} ticketID={ticket.ticketId} ticketPrice={ticket.price}/>
+      ))}     
+    </div>
   </>
 )
 }
 
-export default Showtimes
+export default Tickets

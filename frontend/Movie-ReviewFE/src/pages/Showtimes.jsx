@@ -1,49 +1,50 @@
-import fetchData from "../utils/request-utils"
+import fetchData from "../utils/request-utils";
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom'; 
 import ShowtimeItem from "../components/ShowtimeItem";
+import "../showtime.css"; // Import the CSS file
 
 
 const Showtimes = () => {
-    const { movieId } = useParams();
-    const [showtimes, setShowtimes] = useState([]);
-    const [movie, setMovie] = useState([]);
+  const { movieId } = useParams();
+  const [showtimes, setShowtimes] = useState([]);
+  const [movie, setMovie] = useState([]);
 
-
-useEffect(() => {
-  const fetchShowtimes = async () => {
-      try {
-          const data = await fetchData(`http://localhost:5190/api/ShowTime/GetShowTimes/${movieId}`);
-          setShowtimes(data);
-          console.log(data);
-      } catch (err) {
-        console.log(err);
-      }
-  };
-
-  fetchShowtimes();
-  console.log(showtimes)
-}, []);
-useEffect(() => {
-  const fetchMovie = async() => {
+  const fetchMovie = async () => {
     try {
-      const movieData = await fetchData(`http://localhost:5190/api/Movie/GetMovieById/${movieId}`);
+      const res = await fetch(`http://localhost:5190/api/Movie/GetMovieById?id=${movieId}`);
+      const data = await res.json();
+      console.log(data);
       setMovie(data);
-      console.log(data)
-    } catch {
+  } catch (err) {
+      console.log(err);
+  }
+  }
+  const fetchShowtimes = async () => {
+    try {
+        const data = await fetchData(`http://localhost:5190/api/ShowTime/GetShowTimes/${movieId}`);
+        setShowtimes(data);
+    } catch (err) {
       console.log(err);
     }
-  }
-})
+};
+  useEffect(() => {
+
+    fetchMovie();
+    fetchShowtimes();
+    console.log(showtimes)
+  }, []);
 
   return (
     <>
-      <h1>Showtimes for {movie.movieId}</h1>
-      {showtimes.map(showtime => (
-        <ShowtimeItem key={showtime.showTimeId} id={showtime.showTimeId} title={showtime.movieId} time={showtime.viewingTime}/>
-      ))}
+      <h1 className='title'>Showtimes for {movie.title}</h1>
+      <div className='showtime--container'>
+        {showtimes.map(showtime => (
+          <ShowtimeItem key={showtime.showTimeId} id={showtime.showTimeId} title={showtime.movieId} time={showtime.viewingTime}/>
+        ))}
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default Showtimes
+export default Showtimes;
