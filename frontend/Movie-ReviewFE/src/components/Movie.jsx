@@ -11,7 +11,6 @@ const Movie = () => {
         try {
             const res = await fetch(`http://localhost:5190/api/Movie/GetMovieById?id=${id}`);
             const data = await res.json();
-            console.log(data);
             setMovie(data);
         } catch (err) {
             console.log(err);
