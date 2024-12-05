@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "../pages/Home";
 import Cart from "../pages/Cart"
 import Movies from "../pages/Movies";
@@ -9,6 +9,16 @@ import Showtimes from "../pages/Showtimes";
 import Tickets from "../pages/Tickets";
 import Reviews from "../pages/Reviews";
 import Management from "../pages/Management";import MyReviews from "../pages/MyReviews";
+
+const ProtectedRoute = ({ isAllowed, redirectPath = "/", children }) => {
+    if (!isAllowed) {
+      return <Navigate to={redirectPath} />;
+    }
+    return children;
+  };
+
+  const user = JSON.parse(localStorage.getItem('user')) || {};
+  const isAdmin = user.userType === 'Admin';
 
 const UseRoutes = () => {
     return(
@@ -22,6 +32,9 @@ const UseRoutes = () => {
             <Route path='/Movies/:movieId' element={<Showtimes />}></Route>
             <Route path='/Reviews/:movieId' element={<Reviews />}></Route>
             <Route path='/Movies/:movieId/Tickets/:showtimeID' element={<Tickets />}></Route>
+            <Route path="/MyReviews" element={<MyReviews />}></Route>
+            <Route path="/Management" element={<ProtectedRoute isAllowed={isAdmin}><Management /></ProtectedRoute>}
+      />
         </Routes>
     )
 }
