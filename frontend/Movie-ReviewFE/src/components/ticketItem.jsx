@@ -22,8 +22,8 @@ const TicketItem = ({ ticketID, ticketPrice }) => {
   }, []);
 
   const addTicket = async () => {
-    const cartId = 5;
-    const url = `http://localhost:5190/api/Cart/AddTicketToCart?cartId=${cartId}&ticketId=${ticketID}&quantity=1`;
+    const cartId = JSON.parse(localStorage.getItem('cart'));
+    const url = `http://localhost:5190/api/Cart/AddTicketToCart?cartId=${cartId.cartId}&ticketId=${ticketID}&quantity=1`;
     console.log(url);
     let cartRes = await fetch(url, {
         method: 'POST',
@@ -34,7 +34,8 @@ const TicketItem = ({ ticketID, ticketPrice }) => {
     )
       .then(response => response.json()) // Parse the JSON response
       .then(data => {
-        console.log('Success:', data); // Handle the response data
+        console.log('Success:', data);
+        window.location.reload(); // Handle the response data
 
       })
       .catch(error => {

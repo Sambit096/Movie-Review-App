@@ -33,6 +33,14 @@ const Login = () => {
             setSuccess(data.message)
             localStorage.removeItem('user');
             localStorage.setItem('user', JSON.stringify({email: email, username: data.username, userId: data.userId, firstName: data.firstName, lastName: data.lastName, userType: data.userType}))
+
+            const res2 = await fetch(`http://localhost:5190/api/Cart/GetCartIdByUser?userId=${data.userId}`, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+            });
+            if(!res2.ok) throw new Error('Retreiving Cart Failed')
+            const cartData = await res2.json()
+            localStorage.setItem('cart', JSON.stringify({cartId: cartData}));
             navigate('/Movies')
         } catch (err) {
             setError(err.message);
