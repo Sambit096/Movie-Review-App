@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MovieReviewApp.Models;
 using MovieReviewApp.Interfaces;
 using MovieReviewApp.Data;
+using MovieReviewApp.Tools;
 
 namespace MovieReviewApp.Controllers;
 [ApiController]
@@ -79,6 +80,16 @@ public class CartController : ControllerBase {
             return StatusCode(500, "Unaable to add ticket to cart");
         } catch (Exception error) {
             return StatusCode(500, $"Error when adding ticket: {error}");
+        }
+    }
+
+    [HttpGet(nameof(GetCartIdByUser))]
+    public async Task<IActionResult> GetCartIdByUser(int userId) {
+        try {
+            var result = await this.cartService.GetCartIdByUser(userId);
+            return Ok(result);
+        } catch (Exception error) {
+            return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + error);
         }
     }
 }

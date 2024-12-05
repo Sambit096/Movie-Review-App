@@ -28,12 +28,6 @@ const Showtimes = () => {
       console.log(err);
     }
 };
-const addToCart = (ticket) => {
-  let cart = JSON.parse(localStorage.getItem('cart')) || { tickets: [] };
-  cart.tickets.push(ticket);
-  localStorage.setItem('cart', JSON.stringify(cart));
-  alert("Ticket added to cart!"); 
-};
   useEffect(() => {
 
     fetchMovie();

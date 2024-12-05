@@ -3,6 +3,7 @@ using MovieReviewApp.Models;
 using System.Linq;
 using MovieReviewApp.Data;
 using Microsoft.EntityFrameworkCore;
+using MovieReviewApp.Tools;
 
 namespace MovieReviewApp.Services {
 
@@ -43,9 +44,7 @@ namespace MovieReviewApp.Services {
                 }
                 var ticket = await dbContext.Tickets.FirstOrDefaultAsync(t => t.TicketId == ticketId);
                 if(ticket == null) {
-                    //fix potential error add a nonexistent ticket
-                    ticket = new Ticket { CartId = cart.CartId, TicketId = ticketId, ShowTimeId = 0, Price = 0.0, Availability = true };
-                    await dbContext.Tickets.AddAsync(ticket);
+                    throw new ArgumentException("Ticket does not exist.");
                 } else {
                     ticket.CartId = cart.CartId;
                     //ticket availability updates when a ticket is in a cart. 
@@ -67,11 +66,14 @@ namespace MovieReviewApp.Services {
                 if(cart == null) {
                     throw new ArgumentException("Cart does not exist.");
                 }
-                var ticket = await dbContext.Tickets.FirstOrDefaultAsync(t => t.TicketId == ticketId);
+                var ticket = await dbContext.Tickets.FirstOrDefaultAsync(t => t.TicketId == ticketId && t.CartId == cartId);
                 if(ticket == null) {
-                    throw new ArgumentException("Ticket does not exist.");
+                    throw new ArgumentException("Ticket does not exist in cart.");
                 }
-                dbContext.Tickets.Remove(ticket);
+                 var updateTicket = await dbContext.Tickets
+                    .Where(t => t.TicketId == ticketId)
+                    .ExecuteUpdateAsync(u => u.SetProperty(t => t.Availability, true)
+                    .SetProperty(t => t.CartId, (int?)null));
                 await dbContext.SaveChangesAsync();
                 //return a cart
                 return cart;
@@ -115,11 +117,17 @@ namespace MovieReviewApp.Services {
 
                 var newPayment = new PaymentGateway() { CardNumber = cardNumber, CardHolderName = cardHolderName, ExpirationDate = exp, CVC = cvc };
                 await dbContext.PaymentGateways.AddAsync(newPayment);
+                var updateCart = await dbContext.Carts
+                    .Where(c => c.CartId == cartId)
+                    .ExecuteUpdateAsync(u => u.SetProperty(c => c.Purchased, true));
                 dbContext.SaveChanges();
             } else {
                 if(paymentGateway.CardHolderName != cardHolderName || paymentGateway.CardNumber != cardNumber || paymentGateway.CVC != cvc || paymentGateway.ExpirationDate != exp) {
                     throw new Exception("Invalid Credentials for card");
                 }
+                var updateCart = await dbContext.Carts
+                    .Where(c => c.CartId == cartId)
+                    .ExecuteUpdateAsync(u => u.SetProperty(c => c.Purchased, true));
             }
 
             return true;
@@ -147,6 +155,27 @@ namespace MovieReviewApp.Services {
             await dbContext.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<int> GetCartIdByUser(int userId) {
+            try {
+                var userCheck = await dbContext.Users.SingleOrDefaultAsync(u => u.UserId == userId);
+                if (userCheck == null) {
+                    throw new Exception(ErrorDictionary.ErrorLibrary[404] + " User cannot be found.");
+                }
+                var currentCart = await dbContext.Carts.FirstOrDefaultAsync(c => c.UserId == userId && c.Purchased == false);
+                if (currentCart == null) {
+                    var newCart = await GetCart(userId);
+                    var updateCart = await dbContext.Carts
+                    .Where(c => c.CartId == newCart.Cart.CartId)
+                    .ExecuteUpdateAsync(u => u.SetProperty(c => c.UserId, userId));
+                    return newCart.Cart.CartId;
+                } else {
+                    return currentCart.CartId;
+                }
+            } catch (Exception error) {
+                throw new Exception(ErrorDictionary.ErrorLibrary[500], error);
+            }
         }
     }
 }

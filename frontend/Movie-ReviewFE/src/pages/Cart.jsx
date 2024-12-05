@@ -20,20 +20,19 @@ const Cart = () => {
 
     // Load cart when component mounts
     useEffect(() => {
-        const fetchCart = async () => {
-            try {
-            const cartId = (JSON.parse(localStorage.getItem('cart')).cartId);
-              const response = await fetchData(
-                `http://localhost:5190/api/Cart/GetCart?cartId=${cartId}`
-              );
-              setCart(response);
-            } catch (err) {
-              console.log("Failed to fetch cart");
-            }
-          };
           fetchCart();
     }, []);
-
+    const fetchCart = async () => {
+        try {
+        const cartId = (JSON.parse(localStorage.getItem('cart')).cartId);
+          const response = await fetchData(
+            `http://localhost:5190/api/Cart/GetCart?cartId=${cartId}`
+          );
+          setCart(response);
+        } catch (err) {
+          console.log("Failed to fetch cart");
+        }
+      };
     // Listen for localStorage changes
     // useEffect(() => {
     //     const handleStorageChange = () => {
@@ -52,7 +51,7 @@ const Cart = () => {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                 });
-              setCart(response);
+              fetchCart();
             } catch (err) {
               console.log("Failed to remove ticket");
             }

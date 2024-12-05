@@ -20,19 +20,10 @@ const TicketItem = ({ ticketID, ticketPrice }) => {
   useEffect(() => {
     fetchMovie();
   }, []);
-  const updateLocalCart = () => {
-    let cart = JSON.parse(localStorage.getItem("cart")) || { tickets: [] };
-    cart.tickets.push({
-        ticketId: ticketID,
-        price: ticketPrice,
-        availability: true, // Or update dynamically if needed
-    });
-    localStorage.setItem("cart", JSON.stringify(cart));
-  };
-  
+
   const addTicket = async () => {
-    const cartId = 5;
-    const url = `http://localhost:5190/api/Cart/AddTicketToCart?cartId=${cartId}&ticketId=${ticketID}&quantity=1`;
+    const cartId = JSON.parse(localStorage.getItem('cart'));
+    const url = `http://localhost:5190/api/Cart/AddTicketToCart?cartId=${cartId.cartId}&ticketId=${ticketID}&quantity=1`;
     console.log(url);
     let cartRes = await fetch(url, {
         method: 'POST',
@@ -43,9 +34,9 @@ const TicketItem = ({ ticketID, ticketPrice }) => {
     )
       .then(response => response.json()) // Parse the JSON response
       .then(data => {
-        console.log('Success:', data); // Handle the response data
-        updateLocalCart(); // Update localStorage
-          alert("Ticket added to cart!");
+        console.log('Success:', data);
+        window.location.reload(); // Handle the response data
+
       })
       .catch(error => {
         console.error('Error:', error); // Handle any errors that occur
@@ -77,6 +68,7 @@ const TicketItem = ({ ticketID, ticketPrice }) => {
     </div>
   )
 }
+
 
 export default TicketItem
 

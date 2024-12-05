@@ -33,8 +33,8 @@ return (
   <>
     <h1>Available Tickets</h1>
     <div className="tickets--container">
-      {tickets.length == 0 ? <p>Sold Out</p>: tickets.map(ticket => (
-        <TicketItem key={ticket.ticketID} ticketID={ticket.ticketId} ticketPrice={ticket.price}/>
+      {tickets.filter(ticket => ticket.availability === true).length == 0 ? <p>Sold Out</p>: tickets.filter(ticket => ticket.availability === true).map(ticket => (
+        <TicketItem key={ticket.ticketId} ticketID={ticket.ticketId} ticketPrice={ticket.price}/>
       ))}     
     </div>
   </>
