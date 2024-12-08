@@ -187,11 +187,11 @@ const Management = () => {
     }
   };
 
-  // Add movie
+    // Add movie
   const addMovie = async (e) => {
     e.preventDefault(); // Prevents the default form submission behavior
     console.log("addMovie called");
-  
+
     // Validate inputs
     if (!movie.title.trim()) {
       alert("Please add a title.");
@@ -213,21 +213,9 @@ const Management = () => {
       console.error("Validation failed: Missing rating");
       return;
     }
-  
-    // Check for duplicate movie titles (case-insensitive)
-    const duplicateMovie = movieList.find(
-      (existingMovie) =>
-        existingMovie.title.trim().toLowerCase() === movie.title.trim().toLowerCase()
-    );
-  
-    if (duplicateMovie) {
-      alert("A movie with this title already exists. Please choose a different title.");
-      console.error("Validation failed: Duplicate title");
-      return;
-    }
-  
+
     console.log("All validations passed. Proceeding to API call.");
-  
+
     try {
       const movieData = {
         title: movie.title.trim(),
@@ -235,31 +223,34 @@ const Management = () => {
         description: movie.description.trim(),
         rating: Number(movie.rating),
       };
-  
+
       console.log("Making API call with data:", movieData);
-  
-      const response = await fetchData("http://localhost:5190/api/Management/AddMovie", {
+
+      const response = await fetch("http://localhost:5190/api/Management/AddMovie", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(movieData),
       });
-  
-      console.log("API call successful:", response);
-      alert("Movie added successfully!");
-      // Reset the form only after successful submission
-      setMovie({ title: "", genre: "", description: "", rating: "" });
-      // Refresh the movie list to include the new movie
-      fetchMovies();
+
+      const data = await response.json(); // Parse the JSON response
+
+      if (response.ok) {
+        console.log("API call successful:", data);
+        alert(data.message); // "Movie added successfully."
+        // Reset the form only after successful submission
+        setMovie({ title: "", genre: "", description: "", rating: "" });
+        // Refresh the movie list to include the new movie
+        fetchMovies();
+      } else {
+        // Handle errors based on status code
+        console.error("API call failed:", data.message);
+        alert(data.message); // Display the error message from the backend
+      }
     } catch (err) {
       console.error("Error adding movie:", err.message);
-      // Handle specific error scenarios based on backend response
-      if (err.message.includes("duplicate")) {
-        alert("A movie with this title already exists. Please choose a different title.");
-      } else {
-        alert("Failed to add movie. Please try again.");
-      }
+      alert("Failed to add movie. Please try again."); // Generic error message
     }
   };
   

@@ -17,6 +17,11 @@ namespace MovieReviewApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Ensure that the Title field in your Movies table is unique.
+            modelBuilder.Entity<Movie>()
+            .HasIndex(m => m.Title)
+            .IsUnique();
+
             //Set MovieId as Foreign Key on ShowTime Table
             modelBuilder.Entity<ShowTime>()
                 .HasOne(t => t.Movie)

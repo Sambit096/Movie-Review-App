@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieReviewApp.Data;
 
@@ -11,9 +12,11 @@ using MovieReviewApp.Data;
 namespace MovieReviewApp.Migrations
 {
     [DbContext(typeof(MovieReviewDbContext))]
-    partial class MovieReviewDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241208013539_EnforceUniqueTitleOnMovies")]
+    partial class EnforceUniqueTitleOnMovies
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -267,7 +270,7 @@ namespace MovieReviewApp.Migrations
                         {
                             ReviewId = 1,
                             Content = "An incredible journey through dreams.",
-                            CreatedAt = new DateTime(2024, 11, 28, 9, 15, 52, 988, DateTimeKind.Local).AddTicks(715),
+                            CreatedAt = new DateTime(2024, 11, 27, 20, 35, 39, 447, DateTimeKind.Local).AddTicks(674),
                             Likes = 0,
                             MovieId = 1,
                             Rating = 5,
@@ -278,7 +281,7 @@ namespace MovieReviewApp.Migrations
                         {
                             ReviewId = 2,
                             Content = "A masterpiece in modern cinema.",
-                            CreatedAt = new DateTime(2024, 11, 29, 9, 15, 52, 988, DateTimeKind.Local).AddTicks(720),
+                            CreatedAt = new DateTime(2024, 11, 28, 20, 35, 39, 447, DateTimeKind.Local).AddTicks(679),
                             Likes = 0,
                             MovieId = 4,
                             Rating = 5,
@@ -289,7 +292,7 @@ namespace MovieReviewApp.Migrations
                         {
                             ReviewId = 3,
                             Content = "Great for kids and adults alike.",
-                            CreatedAt = new DateTime(2024, 12, 3, 9, 15, 52, 988, DateTimeKind.Local).AddTicks(724),
+                            CreatedAt = new DateTime(2024, 12, 2, 20, 35, 39, 447, DateTimeKind.Local).AddTicks(682),
                             Likes = 0,
                             MovieId = 2,
                             Rating = 2,
@@ -300,7 +303,7 @@ namespace MovieReviewApp.Migrations
                         {
                             ReviewId = 4,
                             Content = "A compelling story about loyalty and power.",
-                            CreatedAt = new DateTime(2024, 12, 6, 9, 15, 52, 988, DateTimeKind.Local).AddTicks(727),
+                            CreatedAt = new DateTime(2024, 12, 5, 20, 35, 39, 447, DateTimeKind.Local).AddTicks(686),
                             Likes = 0,
                             MovieId = 3,
                             Rating = 3,
@@ -311,7 +314,7 @@ namespace MovieReviewApp.Migrations
                         {
                             ReviewId = 5,
                             Content = "One of the best films ever made.",
-                            CreatedAt = new DateTime(2024, 12, 7, 9, 15, 52, 988, DateTimeKind.Local).AddTicks(730),
+                            CreatedAt = new DateTime(2024, 12, 6, 20, 35, 39, 447, DateTimeKind.Local).AddTicks(689),
                             Likes = 0,
                             MovieId = 3,
                             Rating = 5,
