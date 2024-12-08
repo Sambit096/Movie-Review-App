@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import Carts from "../components/Carts";
 
 const Settings = () => {
 
@@ -15,6 +16,9 @@ const Settings = () => {
       });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [movies, setMovies] = useState([]);
+    const [showTimes, setShowTimes] = useState([]);
+    const [carts, setCarts] = useState([]);
 
     const genderOptions = ["None", "F", "M", "Other"];
     const ageGroupOptions = ["Teen", "YoungAdult", "Adult", "Retired"];
@@ -37,13 +41,49 @@ const Settings = () => {
     
             const userData = await response.json();
             setUser(userData);
+            const response2 = await fetch(`http://localhost:5190/api/Cart/GetCompletedCartsByUser?userId=${userId}`);
+            if (!response2.ok) {
+              throw new Error("Failed to fetch past cart data.");
+            }
+            const cartData = await response2.json();
+            setCarts(cartData);
           } catch (err) {
             setError(err.message);
           } finally {
             setLoading(false);
           }
         };
-    
+
+        const fetchMovieData = async () => {
+          try {
+            const response = await fetch(
+              "http://localhost:5190/api/Movie/GetMovies");
+              if (!response.ok) {
+                throw new Error("Failed to fetch movie data.");
+              }
+              const data = await response.json();
+              setMovies(data);
+          } catch (err) {
+              setError(err.message);
+          }
+        }
+        fetchMovieData();
+
+        const fetchShowTimeData = async () => {
+          try {
+            const response = await fetch(
+              "http://localhost:5190/api/ShowTime/GetAllShowTimes");
+            if (!response.ok) {
+              throw new Error("Failed to fetch showtime data.");
+            }
+            const data = await response.json();
+            setShowTimes(data);
+          } catch (err) {
+              setError(err.message);
+          }
+        }
+        fetchShowTimeData();
+
         fetchUserData();
       }, []);
       
@@ -56,24 +96,6 @@ const Settings = () => {
         return <div>Error: {error}</div>;
       }
 
-    // const handleChange = async () => {
-    //     setFormData({...formData, [e.target.name]: e.target.value});
-    // };
-
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault()
-        
-    //     // API Call to update user info
-    //     const res = await fetch('http://localhost:5190/api/User/UpdateUser', {
-    //         method: 'PUT',
-    //         headers: {'Content-Type': 'application/json',},
-    //         body: JSON.stringify(formData)
-    //     });
-    //     if(res.ok) {
-    //         const updatedUser = await res.json()
-    //         updateUser(updatedUser) // update user context
-    //     }
-    // }
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUser({ ...user, [name]: value });
@@ -91,6 +113,7 @@ const Settings = () => {
         if(res.ok) {
             localStorage.removeItem('user');
             localStorage.setItem('user', JSON.stringify({email: user.email, username: user.username, userId: user.userId, firstName: user.firstName, lastName: user.lastName, userType: user.userType}))
+            alert("User Updated!");
         }
       };
     
@@ -207,7 +230,12 @@ const Settings = () => {
             </div>
             <button type="submit">Save Changes</button>
           </form>
+
+          <h2>Past Purchases</h2>
+          {carts.length > 0 ? (
+          <Carts data={carts} movies={movies} showTimes={showTimes} />) : ( <p>No past purchases</p> )}
         </div>
+
       );
     };
     

@@ -92,5 +92,15 @@ public class CartController : ControllerBase {
             return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + error);
         }
     }
+
+    [HttpGet(nameof(GetCompletedCartsByUser))]
+    public async Task<IActionResult> GetCompletedCartsByUser(int userId) {
+        try {
+            var result = await this.cartService.GetCompletedCartsByUser(userId);
+            return Ok(result);
+        } catch (Exception error) {
+            return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + error);
+        }
+    }
 }
 

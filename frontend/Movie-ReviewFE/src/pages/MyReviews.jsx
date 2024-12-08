@@ -169,7 +169,6 @@ const MyReviews = () => {
     <div>
       <button
         className="review-buttons"
-        style={{ marginTop: "100px" }}
         onClick={() => nav("/Movies")}
       >
         Back to Movies

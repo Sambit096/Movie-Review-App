@@ -5,6 +5,10 @@
   text-align: center;
 }
 
+.main-content {
+  margin-top: 60px;
+}
+
 /** Navbar **/
 .navbar {
   left: 0%;
@@ -12,8 +16,9 @@
   position: fixed;
   display: flex;
   top: 0px;
+  height: 70px;
   box-shadow: 2px 2px 5px white;
-  z-index: 2;
+  z-index: 500;
   background-color: #242424;
 }
 

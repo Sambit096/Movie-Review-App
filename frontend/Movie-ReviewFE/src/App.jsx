@@ -8,8 +8,10 @@ function App() {
   return (
     <div className='app'>
       <UserProvider>
-        <UseRoutes />
-        <Navigation />
+      <Navigation />
+      <div className="main-content">
+      <UseRoutes />
+        </div>
       </UserProvider>
     </div>
   )

@@ -70,10 +70,13 @@ namespace MovieReviewApp.Services {
                 if(ticket == null) {
                     throw new ArgumentException("Ticket does not exist in cart.");
                 }
-                 var updateTicket = await dbContext.Tickets
+                var updateTicket = await dbContext.Tickets
                     .Where(t => t.TicketId == ticketId)
                     .ExecuteUpdateAsync(u => u.SetProperty(t => t.Availability, true)
                     .SetProperty(t => t.CartId, (int?)null));
+                var updateCart = await dbContext.Carts
+                    .Where(c => c.CartId == cartId)
+                    .ExecuteUpdateAsync(u => u.SetProperty(c => c.Total, c => c.Total - ticket.Price));
                 await dbContext.SaveChangesAsync();
                 //return a cart
                 return cart;
@@ -173,6 +176,26 @@ namespace MovieReviewApp.Services {
                 } else {
                     return currentCart.CartId;
                 }
+            } catch (Exception error) {
+                throw new Exception(ErrorDictionary.ErrorLibrary[500], error);
+            }
+        }
+
+        public async Task<IList<CartWithTickets>> GetCompletedCartsByUser(int userId) {
+            try {
+                var userCheck = await dbContext.Users.SingleOrDefaultAsync(u => u.UserId == userId);
+                if (userCheck == null) {
+                    throw new Exception(ErrorDictionary.ErrorLibrary[404] + " User cannot be found.");
+                }
+                var carts = await dbContext.Carts.Where(c => c.UserId == userId && c.Purchased == true).ToListAsync();
+                List<CartWithTickets> finalCarts = new List<CartWithTickets>();
+                foreach (Cart cart in carts) {
+                    List<Ticket> tickets = new List<Ticket>();
+                    tickets = await dbContext.Tickets.Where(t => t.CartId == cart.CartId).ToListAsync();
+                    var result = new CartWithTickets { Cart = cart, Tickets = tickets };
+                    finalCarts.Add(result);
+                }
+                return finalCarts;
             } catch (Exception error) {
                 throw new Exception(ErrorDictionary.ErrorLibrary[500], error);
             }

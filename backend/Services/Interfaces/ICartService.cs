@@ -9,5 +9,6 @@ namespace MovieReviewApp.Interfaces
         public Task<int> GetCartIdByUser(int userId);
         public Task<bool> AddTicketsByShowtime(int cartId, int showtimeId, int quantity);
         public Task<bool> ProcessPayment(int cartId, string cardNumber, string exp, string cardHolderName, string cvc);
+        public Task<IList<CartWithTickets>> GetCompletedCartsByUser(int userId);
     }
 }
