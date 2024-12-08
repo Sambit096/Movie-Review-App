@@ -13,7 +13,7 @@ const Home = () => {
     }, []);
     
     function logOut() {
-        localStorage.removeItem("user");
+        localStorage.clear();
         setUserData(null);
     }
 

@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Home from "../pages/Home";
 import Cart from "../pages/Cart"
 import Movies from "../pages/Movies";
@@ -17,10 +18,18 @@ const ProtectedRoute = ({ isAllowed, redirectPath = "/", children }) => {
     return children;
   };
 
-  const user = JSON.parse(localStorage.getItem('user')) || {};
-  const isAdmin = user.userType === 'Admin';
+  // const user = JSON.parse(localStorage.getItem('user')) || {};
+  // const isAdmin = user.userType === 'Admin';
 
 const UseRoutes = () => {
+    const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user")) || {});
+
+    const refreshUser = () => {
+      const updatedUser = JSON.parse(localStorage.getItem("user")) || {};
+      setUser(updatedUser);
+  };
+
+  const isAdmin = user.userType === "Admin";
     return(
         <Routes>
             <Route path="/" element={<Home />}></Route>
@@ -33,7 +42,7 @@ const UseRoutes = () => {
             <Route path='/Reviews/:movieId' element={<Reviews />}></Route>
             <Route path='/Movies/:movieId/Tickets/:showtimeID' element={<Tickets />}></Route>
             <Route path="/MyReviews" element={<MyReviews />}></Route>
-            <Route path="/Management" element={<ProtectedRoute isAllowed={isAdmin}><Management /></ProtectedRoute>}
+            <Route path="/Management" element={<ProtectedRoute isAllowed={isAdmin} refreshUser={refreshUser}><Management /></ProtectedRoute>}
       />
         </Routes>
     )
