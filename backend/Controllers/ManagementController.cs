@@ -64,7 +64,8 @@ namespace MovieReviewApp.Controllers
             }
         }
 
-        // Add Movie
+        
+       // Add Movie
         [HttpPost("AddMovie")]
         public async Task<IActionResult> AddMovie([FromBody] Movie movie)
         {
@@ -72,12 +73,19 @@ namespace MovieReviewApp.Controllers
             {
                 var result = await _movieService.AddMovie(movie);
                 return result
-                    ? Ok("Movie added successfully.")
-                    : StatusCode(500, ErrorDictionary.ErrorLibrary[501]);
+                    ? Ok(new { message = "Movie added successfully." })
+                    : StatusCode(500, new { message = ErrorDictionary.ErrorLibrary[501] });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+                if (ex.Message == ErrorDictionary.ErrorLibrary[409]) // Conflict - Duplicate
+                {
+                    return Conflict(new { message = ex.Message });
+                }
+                else
+                {
+                    return StatusCode(500, new { message = ErrorDictionary.ErrorLibrary[500] });
+                }
             }
         }
 
