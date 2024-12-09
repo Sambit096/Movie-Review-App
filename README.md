@@ -101,6 +101,17 @@ Please have these installed on your computer to run our project. You will also w
 ## Testing Instructions
 
 Enter Testing Instructions here
+Steps to run Backend Unit Tests:
+1. Open VSCode and open a terminal
+2. cd into the projects Testing directory (\Movie-Review-App\Movie-Review-App.Tests)
+```sh
+cd .\Movie-Review-App.Tests
+```
+5. Run the Testing Project:
+```sh
+dotnet test .\MovieReviewApp.Tests.csproj
+```
+4. View console for output to see passing/failing tests
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
