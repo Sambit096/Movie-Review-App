@@ -87,7 +87,6 @@ namespace MovieReviewApp.Services {
         }
 
         public async Task<bool> ProcessPayment(int cartId, string cardNumber, string exp, string cardHolderName, string cvc){
-
             //checking to see if a cart exists
             var cartExists = await dbContext.Carts.AnyAsync(c => c.CartId == cartId);
             if (!cartExists) {
@@ -168,7 +167,7 @@ namespace MovieReviewApp.Services {
                 }
                 var currentCart = await dbContext.Carts.FirstOrDefaultAsync(c => c.UserId == userId && c.Purchased == false);
                 if (currentCart == null) {
-                    var newCart = await GetCart(userId);
+                    var newCart = await GetCart(null);
                     var updateCart = await dbContext.Carts
                     .Where(c => c.CartId == newCart.Cart.CartId)
                     .ExecuteUpdateAsync(u => u.SetProperty(c => c.UserId, userId));

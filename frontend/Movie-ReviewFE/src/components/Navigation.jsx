@@ -9,11 +9,11 @@ const Navigation = () => {
                     <h3>Movie Review App</h3>
                 </div>
                 <div id="nav--right">
-                    <NavbarButton to=""/>
-                    <NavbarButton to="Movies" />
-                    <NavbarButton to="Cart" />
-                    <NavbarButton to="Settings" />
-                    <NavbarButton to="Management" />
+                    <NavbarButton to="" label=""/>
+                    <NavbarButton to="Movies" label="Movies" />
+                    <NavbarButton to="Cart" label="Cart" />
+                    <NavbarButton to="Settings" label="Account" />
+                    <NavbarButton to="Management" label="Management"/>
                 </div>
             </nav>
         </div>

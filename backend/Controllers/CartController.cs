@@ -66,7 +66,7 @@ public class CartController : ControllerBase {
             }
             return Ok("Payment Processed!");
         } catch (Exception error) {
-            return StatusCode(500, $"Error when processing payment: {error}");
+            return StatusCode(500, new { message = $"Error when processing payment: {error}"});
         }
     }
 
