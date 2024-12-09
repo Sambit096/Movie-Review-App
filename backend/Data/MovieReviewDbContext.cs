@@ -85,21 +85,21 @@ namespace MovieReviewApp.Data
                );
             modelBuilder.Entity<ShowTime>().HasData(
                 //Showtime sample data provided by ChatGPT
-                new ShowTime { ShowTimeId = 1, MovieId = 1, ViewingTime = new DateTime(2024, 10, 29, 14, 0, 0), Status = MovieStatus.Available },
-                new ShowTime { ShowTimeId = 2, MovieId = 1, ViewingTime = new DateTime(2024, 11, 1, 18, 30, 0), Status = MovieStatus.Available },
-                new ShowTime { ShowTimeId = 3, MovieId = 2, ViewingTime = new DateTime(2024, 11, 2, 15, 0, 0), Status = MovieStatus.Available },
-                new ShowTime { ShowTimeId = 4, MovieId = 3, ViewingTime = new DateTime(2024, 10, 30, 16, 15, 0), Status = MovieStatus.Available },
-                new ShowTime { ShowTimeId = 5, MovieId = 3, ViewingTime = new DateTime(2024, 11, 4, 19, 0, 0), Status = MovieStatus.Available },
-                new ShowTime { ShowTimeId = 6, MovieId = 4, ViewingTime = new DateTime(2024, 11, 6, 11, 30, 0), Status = MovieStatus.Available },
-                new ShowTime { ShowTimeId = 7, MovieId = 5, ViewingTime = new DateTime(2024, 11, 12, 17, 0, 0), Status = MovieStatus.Available },
-                new ShowTime { ShowTimeId = 8, MovieId = 5, ViewingTime = new DateTime(2024, 11, 14, 12, 30, 0), Status = MovieStatus.Available },
-                new ShowTime { ShowTimeId = 9, MovieId = 6, ViewingTime = new DateTime(2024, 11, 1, 10, 0, 0), Status = MovieStatus.Available },
-                new ShowTime { ShowTimeId = 10, MovieId = 7, ViewingTime = new DateTime(2024, 11, 5, 16, 0, 0), Status = MovieStatus.Available },
-                new ShowTime { ShowTimeId = 11, MovieId = 8, ViewingTime = new DateTime(2024, 10, 31, 15, 0, 0), Status = MovieStatus.Available },
-                new ShowTime { ShowTimeId = 12, MovieId = 8, ViewingTime = new DateTime(2024, 11, 3, 19, 0, 0), Status = MovieStatus.Available },
-                new ShowTime { ShowTimeId = 13, MovieId = 9, ViewingTime = new DateTime(2024, 11, 8, 11, 0, 0), Status = MovieStatus.Available },
-                new ShowTime { ShowTimeId = 14, MovieId = 10, ViewingTime = new DateTime(2024, 11, 10, 16, 30, 0), Status = MovieStatus.Available },
-                new ShowTime { ShowTimeId = 15, MovieId = 10, ViewingTime = new DateTime(2024, 11, 19, 18, 0, 0), Status = MovieStatus.Available }
+                new ShowTime { ShowTimeId = 1, MovieId = 1, ViewingTime = new DateTime(2024, 10, 29, 14, 0, 0) },
+                new ShowTime { ShowTimeId = 2, MovieId = 1, ViewingTime = new DateTime(2024, 11, 1, 18, 30, 0) },
+                new ShowTime { ShowTimeId = 3, MovieId = 2, ViewingTime = new DateTime(2024, 11, 2, 15, 0, 0) },
+                new ShowTime { ShowTimeId = 4, MovieId = 3, ViewingTime = new DateTime(2024, 10, 30, 16, 15, 0) },
+                new ShowTime { ShowTimeId = 5, MovieId = 3, ViewingTime = new DateTime(2024, 11, 4, 19, 0, 0) },
+                new ShowTime { ShowTimeId = 6, MovieId = 4, ViewingTime = new DateTime(2024, 11, 6, 11, 30, 0) },
+                new ShowTime { ShowTimeId = 7, MovieId = 5, ViewingTime = new DateTime(2024, 11, 12, 17, 0, 0) },
+                new ShowTime { ShowTimeId = 8, MovieId = 5, ViewingTime = new DateTime(2024, 11, 14, 12, 30, 0) },
+                new ShowTime { ShowTimeId = 9, MovieId = 6, ViewingTime = new DateTime(2024, 11, 1, 10, 0, 0) },
+                new ShowTime { ShowTimeId = 10, MovieId = 7, ViewingTime = new DateTime(2024, 11, 5, 16, 0, 0) },
+                new ShowTime { ShowTimeId = 11, MovieId = 8, ViewingTime = new DateTime(2024, 10, 31, 15, 0, 0) },
+                new ShowTime { ShowTimeId = 12, MovieId = 8, ViewingTime = new DateTime(2024, 11, 3, 19, 0, 0) },
+                new ShowTime { ShowTimeId = 13, MovieId = 9, ViewingTime = new DateTime(2024, 11, 8, 11, 0, 0) },
+                new ShowTime { ShowTimeId = 14, MovieId = 10, ViewingTime = new DateTime(2024, 11, 10, 16, 30, 0) },
+                new ShowTime { ShowTimeId = 15, MovieId = 10, ViewingTime = new DateTime(2024, 11, 19, 18, 0, 0) }
             );
             modelBuilder.Entity<Ticket>().HasData(
                 //Ticket sample data provided by ChatGPT

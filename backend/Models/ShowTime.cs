@@ -17,9 +17,6 @@ namespace MovieReviewApp.Models
         // Date and time for when the showtime occurs
         public required DateTime ViewingTime { get; set; }
 
-        // Current status of the showtime, indicating if it is available or sold out
-        public required MovieStatus Status { get; set; }
-
         public Movie? Movie {get; set; }
         public ShowTime(){}
         /*public ShowTime(int showTimeId,int movieId, DateTime viewingTime,int numOfTickets, MovieStatus status)

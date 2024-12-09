@@ -19,7 +19,6 @@ const Management = () => {
   const [showTime, setShowTime] = useState({
     movieId: "",
     viewingTime: "",
-    status: "",
   });
 
   const [removeMovieId, setRemoveMovieId] = useState("");
@@ -337,20 +336,19 @@ const Management = () => {
       console.error("Validation failed: Missing Viewing Time");
       return;
     }
-    if (showTime.status === "") {
-      alert("Please select a Status.");
-      console.error("Validation failed: Missing Status");
-      return;
-    }
+    // if (showTime.status === "") {
+    //   alert("Please select a Status.");
+    //   console.error("Validation failed: Missing Status");
+    //   return;
+    // }
 
     try {
       const movieId = Number(showTime.movieId);
-      const status = Number(showTime.status);
+      //const status = Number(showTime.status);
 
       const showTimeData = {
         movieId: movieId,
         viewingTime: showTime.viewingTime,
-        status: status,
       };
 
       console.log("Request Body:", JSON.stringify(showTimeData));
@@ -363,7 +361,7 @@ const Management = () => {
         body: JSON.stringify(showTimeData),
       });
       alert("Showtime added successfully!");
-      setShowTime({ movieId: "", viewingTime: "", status: "" });
+      setShowTime({ movieId: "", viewingTime: "" });
       // Optionally, refresh showtimes if displayed elsewhere
     } catch (err) {
       console.error("Error adding showtime:", err);
@@ -796,7 +794,7 @@ const Management = () => {
             }
           />
 
-          <label htmlFor="showtime-status">Status:</label>
+          {/* <label htmlFor="showtime-status">Status:</label>
           <select
             id="showtime-status"
             value={showTime.status}
@@ -807,7 +805,7 @@ const Management = () => {
             <option value="">Select Status</option>
             <option value="1">Available</option>
             <option value="0">Not Available</option>
-          </select>
+          </select> */}
 
           <button type="button" onClick={addShowTime}>
             Add Showtime
