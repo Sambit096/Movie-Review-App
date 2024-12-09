@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"
 import "../Management.css"; // Import the CSS file
 
 const Management = () => {
+  const navigate = useNavigate();
   const [movie, setMovie] = useState({
     title: "",
     genre: "",
@@ -98,8 +100,13 @@ const Management = () => {
   };
 
   useEffect(() => {
-    fetchMovies();
-  }, []);
+    const updatedUser = JSON.parse(localStorage.getItem("user")) || {};
+    if(updatedUser && updatedUser.userType !== "Admin") {
+      navigate("/");
+    } else {
+      fetchMovies();
+    }
+  }, [navigate]);
 
   // Helper function to check if a movie has showtimes
   const hasShowtimes = async (movieId) => {
