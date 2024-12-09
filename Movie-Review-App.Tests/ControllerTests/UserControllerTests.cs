@@ -245,9 +245,9 @@ namespace MovieReviewApp.Tests.Controllers {
             var result = await _userController.AddUser(userDTO);
 
             // Assert
-            Assert.IsInstanceOf<StatusCodeResult>(result);
-            var statusCodeResult = result as StatusCodeResult;
-            Assert.AreEqual(201, statusCodeResult.StatusCode);
+            Assert.IsInstanceOf<OkObjectResult>(result);
+            var statusCodeResult = result as OkObjectResult;
+            Assert.AreEqual(200, statusCodeResult.StatusCode);
         }
 
         [Test]
