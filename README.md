@@ -84,6 +84,13 @@ Please have these installed on your computer to run our project.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+## Technical Documents
+
+Provide links to documents & display image of Entity Diagram
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
 ## Testing Instructions
 
 Enter Testing Instructions here
