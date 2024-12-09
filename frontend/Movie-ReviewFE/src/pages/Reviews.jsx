@@ -15,7 +15,7 @@ const Reviews = () => {
     const fetchReviews = async () => {
       try {
         const response = await fetchData(
-          `http://localhost:5190/api/Review/GetReviews?movieId=${movieId}`
+          `http://localhost:5190/api/Review/GetReviews?MovieId=${movieId}&Title=${title}&Genre=&Description=&Rating=0`
         );
         setReviews(response);
         setLoading(false);
@@ -30,6 +30,50 @@ const Reviews = () => {
 
   if (loading) return <p>Loading reviews...</p>;
   if (error) return <p>{error}</p>;
+  
+  const handleLike = async (reviewId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5190/api/Review/AddLike?reviewId=${reviewId}`,
+        {
+          method: 'PUT',
+        }
+      );
+      if (response.ok) {
+        console.log('Like added successfully:', response);
+        const response2 = await fetchData(
+          `http://localhost:5190/api/Review/GetReviews?MovieId=${movieId}&Title=${title}&Genre=&Description=&Rating=0`
+        );
+        setReviews(response2);
+      } else {
+        console.error('Failed to add like:', response);
+      }
+    } catch (error) {
+      console.error('Error while adding like:', error);
+    }
+  };
+  
+  const handleDislike = async (reviewId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5190/api/Review/RemoveLike?reviewId=${reviewId}`,
+        {
+          method: 'PUT',
+        }
+      );
+      if (response.ok) {
+        console.log('Like added successfully:', response);
+        const response2 = await fetchData(
+          `http://localhost:5190/api/Review/GetReviews?MovieId=${movieId}&Title=${title}&Genre=&Description=&Rating=0`
+        );
+        setReviews(response2);
+      } else {
+        console.error('Failed to add like:', response);
+      }
+    } catch (error) {
+      console.error('Error while adding like:', error);
+    }
+  };
 
   return (
     <div>

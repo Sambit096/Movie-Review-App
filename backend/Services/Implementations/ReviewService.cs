@@ -17,11 +17,11 @@ namespace MovieReviewApp.Services
             this.dbContext = dbContext;
         }
 
-        public async Task<IList<Review>> GetReviews(int movieId)
+        public async Task<IList<Review>> GetReviews(Movie movie)
         {
             try
             {
-                var reviews = await this.dbContext.Reviews.Where(r => r.MovieId == movieId).ToListAsync();
+                var reviews = await this.dbContext.Reviews.Where(r => r.MovieId == movie.MovieId).ToListAsync();
                 if (reviews.IsNullOrEmpty()) {
                     return new List<Review>();
                 }

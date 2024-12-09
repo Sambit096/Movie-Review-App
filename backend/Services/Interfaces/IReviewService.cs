@@ -9,7 +9,7 @@ namespace MovieReviewApp.Interfaces {
 
         public Task<bool> EditReview(int reviewId, Review newReview);
 
-        public Task<IList<Review>> GetReviews(int movieId);
+        public Task<IList<Review>> GetReviews(Movie movie);
 
         public Task<bool> AddLike(int reviewId);
         public Task<bool> RemoveLike(int reviewId);

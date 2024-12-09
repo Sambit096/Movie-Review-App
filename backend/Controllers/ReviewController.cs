@@ -53,11 +53,11 @@ public class ReviewController: ControllerBase
     }
 
     [HttpGet(nameof(GetReviews))]
-    public async Task<IActionResult> GetReviews(int movieId)
+    public async Task<IActionResult> GetReviews([FromQuery] Movie movie)
     {
         try
         {
-            var reviews = await this.reviewService.GetReviews(movieId);
+            var reviews = await this.reviewService.GetReviews(movie);
             if(reviews == null || !reviews.Any())
             {
                 return Ok(reviews); 
