@@ -46,7 +46,7 @@ How to setup this project locally:
 
 ### Prerequisites
 
-Please have these installed on your computer to run our project.
+Please have these installed on your computer to run our project. You will also want an instance of SQL Server.
 * npm
   ```sh
   npm install npm@latest -g
@@ -54,6 +54,10 @@ Please have these installed on your computer to run our project.
 * dotnet
   ```sh
   https://dotnet.microsoft.com/en-us/download/dotnet
+  ```
+* Entity Framework Core
+  ```sh
+  dotnet add package Microsoft.EntityFrameworkCore.SqlServer
   ```
 
 ### Installation
@@ -84,9 +88,12 @@ Please have these installed on your computer to run our project.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-## Technical Documents
+## Technical Documents and Screenshots
 
-Provide links to documents & display image of Entity Diagram
+* Link to Business Requirements Document [link-business]
+* Link to Weekly Updates [link-weekly]
+
+![Entity Screen Shot][entity-screenshot]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -110,3 +117,6 @@ AI and Copilot were used minimally throughout this project. We used AI to help u
 
 
 [product-screenshot]: ReadmeInfo/project.png
+[entity-screenshot]: ReadmeInfo/entities.png
+[link-business]: https://docs.google.com/document/d/1SQUSj7MYeESE2oluxp6o_LA63nJzexJ2unEtSn-zBtM/edit?usp=sharing
+[link-weekly]: https://emailsc-my.sharepoint.com/:w:/g/personal/gtowne_email_sc_edu/EQ2EE0_qcTRLsuc1F3g_rY8BtWFXlseZhtPhAvDRopV9UA?e=ho6wNJ
