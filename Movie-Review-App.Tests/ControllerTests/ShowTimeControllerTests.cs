@@ -27,7 +27,7 @@ namespace MovieReviewApp.Tests.Controllers {
         [Test]
         public async Task GetAllShowTimes_ShouldReturnOk_WhenShowTimesExist() {
             // Arrange
-            var showTimes = new List<ShowTime> { new ShowTime { ShowTimeId = 1, MovieId = 1, ViewingTime = DateTime.Now, Status = MovieStatus.Available } };
+            var showTimes = new List<ShowTime> { new ShowTime { ShowTimeId = 1, MovieId = 1, ViewingTime = DateTime.Now} };
             _mockShowTimeService.Setup(service => service.GetAllShowTimes()).ReturnsAsync(showTimes);
 
             // Act
@@ -77,7 +77,7 @@ namespace MovieReviewApp.Tests.Controllers {
         public async Task GetShowTimes_ShouldReturnOk_WhenShowTimesExistForMovie() {
             // Arrange
             int movieId = 1;
-            var showTimes = new List<ShowTime> { new ShowTime { ShowTimeId = 1, MovieId = movieId, ViewingTime = DateTime.Now, Status = MovieStatus.Available } };
+            var showTimes = new List<ShowTime> { new ShowTime { ShowTimeId = 1, MovieId = movieId, ViewingTime = DateTime.Now} };
             _mockShowTimeService.Setup(service => service.GetShowTimes(movieId)).ReturnsAsync(showTimes);
 
             // Act
@@ -180,7 +180,7 @@ namespace MovieReviewApp.Tests.Controllers {
         [Test]
         public async Task AddShowTime_ShouldReturnCreated_WhenShowTimeIsAdded() {
             // Arrange
-            var showTime = new ShowTime { MovieId = 1, ViewingTime = DateTime.Now, Status = MovieStatus.Available };
+            var showTime = new ShowTime { MovieId = 1, ViewingTime = DateTime.Now};
             _mockShowTimeService.Setup(service => service.AddShowTime(showTime)).ReturnsAsync(true);
 
             // Act
@@ -195,7 +195,7 @@ namespace MovieReviewApp.Tests.Controllers {
         [Test]
         public async Task AddShowTime_ShouldReturnBadRequest_WhenShowTimeCannotBeAdded() {
             // Arrange
-            var showTime = new ShowTime { MovieId = 1, ViewingTime = DateTime.Now, Status = MovieStatus.SoldOut };
+            var showTime = new ShowTime { MovieId = 1, ViewingTime = DateTime.Now};
             _mockShowTimeService.Setup(service => service.AddShowTime(showTime)).ReturnsAsync(false);
 
             // Act
@@ -211,7 +211,7 @@ namespace MovieReviewApp.Tests.Controllers {
         [Test]
         public async Task AddShowTime_ShouldReturnInternalServerError_WhenExceptionOccurs() {
             // Arrange
-            var showTime = new ShowTime { MovieId = 1, ViewingTime = DateTime.Now, Status = MovieStatus.Available };
+            var showTime = new ShowTime { MovieId = 1, ViewingTime = DateTime.Now};
             _mockShowTimeService.Setup(service => service.AddShowTime(showTime)).ThrowsAsync(new Exception());
 
             // Act
