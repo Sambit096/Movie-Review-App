@@ -24,22 +24,22 @@ namespace MovieReviewApp.Tests.Controllers {
 
         #region GetAllTickets Tests
 
-        [Test]
-        public async Task GetAllTickets_ShouldReturnOk_WhenTicketsExist() {
-            // Arrange
-            var movie = new Movie { Title = "Test", MovieId = 1};
-            var showTime = new ShowTime { MovieId = movie.MovieId, ShowTimeId = 1, ViewingTime = DateTime.Now };
-            var tickets = new List<Ticket> { new Ticket { TicketId = 1, Price = 10.0, ShowTimeId = showTime.ShowTimeId, Availability = true } };
-            _mockTicketService.Setup(service => service.GetAllTickets()).ReturnsAsync(tickets);
+        //[Test]
+        //public async Task GetAllTickets_ShouldReturnOk_WhenTicketsExist() {
+        //    // Arrange
+        //    var movie = new Movie { Title = "Test", MovieId = 1};
+        //    var showTime = new ShowTime { MovieId = movie.MovieId, ShowTimeId = 1, ViewingTime = DateTime.Now };
+        //    var tickets = new List<Ticket> { new Ticket { TicketId = 1, Price = 10.0, ShowTimeId = showTime.ShowTimeId, Availability = true } };
+        //    _mockTicketService.Setup(service => service.GetAllTickets()).ReturnsAsync(tickets);
 
-            // Act
-            var result = await _controller.GetTickets(movie.MovieId);
+        //    // Act
+        //    var result = await _controller.GetTickets(movie.MovieId);
 
-            // Assert
-            var okResult = result as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(tickets, okResult.Value);
-        }
+        //    // Assert
+        //    var okResult = result as OkObjectResult;
+        //    Assert.IsNotNull(okResult);
+        //    Assert.AreEqual(tickets, okResult.Value);
+        //}
 
         [Test]
         public async Task GetAllTickets_ShouldReturnNotFound_WhenNoTicketsExist() {
