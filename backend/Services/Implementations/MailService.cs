@@ -27,7 +27,7 @@ namespace MovieReviewApp.Services {
                     throw new KeyNotFoundException(ErrorDictionary.ErrorLibrary[400]);
                 }
 
-                var fromAddress = new MailAddress("youremail@email.com", "Email Testing");
+                var fromAddress = new MailAddress("movieapp547@gmail.com", "Movie App");
                 var toAddress = new MailAddress(user.Email);
                 var message = new MailMessage(fromAddress, toAddress) {
                     Subject = "Order Confirmation",
@@ -35,9 +35,9 @@ namespace MovieReviewApp.Services {
                     IsBodyHtml = true
                 };
 
-                using var smtpClient = new SmtpClient("sandbox.smtp.mailtrap.io") {
+                using var smtpClient = new SmtpClient("smtp.gmail.com") {
                     Port = 587,
-                    Credentials = new NetworkCredential("mail_trapuser", "mailtrap_pass"),
+                    Credentials = new NetworkCredential("movieapp547@gmail.com", "teymbulawswhuazp"),
                     EnableSsl = true
                 };
 
@@ -45,8 +45,8 @@ namespace MovieReviewApp.Services {
                 return true;
             } catch (KeyNotFoundException) {
                 throw; // Re-throw to be handled by the controller
-            } catch (Exception) {
-                throw new Exception(ErrorDictionary.ErrorLibrary[500]);
+            } catch (Exception e) {
+                throw new Exception("Error generating email:", e);
             }
         }
 
