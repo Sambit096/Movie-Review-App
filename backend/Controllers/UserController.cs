@@ -24,7 +24,7 @@ namespace MovieReviewApp.Controllers {
                 }
                 return Ok(users);
             } catch (Exception ex) {
-                 return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+                 return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + ex);
             }
         }
 
@@ -37,7 +37,7 @@ namespace MovieReviewApp.Controllers {
                 }
                 return Ok(user);
             } catch (Exception ex) {
-                return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + ex);
             }
         }
 
@@ -50,7 +50,7 @@ namespace MovieReviewApp.Controllers {
                 }
                 return Ok(user);
             } catch (Exception ex) {
-                return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + ex);
             }
         }
 
@@ -64,7 +64,7 @@ namespace MovieReviewApp.Controllers {
                 await this.userService.UpdateUser(user);
                 return NoContent(); // 204 no content
             } catch (Exception ex) {
-                return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + ex);
             }
         }
 
@@ -78,7 +78,7 @@ namespace MovieReviewApp.Controllers {
                 await this.userService.RemoveUser(removeUser.UserId);
                 return NoContent(); // 204 no content
             } catch (Exception ex) {
-               return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+               return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + ex);
             }
         }
 
@@ -93,7 +93,7 @@ namespace MovieReviewApp.Controllers {
                 }
                 return Ok(new { message = "Login successful!", username = user.Username, userId = user.UserId, firstName = user.FirstName, lastName = user.LastName, userType = user.UserType, notiPreference = user.NotiPreference });
             } catch (Exception ex) {
-                 return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+                 return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + ex);
             }
         }
 
@@ -115,22 +115,22 @@ namespace MovieReviewApp.Controllers {
                 await this.userService.AddUser(user);
                 return Ok(new { message = "Sign up Successful" });
             } catch (Exception ex) {
-                return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+                return StatusCode(500, ErrorDictionary.ErrorLibrary[500] + ex);
             }
         }
     }
 
     public class LoginRequest {
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public required string Email { get; set; }
+        public required string Password { get; set; }
     }
 
     // Used to pass data transfer object with expected data from front end to the model in backend
     public class UserDTO {
-        public string Email { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string FirstName {get; set; }
-        public string LastName {get; set; }
+        public required string Email { get; set; }
+        public required string Username { get; set; }
+        public required string Password { get; set; }
+        public required string FirstName {get; set; }
+        public required string LastName {get; set; }
     }
 }
