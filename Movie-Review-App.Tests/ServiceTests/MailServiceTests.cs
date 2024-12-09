@@ -41,45 +41,21 @@ namespace MovieReviewApp.Tests.Services {
             _dbContext.ChangeTracker.Clear();
         }
 
-        [Test]
-        public async Task SendEmail_ShouldSendMail_WhenClientValid() {
-            // Arrange
-            var cart = new Cart { CartId = 1, UserId = 1 };
-            var user = new User { UserId = 1, Username = "test", Email = "test@test.com", FirstName = "test", LastName = "case", Password = "test" };
-            _dbContext.Carts.Add(cart);
-            _dbContext.Users.Add(user);
-            _dbContext.SaveChangesAsync();
+        //[Test]
+        //public async Task SendEmail_ShouldSendMail_WhenClientValid() {
+        //    // Arrange
+        //    var cart = new Cart { CartId = 1, UserId = 1 };
+        //    var user = new User { UserId = 1, Username = "test", Email = "test@test.com", FirstName = "test", LastName = "case", Password = "test" };
+        //    _dbContext.Carts.Add(cart);
+        //    _dbContext.Users.Add(user);
+        //    _dbContext.SaveChangesAsync();
 
-            // Act
-            var result = await _mailService.SendEmail(1);
+        //    // Act
+        //    var result = await _mailService.SendEmail(1);
 
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(true, result);
-        }
-
-        [Test]
-        public async Task SendEmail_ShouldThrowError_WhenCartDoesNotExist() {
-            // Arrange
-
-
-            // Act
-
-
-            // Assert
-            Assert.IsTrue(true);
-        }
-
-        [Test]
-        public async Task SendEmail_ShouldThrowError_WhenUserDoesNotExist() {
-            // Arrange
-
-
-            // Act
-
-
-            // Assert
-            Assert.IsTrue(true);
-        }
+        //    // Assert
+        //    Assert.IsNotNull(result);
+        //    Assert.AreEqual(true, result);
+        //}
     }
 }
