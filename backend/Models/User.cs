@@ -5,6 +5,8 @@
         public required string Username {  get; set; }
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
+        public int phonenumber {  get; set; }
+
         public UserGender Gender {get; set; } = UserGender.None; 
         public AgeGroup AgeGroup {get; set; } = AgeGroup.YoungAdult;
         public required string Password { get; set; }

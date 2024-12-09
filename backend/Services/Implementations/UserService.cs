@@ -82,6 +82,7 @@ namespace MovieReviewApp.Implementations {
                     updateUser.Gender = user.Gender;
                     updateUser.NotiPreference = user.NotiPreference;
                     updateUser.UserType = user.UserType;
+                    updateUser.phonenumber = user.phonenumber;
                     await dbContext.SaveChangesAsync();
                 }
             } catch (Exception ex) {
