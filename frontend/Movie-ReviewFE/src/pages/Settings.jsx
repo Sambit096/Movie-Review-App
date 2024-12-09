@@ -112,7 +112,7 @@ const Settings = () => {
         });
         if(res.ok) {
             localStorage.removeItem('user');
-            localStorage.setItem('user', JSON.stringify({email: user.email, username: user.username, userId: user.userId, firstName: user.firstName, lastName: user.lastName, userType: user.userType}))
+            localStorage.setItem('user', JSON.stringify({email: user.email, username: user.username, userId: user.userId, firstName: user.firstName, lastName: user.lastName, userType: user.userType, notiPreference: user.notiPreference}))
             alert("User Updated!");
         }
       };

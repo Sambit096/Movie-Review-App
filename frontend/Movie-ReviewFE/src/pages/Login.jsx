@@ -32,7 +32,7 @@ const Login = () => {
             const data = await res.json()
             setSuccess(data.message)
             localStorage.removeItem('user');
-            localStorage.setItem('user', JSON.stringify({email: email, username: data.username, userId: data.userId, firstName: data.firstName, lastName: data.lastName, userType: data.userType}))
+            localStorage.setItem('user', JSON.stringify({email: email, username: data.username, userId: data.userId, firstName: data.firstName, lastName: data.lastName, userType: data.userType, notiPreference: data.notiPreference}))
 
             const res2 = await fetch(`http://localhost:5190/api/Cart/GetCartIdByUser?userId=${data.userId}`, {
                 method: 'GET',

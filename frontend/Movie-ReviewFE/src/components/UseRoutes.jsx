@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import Home from "../pages/Home";
 import Cart from "../pages/Cart"
 import Movies from "../pages/Movies";
-import Checkout from "../pages/Checkout";
 import Login from "../pages/Login";
 import Settings from "../pages/Settings";
 import Showtimes from "../pages/Showtimes";
@@ -35,7 +34,6 @@ const UseRoutes = () => {
             <Route path="/" element={<Home />}></Route>
             <Route path="/Cart" element={<Cart />}></Route>
             <Route path="/Movies" element={<Movies />}></Route>
-            <Route path="/Checkout" element={<Checkout />}></Route>
             <Route path="/Login" element={<Login />}></Route>
             <Route path="/Settings" element={<Settings />}></Route>
             <Route path='/Movies/:movieId' element={<Showtimes />}></Route>

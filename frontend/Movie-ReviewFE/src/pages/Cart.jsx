@@ -57,6 +57,18 @@ const Cart = () => {
             }
     };
 
+    const sendEmailNotification = async (cartId) => {
+        try {
+              const response = await fetch(
+                `http://localhost:5190/api/Mail/SendEmail?cartId=${cartId}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                });
+            } catch (err) {
+              console.log("Failed to send notification");
+            }
+    }
+
     const totalPrice = cart.tickets?.reduce((total, ticket) => total + ticket.price, 0);
     const totalPriceWithTax = ((cart.tickets?.reduce((total, ticket) => total + ticket.price, 0)) * 1.06).toFixed(2);
 
@@ -77,6 +89,9 @@ const Cart = () => {
         );
         if (response.ok) {
         alert("Payment successful!");
+        if(JSON.parse(localStorage.getItem("user")).notiPreference == "Both" || JSON.parse(localStorage.getItem("user")).notiPreference == "Email") {
+            sendEmailNotification(cartId);
+        }
         fetchNewCart();
         setIsModalOpen(false);
         } else {
