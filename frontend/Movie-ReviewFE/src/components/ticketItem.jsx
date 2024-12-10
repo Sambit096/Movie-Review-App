@@ -62,7 +62,7 @@ const TicketItem = ({ ticketID, ticketPrice }) => {
     <div className="ticket--item">
       <div className="ticket--simple--list">
         <p className="item--title">{movie.title}</p>
-        <p>Price: ${ticketPrice}</p>
+        <p>Price: ${ticketPrice.toFixed(2)}</p>
       </div>
         <button className="add--to--cart" onClick={addTicket}> Add to Cart </button>
     </div>

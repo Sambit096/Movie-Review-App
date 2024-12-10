@@ -107,7 +107,7 @@ const Cart = () => {
   const totalPrice = cart.tickets?.reduce(
     (total, ticket) => total + ticket.price,
     0
-  );
+  ).toFixed(2);
   const totalPriceWithTax = (
     cart.tickets?.reduce((total, ticket) => total + ticket.price, 0) * 1.06
   ).toFixed(2);
@@ -190,7 +190,7 @@ const Cart = () => {
                     : "Unknown Showtime"}
                 </div>
                 <div>
-                  <strong>Price:</strong> ${ticket.price}
+                  <strong>Price:</strong> ${ticket.price.toFixed(2)}
                   <button
                     onClick={() => removeTicketFromCart(ticket.ticketId)}
                     style={{ marginLeft: "10px" }}
