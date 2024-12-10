@@ -153,7 +153,7 @@ namespace MovieReviewApp.Services
                 // Fetch all tickets associated with the movie
                 var ticketsToEdit = await _dbContext.Tickets
                     .Include(t => t.ShowTime)
-                    .Where(t => t.ShowTime.MovieId == movieId)
+                    .Where(t => t.ShowTime.MovieId == movieId && t.ShowTimeId == newShowTime.ShowTimeId)
                     .ToListAsync();
 
                 if (!ticketsToEdit.Any())
