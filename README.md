@@ -127,6 +127,8 @@ dotnet test .\MovieReviewApp.Tests.csproj
 ```
 4. View console for output to see passing/failing tests
 
+<img src="ReadmeInfo/controller-tests.png" width="500px"/> <img src="ReadmeInfo/service-tests.png" width="500px"/>
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
