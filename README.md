@@ -105,6 +105,7 @@ Please have these installed on your computer to run our project. You will also w
 
 * [Link to Business Requirements Document][link-business]
 * [Link to Weekly Updates][link-weekly]
+* [Backlog Link (Private)][link-project] - Tracked via Weekly Updates Document and Github Project
 
 ![Entity Screen Shot][entity-screenshot]
 
@@ -120,7 +121,7 @@ Steps to run Backend Unit Tests:
 ```sh
 cd .\Movie-Review-App.Tests
 ```
-5. Run the Testing Project:
+3. Run the Testing Project:
 ```sh
 dotnet test .\MovieReviewApp.Tests.csproj
 ```
@@ -145,5 +146,6 @@ AI and Copilot were used minimally throughout this project. We used AI to help u
 [admin-screenshot]: ReadmeInfo/admin.png
 [cart-screenshot]: ReadmeInfo/cart.png
 [review-screenshot]: ReadmeInfo/reviews.png
+[link-project]: https://github.com/users/Sambit096/projects/4]
 [link-business]: https://docs.google.com/document/d/1SQUSj7MYeESE2oluxp6o_LA63nJzexJ2unEtSn-zBtM/edit?usp=sharing
 [link-weekly]: https://emailsc-my.sharepoint.com/:w:/g/personal/gtowne_email_sc_edu/EQ2EE0_qcTRLsuc1F3g_rY8BtWFXlseZhtPhAvDRopV9UA?e=ho6wNJ
