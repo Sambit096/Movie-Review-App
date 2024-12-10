@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieReviewApp.Data;
 
@@ -11,9 +12,11 @@ using MovieReviewApp.Data;
 namespace MovieReviewApp.Migrations
 {
     [DbContext(typeof(MovieReviewDbContext))]
-    partial class MovieReviewDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241210034648_updateStartingData")]
+    partial class updateStartingData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -267,7 +270,7 @@ namespace MovieReviewApp.Migrations
                         {
                             ReviewId = 1,
                             Content = "An incredible journey through dreams.",
-                            CreatedAt = new DateTime(2024, 11, 29, 22, 47, 21, 710, DateTimeKind.Local).AddTicks(9130),
+                            CreatedAt = new DateTime(2024, 11, 29, 22, 46, 47, 987, DateTimeKind.Local).AddTicks(6762),
                             Likes = 0,
                             MovieId = 1,
                             Rating = 5,
@@ -278,7 +281,7 @@ namespace MovieReviewApp.Migrations
                         {
                             ReviewId = 2,
                             Content = "A masterpiece in modern cinema.",
-                            CreatedAt = new DateTime(2024, 11, 30, 22, 47, 21, 710, DateTimeKind.Local).AddTicks(9142),
+                            CreatedAt = new DateTime(2024, 11, 30, 22, 46, 47, 987, DateTimeKind.Local).AddTicks(6770),
                             Likes = 0,
                             MovieId = 4,
                             Rating = 5,
@@ -289,7 +292,7 @@ namespace MovieReviewApp.Migrations
                         {
                             ReviewId = 3,
                             Content = "Great for kids and adults alike.",
-                            CreatedAt = new DateTime(2024, 12, 4, 22, 47, 21, 710, DateTimeKind.Local).AddTicks(9146),
+                            CreatedAt = new DateTime(2024, 12, 4, 22, 46, 47, 987, DateTimeKind.Local).AddTicks(6775),
                             Likes = 0,
                             MovieId = 2,
                             Rating = 2,
@@ -300,7 +303,7 @@ namespace MovieReviewApp.Migrations
                         {
                             ReviewId = 4,
                             Content = "A compelling story about loyalty and power.",
-                            CreatedAt = new DateTime(2024, 12, 7, 22, 47, 21, 710, DateTimeKind.Local).AddTicks(9150),
+                            CreatedAt = new DateTime(2024, 12, 7, 22, 46, 47, 987, DateTimeKind.Local).AddTicks(6781),
                             Likes = 0,
                             MovieId = 3,
                             Rating = 3,
@@ -311,7 +314,7 @@ namespace MovieReviewApp.Migrations
                         {
                             ReviewId = 5,
                             Content = "One of the best films ever made.",
-                            CreatedAt = new DateTime(2024, 12, 8, 22, 47, 21, 710, DateTimeKind.Local).AddTicks(9153),
+                            CreatedAt = new DateTime(2024, 12, 8, 22, 46, 47, 987, DateTimeKind.Local).AddTicks(6847),
                             Likes = 0,
                             MovieId = 3,
                             Rating = 5,
@@ -752,7 +755,7 @@ namespace MovieReviewApp.Migrations
                             LastName = "Doe",
                             NotiPreference = 0,
                             Password = "d1f23b1a4e5f6a7b8c9d0e",
-                            UserType = 1,
+                            UserType = 0,
                             Username = "johndoe"
                         },
                         new
