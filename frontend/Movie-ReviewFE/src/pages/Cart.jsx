@@ -124,6 +124,10 @@ const Cart = () => {
 
   const handleCheckout = async () => {
     try {
+      if(paymentInfo.cardHolderName == "" || paymentInfo.cardNumber == "" || paymentInfo.cvc == "" || paymentError.expirationDate == "") {
+        setPaymentError("Please fill in empty fields");
+        return;
+      }
       const cartId = JSON.parse(localStorage.getItem("cart")).cartId;
       const response = await fetch(
         `http://localhost:5190/api/Cart/ProcessPayment?cartId=${cartId}&cardNumber=${paymentInfo.cardNumber}&exp=${paymentInfo.expirationDate}&cardHolderName=${paymentInfo.cardHolderName}&cvc=${paymentInfo.cvc}`,

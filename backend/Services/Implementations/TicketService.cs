@@ -193,25 +193,29 @@ namespace MovieReviewApp.Services
         {
             _logger.LogInformation("Attempting to remove {NumberOfTickets} tickets from Movie ID {MovieId}.", numberOfTickets, movieId);
 
-            var ticketsToRemove = await _dbContext.Tickets
+            var getShowTimes = await _dbContext.ShowTimes.Where(s => s.MovieId == movieId).ToListAsync();
+
+            foreach (ShowTime showtime in getShowTimes) {
+                var ticketsToRemove = await _dbContext.Tickets
                 .Include(t => t.ShowTime)
-                .Where(t => t.ShowTime.MovieId == movieId && t.Availability == true)
+                .Where(t => t.ShowTime.MovieId == movieId && t.Availability == true && t.ShowTimeId == showtime.ShowTimeId)
                 .OrderBy(t => t.TicketId)
                 .Take(numberOfTickets)
                 .ToListAsync();
 
-            _logger.LogInformation("Fetched {Count} tickets to remove for Movie ID {MovieId}.", ticketsToRemove.Count, movieId);
+                _logger.LogInformation("Fetched {Count} tickets to remove for Movie ID {MovieId}.", ticketsToRemove.Count, movieId);
 
-            if (ticketsToRemove.Count < numberOfTickets)
-            {
-                _logger.LogWarning("Not enough available tickets to remove. Requested: {Requested}, Available: {Available}.", numberOfTickets, ticketsToRemove.Count);
-                throw new InvalidOperationException("Not enough available tickets to remove.");
+                // if (ticketsToRemove.Count < numberOfTickets)
+                // {
+                //     _logger.LogWarning("Not enough available tickets to remove. Requested: {Requested}, Available: {Available}.", numberOfTickets, ticketsToRemove.Count);
+                //     throw new InvalidOperationException("Not enough available tickets to remove.");
+                // }
+
+                _dbContext.Tickets.RemoveRange(ticketsToRemove);
+                await _dbContext.SaveChangesAsync();
             }
 
-            _dbContext.Tickets.RemoveRange(ticketsToRemove);
-            await _dbContext.SaveChangesAsync();
-
-            _logger.LogInformation("Successfully removed {Count} tickets from Movie ID {MovieId}.", ticketsToRemove.Count, movieId);
+            // _logger.LogInformation("Successfully removed {Count} tickets from Movie ID {MovieId}.", ticketsToRemove.Count, movieId);
 
             return true;
         }
