@@ -23,10 +23,23 @@
 
 ## About The Project
 
-![Product Name Screen Shot][product-screenshot]
+![Movie Screen Shot][product-screenshot]
 
-Our application consists of 2 main experiences. Users can 1) browse and create movie reviews and 2) purchase movie tickets. Alongside these features, users can create accounts, manage their personal preferences including notifications, and admins can manage movie, showtime, and ticket inventory.
+Our web application is a cutting edge platform designed to streamline the movie-going experience by taking the ability to purchase tickets, and combining that with the social aspect of leaving movie reviews. The convenience and interactivity of this application cater to the needs of both casual moviegoers and film enthusiasts.
 
+Our application consists of 4 main interactive experiences. Users can 1) browse and create movie reviews, 2) purchase movie tickets, 3) edit their user preferences to best fit their needs, and 4) admins can manage movie, ticket, and showtime inventory.
+
+Please view the next few screenshots to get an idea of what this application looks like.
+
+### Review Screen (User View)
+![Review Screen Shot][review-screenshot]
+
+### Cart Screen
+![Cart Screen Shot][cart-screenshot]
+
+### Admin Management Screen
+ ![Admin Screen Shot][admin-screenshot]
+ 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
@@ -90,8 +103,8 @@ Please have these installed on your computer to run our project. You will also w
 
 ## Technical Documents and Screenshots
 
-* Link to Business Requirements Document [link-business]
-* Link to Weekly Updates [link-weekly]
+* [Link to Business Requirements Document][link-business]
+* [Link to Weekly Updates][link-weekly]
 
 ![Entity Screen Shot][entity-screenshot]
 
@@ -129,5 +142,8 @@ AI and Copilot were used minimally throughout this project. We used AI to help u
 
 [product-screenshot]: ReadmeInfo/project.png
 [entity-screenshot]: ReadmeInfo/entities.png
+[admin-screenshot]: ReadmeInfo/admin.png
+[cart-screenshot]: ReadmeInfo/cart.png
+[review-screenshot]: ReadmeInfo/reviews.png
 [link-business]: https://docs.google.com/document/d/1SQUSj7MYeESE2oluxp6o_LA63nJzexJ2unEtSn-zBtM/edit?usp=sharing
 [link-weekly]: https://emailsc-my.sharepoint.com/:w:/g/personal/gtowne_email_sc_edu/EQ2EE0_qcTRLsuc1F3g_rY8BtWFXlseZhtPhAvDRopV9UA?e=ho6wNJ
