@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import "../Management.css"; // Import the CSS file
+
+// Map numeric rating to MPAARating string
+const ratingMap = {
+  "0": "G",
+  "1": "PG",
+  "2": "PG13",
+  "3": "R",
+  "4": "NC17"
+};
 
 const Management = () => {
   const navigate = useNavigate();
@@ -101,7 +110,7 @@ const Management = () => {
 
   useEffect(() => {
     const updatedUser = JSON.parse(localStorage.getItem("user")) || {};
-    if(updatedUser && updatedUser.userType !== "Admin") {
+    if (updatedUser && updatedUser.userType !== "Admin") {
       navigate("/");
     } else {
       fetchMovies();
@@ -121,7 +130,6 @@ const Management = () => {
         }
       );
 
-      // If showTimes is null or empty, return false
       if (!showTimes || showTimes.length === 0) {
         return false;
       }
@@ -129,7 +137,6 @@ const Management = () => {
       return true;
     } catch (error) {
       console.error("Error fetching showtimes:", error);
-      // Optionally, handle specific error scenarios here
       return false;
     }
   };
@@ -172,9 +179,9 @@ const Management = () => {
           method: "GET",
         }
       );
-  
-      console.log("API Response for Available Tickets:", response); // Added log
-  
+
+      console.log("API Response for Available Tickets:", response);
+
       if (response && response.AvailableTickets !== undefined) {
         setAvailableTickets(response.AvailableTickets);
         return response.AvailableTickets;
@@ -193,34 +200,27 @@ const Management = () => {
     }
   };
 
-    // Add movie
+  // Add movie
   const addMovie = async (e) => {
-    e.preventDefault(); // Prevents the default form submission behavior
+    e.preventDefault();
     console.log("addMovie called");
 
-    // Validate inputs
     if (!movie.title.trim()) {
       alert("Please add a title.");
-      console.error("Validation failed: Missing title");
       return;
     }
     if (!movie.genre.trim()) {
       alert("Please add a genre.");
-      console.error("Validation failed: Missing genre");
       return;
     }
     if (!movie.description.trim()) {
       alert("Please add a description.");
-      console.error("Validation failed: Missing description");
       return;
     }
     if (!movie.rating.trim()) {
       alert("Please select a rating.");
-      console.error("Validation failed: Missing rating");
       return;
     }
-
-    console.log("All validations passed. Proceeding to API call.");
 
     try {
       const movieData = {
@@ -240,119 +240,113 @@ const Management = () => {
         body: JSON.stringify(movieData),
       });
 
-      const data = await response.json(); // Parse the JSON response
+      const data = await response.json();
 
       if (response.ok) {
-        console.log("API call successful:", data);
-        alert(data.message); // "Movie added successfully."
-        // Reset the form only after successful submission
+        alert(data.message);
         setMovie({ title: "", genre: "", description: "", rating: "" });
-        // Refresh the movie list to include the new movie
         fetchMovies();
       } else {
-        // Handle errors based on status code
-        console.error("API call failed:", data.message);
-        alert(data.message); // Display the error message from the backend
+        alert(data.message);
       }
     } catch (err) {
       console.error("Error adding movie:", err.message);
-      alert("Failed to add movie. Please try again."); // Generic error message
+      alert("Failed to add movie. Please try again.");
     }
   };
-  
 
   // Edit an existing movie
   const editMovie = async () => {
-    // Validate inputs
     if (!editMovieData.movieId) {
       alert("Please select a movie.");
-      console.error("Validation failed: Missing Movie ID");
       return;
     }
     if (!editMovieData.title.trim()) {
       alert("Please add a title.");
-      console.error("Validation failed: Missing title");
       return;
     }
     if (!editMovieData.genre.trim()) {
       alert("Please add a genre.");
-      console.error("Validation failed: Missing genre");
       return;
     }
     if (!editMovieData.description.trim()) {
       alert("Please add a description.");
-      console.error("Validation failed: Missing description");
       return;
     }
     if (editMovieData.rating === "") {
       alert("Please select a rating.");
-      console.error("Validation failed: Missing rating");
       return;
     }
 
     try {
       const movieId = Number(editMovieData.movieId);
+      const newMovieRating = ratingMap[editMovieData.rating];
 
-      const movieData = {
-        movieId: movieId,
-        title: editMovieData.title,
-        genre: editMovieData.genre,
-        description: editMovieData.description,
-        rating: Number(editMovieData.rating),
+      if (!newMovieRating) {
+        alert("Invalid rating selected.");
+        return;
+      }
+
+      const requestData = {
+        oldMovie: {
+          movieId: movieId,
+          title: "",
+          genre: "",
+          description: "",
+          rating: "G"
+        },
+        newMovie: {
+          movieId: movieId,
+          title: editMovieData.title.trim(),
+          genre: editMovieData.genre.trim(),
+          description: editMovieData.description.trim(),
+          rating: newMovieRating
+        }
       };
 
-      console.log("Request URL:", `http://localhost:5190/api/Management/EditMovie/${movieId}`);
-      console.log("Request Body:", JSON.stringify(movieData));
+      console.log("EditMovie Request Data:", requestData);
 
-      await fetchData(
-        `http://localhost:5190/api/Management/EditMovie/${movieId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(movieData),
-        }
-      );
-      alert("Movie updated successfully!");
-      setEditMovieData({
-        movieId: "",
-        title: "",
-        genre: "",
-        description: "",
-        rating: "",
+      const response = await fetch("http://localhost:5190/api/Management/EditMovie", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
       });
-      // Refresh the movie list to reflect changes
-      fetchMovies();
+
+      const data = await response.json();
+      if (response.ok) {
+        alert(data.Message || "Movie edited successfully!");
+        setEditMovieData({
+          movieId: "",
+          title: "",
+          genre: "",
+          description: "",
+          rating: "",
+        });
+        fetchMovies();
+      } else {
+        alert(data.Message || "Failed to edit movie.");
+      }
     } catch (err) {
-      console.error("Error editing movie:", err);
+      console.error("Error editing movie:", err.message);
       alert("Failed to edit movie. Please try again.");
     }
   };
 
   // Add a showtime
   const addShowTime = async () => {
-    // Validate inputs
     if (!showTime.movieId) {
       alert("Please select a movie.");
-      console.error("Validation failed: Missing Movie ID");
       return;
     }
     if (!showTime.viewingTime.trim()) {
       alert("Please provide a Viewing Time.");
-      console.error("Validation failed: Missing Viewing Time");
       return;
     }
-    // if (showTime.status === "") {
-    //   alert("Please select a Status.");
-    //   console.error("Validation failed: Missing Status");
-    //   return;
-    // }
 
     try {
       const movieId = Number(showTime.movieId);
-      //const status = Number(showTime.status);
-
       const showTimeData = {
         movieId: movieId,
         viewingTime: showTime.viewingTime,
@@ -369,7 +363,6 @@ const Management = () => {
       });
       alert("Showtime added successfully!");
       setShowTime({ movieId: "", viewingTime: "" });
-      // Optionally, refresh showtimes if displayed elsewhere
     } catch (err) {
       console.error("Error adding showtime:", err);
       alert("Failed to add showtime. Please try again.");
@@ -378,17 +371,14 @@ const Management = () => {
 
   // Remove movie
   const removeMovie = async () => {
-    // Validate input
     if (!removeMovieId) {
       alert("Please select a movie.");
-      console.error("Validation failed: Missing Movie ID");
       return;
     }
 
     const movieId = Number(removeMovieId);
     if (isNaN(movieId)) {
       alert("Invalid Movie ID.");
-      console.error("Validation failed: Movie ID is not a number");
       return;
     }
 
@@ -407,7 +397,6 @@ const Management = () => {
 
       alert("Movie removed successfully!");
       setRemoveMovieId("");
-      // Refresh the movie list to update the dropdowns
       fetchMovies();
     } catch (err) {
       console.error("Error removing movie:", err);
@@ -421,10 +410,8 @@ const Management = () => {
 
   // Add Tickets to Movie
   const addTicketsToMovie = async () => {
-    // Validate inputs
     if (!ticketData.movieId) {
       alert("Please select a movie.");
-      console.error("Validation failed: Missing Movie ID");
       return;
     }
     if (
@@ -433,7 +420,6 @@ const Management = () => {
       Number(ticketData.numberOfTickets) <= 0
     ) {
       alert("Please provide a valid number of tickets.");
-      console.error("Validation failed: Invalid number of tickets");
       return;
     }
 
@@ -441,16 +427,13 @@ const Management = () => {
     const movieId = Number(ticketData.movieId);
 
     try {
-      // Check if the selected movie has showtimes
       const showtimesExist = await hasShowtimes(movieId);
 
       if (!showtimesExist) {
         alert("No showtimes associated with this movie. Please add a showtime first.");
-        console.error("No showtimes found for Movie ID:", movieId);
         return;
       }
 
-      // Proceed to add tickets
       const requestData = {
         movie: {
           movieId: movieId,
@@ -462,7 +445,7 @@ const Management = () => {
         numberOfTickets: numberOfTickets,
       };
 
-      console.log("AddTicketsToMovie Request Data:", requestData); // Log the request data
+      console.log("AddTicketsToMovie Request Data:", requestData);
 
       const response = await fetch("http://localhost:5190/api/Management/AddTicketsToMovie", {
         method: "POST",
@@ -475,16 +458,13 @@ const Management = () => {
       if (response.ok) {
         const data = await response.json();
         alert(data.Message || "Tickets added successfully!");
-        // Reset the form
         setTicketData({ movieId: "", numberOfTickets: "" });
         setAvailableTickets(0);
-        // Optionally, refresh tickets
       } else {
         const errorData = await response.json();
-        console.log("Error response data:", errorData); // Log the error response
+        console.log("Error response data:", errorData);
 
         if (errorData.errors) {
-          // Extract and display validation errors
           const validationErrors = Object.values(errorData.errors)
             .flat()
             .join("\n");
@@ -492,7 +472,6 @@ const Management = () => {
         } else {
           alert(errorData.Message || "Failed to add tickets.");
         }
-        console.error("API call failed:", errorData.Message);
       }
     } catch (err) {
       console.error("Error adding tickets:", err.message);
@@ -501,10 +480,8 @@ const Management = () => {
   };
 
   const removeTicketsFromMovie = async () => {
-    // Validate inputs
     if (!removeTicketData.movieId) {
       alert("Please select a movie.");
-      console.error("Validation failed: Missing Movie ID");
       return;
     }
     if (
@@ -513,43 +490,38 @@ const Management = () => {
       Number(removeTicketData.numberOfTickets) <= 0
     ) {
       alert("Please provide a valid number of tickets to remove.");
-      console.error("Validation failed: Invalid number of tickets");
       return;
     }
-  
+
     const numberOfTickets = Number(removeTicketData.numberOfTickets);
     const movieId = Number(removeTicketData.movieId);
-  
+
     try {
-      // Fetch available tickets before attempting to remove
       const tickets = await fetchAvailableTickets(movieId);
-  
+
       if (tickets === 0) {
         alert("No available tickets to remove for this movie.");
-        console.error("No available tickets for Movie ID:", movieId);
         return;
       }
-  
+
       if (numberOfTickets > tickets) {
         alert(`Cannot remove ${numberOfTickets} tickets. Only ${tickets} tickets are available.`);
-        console.error(`Attempted to remove ${numberOfTickets} tickets, but only ${tickets} are available.`);
         return;
       }
-  
-      // Construct the request data
+
       const requestData = {
         movie: {
           movieId: movieId,
           title: "",
           genre: "",
           description: "",
-          rating: "G" // Provide a valid enum value to avoid parsing errors
+          rating: "G"
         },
         numberOfTickets: numberOfTickets,
       };
-  
-      console.log("RemoveTicketsFromMovie Request Data:", requestData); // Log the request data for debugging
-  
+
+      console.log("RemoveTicketsFromMovie Request Data:", requestData);
+
       const response = await fetch("http://localhost:5190/api/Management/RemoveTicketsFromMovie", {
         method: "POST",
         headers: {
@@ -557,20 +529,17 @@ const Management = () => {
         },
         body: JSON.stringify(requestData),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         alert(data.Message || "Tickets removed successfully!");
-        // Reset the form
         setRemoveTicketData({ movieId: "", numberOfTickets: "" });
         setAvailableTickets(0);
-        // Optionally, refresh any ticket counts or lists
       } else {
         const errorData = await response.json();
-        console.log("Error response data:", errorData); // Log the error response
-  
+        console.log("Error response data:", errorData);
+
         if (errorData.errors) {
-          // Extract and display validation errors
           const validationErrors = Object.values(errorData.errors)
             .flat()
             .join("\n");
@@ -578,65 +547,53 @@ const Management = () => {
         } else {
           alert(errorData.Message || "Failed to remove tickets.");
         }
-        console.error("API call failed:", errorData.Message);
       }
     } catch (err) {
       console.error("Error removing tickets:", err.message);
       alert("Failed to remove tickets. Please try again.");
     }
   };
-  
 
-  
   // Edit Tickets
   const editTickets = async () => {
-    // Validate inputs
     if (!editTicketData.movieId) {
       alert("Please select a movie.");
-      console.error("Validation failed: Missing Movie ID");
       return;
     }
     if (!editTicketData.showTimeId) {
       alert("Please select a showtime.");
-      console.error("Validation failed: Missing Showtime ID");
       return;
     }
     if (editTicketData.price === "") {
       alert("Please enter a valid price.");
-      console.error("Validation failed: Missing price");
       return;
     }
-  
+
     const price = parseFloat(editTicketData.price);
     if (isNaN(price) || price < 0) {
       alert("Please enter a valid price.");
-      console.error("Validation failed: Invalid price");
       return;
     }
-  
+
     const movieId = Number(editTicketData.movieId);
     const showTimeId = Number(editTicketData.showTimeId);
     const availability = editTicketData.availability;
-  
+
     try {
-      // Check if there are any tickets available for this movie and showtime
       const ticketsAvailable = await fetchAvailableTickets(movieId);
-  
-      // If no tickets are available, do not proceed with the edit
+
       if (ticketsAvailable === 0) {
         alert("No tickets available to edit for this movie and showtime. Add tickets first.");
-        console.error("No tickets available for movieId:", movieId, "and showTimeId:", showTimeId);
-        return; // Stop execution here
+        return;
       }
-  
-      // Construct the requestData according to the backend format
+
       const requestData = {
         movie: {
           movieId: movieId,
           title: "",
           genre: "",
           description: "",
-          rating: "G" // A valid enum value
+          rating: "G"
         },
         newTicket: {
           ticketId: 0,
@@ -644,11 +601,10 @@ const Management = () => {
           price: price,
           availability: availability,
           cartId: 0,
-          // Provide a default viewingTime and nested movie data
           showTime: {
             showTimeId: showTimeId,
             movieId: movieId,
-            viewingTime: "2024-12-10T00:42:49.259Z", // A placeholder datetime; adjust if needed
+            viewingTime: "2024-12-10T00:42:49.259Z", 
             movie: {
               movieId: movieId,
               title: "",
@@ -657,7 +613,6 @@ const Management = () => {
               rating: "G"
             }
           },
-          // Provide default cart data as required by the backend
           cart: {
             cartId: 0,
             total: 0,
@@ -678,9 +633,9 @@ const Management = () => {
           }
         }
       };
-  
-      console.log("EditTickets Request Data:", requestData); // For debugging
-  
+
+      console.log("EditTickets Request Data:", requestData);
+
       const response = await fetch("http://localhost:5190/api/Management/EditTickets", {
         method: "POST",
         headers: {
@@ -688,11 +643,10 @@ const Management = () => {
         },
         body: JSON.stringify(requestData),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         alert(data.Message || "Tickets updated successfully!");
-        // Reset the form
         setEditTicketData({
           movieId: "",
           showTimeId: "",
@@ -713,15 +667,6 @@ const Management = () => {
         alert("Failed to edit tickets. Please try again.");
       }
     }
-  };
-  
-  
-
-
-  // Helper function to get movie title by ID
-  const getMovieTitle = (movieId) => {
-    const movie = movieList.find((m) => m.movieId === movieId);
-    return movie ? movie.title : "Unknown Movie";
   };
 
   return (
@@ -788,28 +733,14 @@ const Management = () => {
             value={editMovieData.movieId}
             onChange={(e) => {
               const selectedMovieId = e.target.value;
-              setEditMovieData({ ...editMovieData, movieId: selectedMovieId });
-              // Find the selected movie and populate the form fields
-              const selectedMovie = movieList.find(
-                (movie) => movie.movieId.toString() === selectedMovieId
-              );
-              if (selectedMovie) {
-                setEditMovieData({
-                  movieId: selectedMovie.movieId.toString(),
-                  title: selectedMovie.title,
-                  genre: selectedMovie.genre || "",
-                  description: selectedMovie.description || "",
-                  rating: selectedMovie.rating.toString(),
-                });
-              } else {
-                setEditMovieData({
-                  movieId: "",
-                  title: "",
-                  genre: "",
-                  description: "",
-                  rating: "",
-                });
-              }
+              // Do not populate old values; leave them blank
+              setEditMovieData({
+                movieId: selectedMovieId,
+                title: "",
+                genre: "",
+                description: "",
+                rating: "",
+              });
             }}
           >
             <option value="">Select Movie</option>
@@ -909,19 +840,6 @@ const Management = () => {
             }
           />
 
-          {/* <label htmlFor="showtime-status">Status:</label>
-          <select
-            id="showtime-status"
-            value={showTime.status}
-            onChange={(e) =>
-              setShowTime({ ...showTime, status: e.target.value })
-            }
-          >
-            <option value="">Select Status</option>
-            <option value="1">Available</option>
-            <option value="0">Not Available</option>
-          </select> */}
-
           <button type="button" onClick={addShowTime}>
             Add Showtime
           </button>
@@ -960,11 +878,11 @@ const Management = () => {
         <h2>Add Tickets to Movie</h2>
         <form>
           <label htmlFor="add-ticket-movie">Select Movie:</label>
-            <select
+          <select
             id="add-ticket-movie"
             value={ticketData.movieId}
             onChange={async (e) => {
-              const selectedMovieId = e.target.value; // Ensure this is just the ID
+              const selectedMovieId = e.target.value; 
               setTicketData({ ...ticketData, movieId: selectedMovieId });
 
               if (selectedMovieId) {
@@ -1065,104 +983,81 @@ const Management = () => {
       </section>
 
       {/* Edit Tickets */}
-    <section>
-    <h2>Edit Tickets</h2>
-    <form>
-      <label htmlFor="edit-ticket-movie">Select Movie:</label>
-      <select
-        id="edit-ticket-movie"
-        value={editTicketData.movieId}
-        onChange={async (e) => {
-          const selectedMovieId = e.target.value;
-          setEditTicketData({ ...editTicketData, movieId: selectedMovieId, showTimeId: "" });
+      <section>
+        <h2>Edit Tickets</h2>
+        <form>
+          <label htmlFor="edit-ticket-movie">Select Movie:</label>
+          <select
+            id="edit-ticket-movie"
+            value={editTicketData.movieId}
+            onChange={(e) => {
+              const selectedMovieId = e.target.value;
+              setEditTicketData({ ...editTicketData, movieId: selectedMovieId, showTimeId: "" });
+              fetchShowTimesForEdit(selectedMovieId);
+            }}
+          >
+            <option value="">Select Movie</option>
+            {movieList && movieList.length > 0 ? (
+              movieList.map((movie) => (
+                <option key={movie.movieId} value={movie.movieId}>
+                  {movie.title}
+                </option>
+              ))
+            ) : (
+              <option value="">No movies available</option>
+            )}
+          </select>
 
-          // Fetch showtimes for the selected movie
-          await fetchShowTimesForEdit(selectedMovieId);
+          <label htmlFor="edit-showtime">Select Showtime:</label>
+          <select
+            id="edit-showtime"
+            value={editTicketData.showTimeId}
+            onChange={(e) => {
+              const selectedShowTimeId = e.target.value;
+              setEditTicketData({ ...editTicketData, showTimeId: selectedShowTimeId });
+            }}
+            disabled={!editTicketData.movieId || showTimesForEdit.length === 0}
+          >
+            <option value="">Select Showtime</option>
+            {showTimesForEdit.map((showTime) => (
+              <option key={showTime.showTimeId} value={showTime.showTimeId}>
+                {new Date(showTime.viewingTime).toLocaleString()}
+              </option>
+            ))}
+          </select>
 
-          // If a movie is chosen, fetch the number of available tickets for it
-          // Initially set availableTickets = 0 until a showtime is selected and tickets fetched
-          setAvailableTickets(0);
-        }}
-      >
-        <option value="">Select Movie</option>
-        {movieList && movieList.length > 0 ? (
-          movieList.map((movie) => (
-            <option key={movie.movieId} value={movie.movieId}>
-              {movie.title}
-            </option>
-          ))
-        ) : (
-          <option value="">No movies available</option>
-        )}
-      </select>
+          <label htmlFor="edit-price">New Price:</label>
+          <input
+            type="number"
+            id="edit-price"
+            placeholder="New Price"
+            value={editTicketData.price}
+            onChange={(e) =>
+              setEditTicketData({ ...editTicketData, price: e.target.value })
+            }
+            min="0"
+            step="0.01"
+            disabled={availableTickets === 0}
+          />
 
-      <label htmlFor="edit-showtime">Select Showtime:</label>
-      <select
-        id="edit-showtime"
-        value={editTicketData.showTimeId}
-        onChange={async (e) => {
-          const selectedShowTimeId = e.target.value;
-          setEditTicketData({ ...editTicketData, showTimeId: selectedShowTimeId });
+          <div className="checkbox-container">
+            <input
+              type="checkbox"
+              id="availability"
+              checked={editTicketData.availability}
+              onChange={(e) =>
+                setEditTicketData({ ...editTicketData, availability: e.target.checked })
+              }
+              disabled={availableTickets === 0}
+            />
+            <label htmlFor="availability">Available</label>
+          </div>
 
-          // If a showtime is selected, fetch tickets and update availableTickets
-          if (selectedShowTimeId) {
-            const tickets = await fetchAvailableTickets(Number(editTicketData.movieId));
-            setAvailableTickets(tickets);
-          } else {
-            setAvailableTickets(0);
-          }
-        }}
-        disabled={!editTicketData.movieId || showTimesForEdit.length === 0}
-      >
-        <option value="">Select Showtime</option>
-        {showTimesForEdit.map((showTime) => (
-          <option key={showTime.showTimeId} value={showTime.showTimeId}>
-            {new Date(showTime.viewingTime).toLocaleString()}
-          </option>
-        ))}
-      </select>
-
-      {/* Display Available Tickets if a showtime is selected */}
-      {editTicketData.showTimeId && (
-        <p>Available Tickets: {availableTickets}</p>
-      )}
-
-      <label htmlFor="edit-price">New Price:</label>
-      <input
-        type="number"
-        id="edit-price"
-        placeholder="New Price"
-        value={editTicketData.price}
-        onChange={(e) =>
-          setEditTicketData({ ...editTicketData, price: e.target.value })
-        }
-        min="0"
-        step="0.01"
-        disabled={availableTickets === 0} // Disable if no tickets available
-      />
-
-      <div className="checkbox-container">
-        <input
-          type="checkbox"
-          id="availability"
-          checked={editTicketData.availability}
-          onChange={(e) =>
-            setEditTicketData({ ...editTicketData, availability: e.target.checked })
-          }
-          disabled={availableTickets === 0} // Disable if no tickets available
-        />
-        <label htmlFor="availability">Available</label>
-      </div>
-
-      <button
-        type="button"
-        onClick={editTickets}
-        disabled={availableTickets === 0} // Disable button if no tickets available
-      >
-        Edit Tickets
-      </button>
-    </form>
-  </section>
+          <button type="button" onClick={editTickets} disabled={availableTickets === 0}>
+            Edit Tickets
+          </button>
+        </form>
+      </section>
     </div>
   );
 };

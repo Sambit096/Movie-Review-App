@@ -113,40 +113,45 @@ namespace MovieReviewApp.Controllers
             }
         }
 
-        [HttpPut("EditMovie")]
+    [HttpPut("EditMovie")]
     public async Task<IActionResult> EditMovie([FromBody] EditMovieRequest request)
     {
         if (!ModelState.IsValid)
         {
+            // Returns JSON with `errors`
             return BadRequest(ModelState);
         }
 
         try
         {
-            // Validate that the old movie exists
             var oldMovieExists = await _movieService.GetMovieById(request.OldMovie.MovieId);
             if (oldMovieExists == null)
             {
-                return NotFound($"Movie with ID {request.OldMovie.MovieId} not found.");
+                // JSON NotFound
+                return NotFound(new { Message = $"Movie with ID {request.OldMovie.MovieId} not found." });
             }
 
-            // Edit movie
             var success = await _movieService.EditMovie(request.OldMovie, request.NewMovie);
             if (success)
             {
-                return Ok("Movie edited successfully.");
+                // JSON success response
+                return Ok(new { Message = "Movie edited successfully." });
             }
             else
             {
-                return StatusCode(500, "Failed to edit movie.");
+                // JSON error response
+                return StatusCode(500, new { Message = "Failed to edit movie." });
             }
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Exception in EditMovie.");
-            return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            // JSON error response for exceptions
+            return StatusCode(500, new { Message = $"Internal Server Error: {ex.Message}" });
         }
     }
+
+
 
         // Add Showtime
         [HttpPost(nameof(AddShowTime))]
