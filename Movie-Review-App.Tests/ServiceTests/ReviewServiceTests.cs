@@ -49,7 +49,7 @@ namespace MovieReviewApp.Tests.Services {
             await _dbContext.SaveChangesAsync();
 
             // Act
-            var result = await _reviewService.GetReviews(50);
+            var result = await _reviewService.GetReviews(movie);
 
             // Assert
             Assert.NotNull(result);
@@ -60,7 +60,7 @@ namespace MovieReviewApp.Tests.Services {
         [Test]
         public async Task GetReviews_ShouldReturnEmptyList_WhenNoReviewsExist() {
             // Act
-            var result = await _reviewService.GetReviews(200); // No reviews for movie with Id 200
+            var result = await _reviewService.GetReviews(new Movie { MovieId = 373, Title = "Test"}); // No reviews for movie with Id 200
 
             // Assert
             Assert.NotNull(result);

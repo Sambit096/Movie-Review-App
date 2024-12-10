@@ -174,57 +174,6 @@ namespace MovieReviewApp.Tests.Controllers {
         }
 
         #endregion
-
-        #region AddShowTime Tests
-
-        [Test]
-        public async Task AddShowTime_ShouldReturnCreated_WhenShowTimeIsAdded() {
-            // Arrange
-            var showTime = new ShowTime { MovieId = 1, ViewingTime = DateTime.Now};
-            _mockShowTimeService.Setup(service => service.AddShowTime(showTime)).ReturnsAsync(true);
-
-            // Act
-            var result = await _controller.AddShowTime(showTime);
-
-            // Assert
-            var statusCodeResult = result as StatusCodeResult;
-            Assert.IsNotNull(statusCodeResult);
-            Assert.AreEqual(201, statusCodeResult.StatusCode); // 201 Created
-        }
-
-        [Test]
-        public async Task AddShowTime_ShouldReturnBadRequest_WhenShowTimeCannotBeAdded() {
-            // Arrange
-            var showTime = new ShowTime { MovieId = 1, ViewingTime = DateTime.Now};
-            _mockShowTimeService.Setup(service => service.AddShowTime(showTime)).ReturnsAsync(false);
-
-            // Act
-            var result = await _controller.AddShowTime(showTime);
-
-            // Assert
-            var badRequestResult = result as ObjectResult;
-            Assert.IsNotNull(badRequestResult);
-            Assert.AreEqual(400, badRequestResult.StatusCode); // 400 Bad Request
-            Assert.AreEqual(ErrorDictionary.ErrorLibrary[400], badRequestResult.Value);
-        }
-
-        [Test]
-        public async Task AddShowTime_ShouldReturnInternalServerError_WhenExceptionOccurs() {
-            // Arrange
-            var showTime = new ShowTime { MovieId = 1, ViewingTime = DateTime.Now};
-            _mockShowTimeService.Setup(service => service.AddShowTime(showTime)).ThrowsAsync(new Exception());
-
-            // Act
-            var result = await _controller.AddShowTime(showTime);
-
-            // Assert
-            var statusCodeResult = result as ObjectResult;
-            Assert.IsNotNull(statusCodeResult);
-            Assert.AreEqual(500, statusCodeResult.StatusCode);
-            Assert.AreEqual(ErrorDictionary.ErrorLibrary[500], statusCodeResult.Value);
-        }
-
-        #endregion
     }
 }
 

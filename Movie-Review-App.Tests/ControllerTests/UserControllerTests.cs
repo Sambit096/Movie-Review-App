@@ -238,7 +238,7 @@ namespace MovieReviewApp.Tests.Controllers {
         [Test]
         public async Task AddUser_ReturnsCreated_WhenUserIsAdded() {
             // Arrange
-            var userDTO = new UserDTO { Email = "user1@example.com", Username = "user1", Password = "password" };
+            var userDTO = new UserDTO { Email = "user1@example.com", Username = "user1", Password = "password", FirstName = "Test", LastName = "Test" };
             _mockUserService.Setup(service => service.AddUser(It.IsAny<User>())).Returns(Task.CompletedTask);
 
             // Act
@@ -255,7 +255,7 @@ namespace MovieReviewApp.Tests.Controllers {
             // Arrange
             _userController.ModelState.AddModelError("Email", "Required");
 
-            var userDTO = new UserDTO { Email = "user1@example.com", Username = "user1", Password = "password" };
+            var userDTO = new UserDTO { Email = "user1@example.com", Username = "user1", Password = "password", FirstName = "Test", LastName = "Test" };
 
             // Act
             var result = await _userController.AddUser(userDTO);

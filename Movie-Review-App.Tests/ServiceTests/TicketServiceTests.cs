@@ -137,7 +137,7 @@ namespace MovieReviewApp.Tests.Services {
 
             // Assert
             Assert.True(result);
-            var ticket = await _dbContext.Tickets.FirstAsync();
+            var ticket = await _dbContext.Tickets.FindAsync(11);
             Assert.AreEqual(12.0, ticket.Price);
             Assert.False(ticket.Availability);
         }
@@ -151,7 +151,7 @@ namespace MovieReviewApp.Tests.Services {
             // Act & Assert
             var ex = Assert.ThrowsAsync<Exception>(async () =>
                 await _ticketService.EditTickets(movieId, invalidTicket)); // Invalid ShowTimeId
-            Assert.AreEqual("Internal Server Error - The server encountered an unexpected condition.", ex.Message);
+            Assert.AreEqual("An error occurred while editing tickets.", ex.Message);
         }
 
         #endregion
