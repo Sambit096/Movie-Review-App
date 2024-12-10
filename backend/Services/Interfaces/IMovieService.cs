@@ -5,6 +5,6 @@ namespace MovieReviewApp.Interfaces {
         public Task<Movie> GetMovieById(int id);
         public Task<bool> AddMovie(Movie movie);
         public Task<bool> RemoveMovie(Movie movie);
-        public Task<bool> EditMovie(Movie movie);
+        Task<bool> EditMovie(Movie oldMovie, Movie newMovie);
     }
 }

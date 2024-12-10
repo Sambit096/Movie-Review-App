@@ -113,22 +113,40 @@ namespace MovieReviewApp.Controllers
             }
         }
 
-        // Edit Movie
-        [HttpPut("EditMovie/{movieId}")]
-        public async Task<IActionResult> EditMovie(int movieId, [FromBody] Movie movie)
+        [HttpPut("EditMovie")]
+    public async Task<IActionResult> EditMovie([FromBody] EditMovieRequest request)
+    {
+        if (!ModelState.IsValid)
         {
-            try
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            // Validate that the old movie exists
+            var oldMovieExists = await _movieService.GetMovieById(request.OldMovie.MovieId);
+            if (oldMovieExists == null)
             {
-                var result = await _movieService.EditMovie(movie);
-                return result
-                    ? NoContent()
-                    : StatusCode(404, ErrorDictionary.ErrorLibrary[404]);
+                return NotFound($"Movie with ID {request.OldMovie.MovieId} not found.");
             }
-            catch (Exception)
+
+            // Edit movie
+            var success = await _movieService.EditMovie(request.OldMovie, request.NewMovie);
+            if (success)
             {
-                return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+                return Ok("Movie edited successfully.");
+            }
+            else
+            {
+                return StatusCode(500, "Failed to edit movie.");
             }
         }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Exception in EditMovie.");
+            return StatusCode(500, $"Internal Server Error: {ex.Message}");
+        }
+    }
 
         // Add Showtime
         [HttpPost(nameof(AddShowTime))]
@@ -151,59 +169,46 @@ namespace MovieReviewApp.Controllers
         // Add Tickets to Movie
     // Add Tickets to Movie
     [HttpPost("AddTicketsToMovie")]
-    public async Task<IActionResult> AddTicketsToMovie([FromBody] AddTicketsRequest request)
+    public async Task<IActionResult> AddTicketsToMovie([FromBody] AddTicketsToMovieRequest request)
     {
-        if (request == null)
+        if (!ModelState.IsValid)
         {
-            return BadRequest("Request cannot be null.");
-        }
-
-        if (request.MovieId <= 0)
-        {
-            return BadRequest("Invalid MovieId.");
-        }
-
-        if (request.NumberOfTickets <= 0)
-        {
-            return BadRequest("Number of tickets must be greater than zero.");
+            return BadRequest(ModelState);
         }
 
         try
         {
-            // Attempt to retrieve the movie by its ID
-            var movieExists = await _movieService.GetMovieById(request.MovieId);
-
-            // If the movie does not exist, return a 404 Not Found response
+            // Validate that the movie exists
+            var movieExists = await _movieService.GetMovieById(request.Movie.MovieId);
             if (movieExists == null)
             {
-                return NotFound($"Movie with ID {request.MovieId} not found.");
+                return NotFound($"Movie with ID {request.Movie.MovieId} not found.");
             }
 
-            // Attempt to add tickets to the movie via the TicketService
-            var success = await _ticketService.AddTicketsToMovie(request.MovieId, request.NumberOfTickets);
-
+            // Add tickets
+            var success = await _ticketService.AddTicketsToMovie(request.Movie.MovieId, request.NumberOfTickets);
             if (success)
             {
-                return Ok("Tickets added successfully to all showtimes of the selected movie.");
+                return Ok(new { Message = "Tickets added successfully!" });
             }
             else
             {
-                return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+                return StatusCode(500, "Failed to add tickets.");
             }
         }
         catch (KeyNotFoundException knfEx)
         {
-            // Handle cases where related entities might not be found
+            _logger.LogError(knfEx, "KeyNotFoundException in AddTicketsToMovie.");
             return NotFound(knfEx.Message);
         }
         catch (DbUpdateException dbEx)
         {
-            // Specifically catch database update exceptions to provide more context
+            _logger.LogError(dbEx, "DbUpdateException in AddTicketsToMovie.");
             return StatusCode(500, $"Database Update Error: {dbEx.InnerException?.Message ?? dbEx.Message}");
         }
         catch (Exception ex)
         {
-            // Handle any other unexpected exceptions
+            _logger.LogError(ex, "Exception in AddTicketsToMovie.");
             return StatusCode(500, $"Internal Server Error: {ex.Message}");
         }
     }
@@ -213,130 +218,98 @@ namespace MovieReviewApp.Controllers
     [HttpPost("RemoveTicketsFromMovie")]
     public async Task<IActionResult> RemoveTicketsFromMovie([FromBody] RemoveTicketsRequest request)
     {
-        if (request == null)
+        if (!ModelState.IsValid)
         {
-            return BadRequest("Request cannot be null.");
-        }
-
-        if (request.MovieId <= 0)
-        {
-            return BadRequest("Invalid MovieId.");
-        }
-
-        if (request.NumberOfTickets <= 0)
-        {
-            return BadRequest("Number of tickets must be greater than zero.");
-        }
-
-        var movieExists = await _movieService.GetMovieById(request.MovieId);
-        if (movieExists == null)
-        {
-            return NotFound($"Movie with ID {request.MovieId} not found.");
+            // Returns JSON containing 'errors' by default
+            return BadRequest(ModelState);
         }
 
         try
         {
-            var success = await _ticketService.RemoveTicketsFromMovie(request.MovieId, request.NumberOfTickets);
+            // Validate that the movie exists
+            var movieExists = await _movieService.GetMovieById(request.Movie.MovieId);
+            if (movieExists == null)
+            {
+                // Return JSON instead of plain text
+                return NotFound(new { Message = $"Movie with ID {request.Movie.MovieId} not found." });
+            }
+
+            // Remove tickets
+            var success = await _ticketService.RemoveTicketsFromMovie(request.Movie.MovieId, request.NumberOfTickets);
             if (success)
             {
-                return Ok($"Successfully removed {request.NumberOfTickets} tickets from all showtimes of movie ID {request.MovieId}.");
+                // Return JSON on success
+                return Ok(new { Message = $"Successfully removed {request.NumberOfTickets} tickets." });
             }
             else
             {
-                return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+                // Return JSON on error
+                return StatusCode(500, new { Message = "Failed to remove tickets." });
             }
         }
         catch (InvalidOperationException ioeEx)
         {
-            return BadRequest(ioeEx.Message);
+            // Return JSON
+            return BadRequest(new { Message = ioeEx.Message });
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
+            // Return JSON
+            return StatusCode(500, new { Message = $"Internal Server Error: {ex.Message}" });
         }
     }
 
     [HttpPost("EditTickets")]
-        public async Task<IActionResult> EditTickets([FromBody] EditTicketsRequest request)
+    public async Task<IActionResult> EditTickets([FromBody] EditTicketsRequest request)
+    {
+        if (!ModelState.IsValid)
         {
-            // Validate the request object
-            if (request == null)
+            return BadRequest(ModelState); // Returns JSON with 'errors'
+        }
+
+        try
+        {
+            // Validate that the movie exists
+            var movieExists = await _movieService.GetMovieById(request.Movie.MovieId);
+            if (movieExists == null)
             {
-                return BadRequest("Request cannot be null.");
+                return NotFound(new { Message = $"Movie with ID {request.Movie.MovieId} not found." });
             }
 
-            if (request.MovieId <= 0)
+            // Validate that the new showtime exists and belongs to the movie
+            var newShowTime = await _showTimeService.GetShowTimeById(request.NewTicket.ShowTimeId);
+            if (newShowTime == null || newShowTime.MovieId != request.Movie.MovieId)
             {
-                return BadRequest("Invalid MovieId.");
+                return BadRequest(new { Message = $"ShowTime with ID {request.NewTicket.ShowTimeId} does not exist for Movie ID {request.Movie.MovieId}." });
             }
 
-            if (request.Price < 0)
+            // Edit tickets
+            var success = await _ticketService.EditTickets(request.Movie.MovieId, request.NewTicket);
+            if (success)
             {
-                return BadRequest("Price cannot be negative.");
+                return Ok(new { Message = "Tickets updated successfully." });
             }
-
-            if (request.ShowTimeId <= 0)
+            else
             {
-                return BadRequest("Invalid ShowTimeId.");
-            }
-
-            try
-            {
-                // Attempt to retrieve the movie by its ID
-                var movieExists = await _movieService.GetMovieById(request.MovieId);
-
-                // If the movie does not exist, return a 404 Not Found response
-                if (movieExists == null)
-                {
-                    return NotFound($"Movie with ID {request.MovieId} not found.");
-                }
-
-                // Attempt to retrieve the new showtime by its ID
-                var newShowTime = await _showTimeService.GetShowTimeById(request.ShowTimeId);
-
-                // Validate that the new showtime exists and is associated with the specified movie
-                if (newShowTime == null || newShowTime.MovieId != request.MovieId)
-                {
-                    return BadRequest($"ShowTime with ID {request.ShowTimeId} does not exist for Movie ID {request.MovieId}.");
-                }
-
-                // Create a new Ticket object with the updated data
-                var updatedTicketData = new Ticket
-                {
-                    ShowTimeId = request.ShowTimeId,
-                    Price = (double)request.Price,
-                    Availability = request.Availability
-                    
-                };
-
-                // Attempt to edit tickets via the TicketService
-                var success = await _ticketService.EditTickets(request.MovieId, updatedTicketData);
-
-                if (success)
-                {
-                    return Ok("Tickets updated successfully.");
-                }
-                else
-                {
-                    return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
-                }
-            }
-            catch (DbUpdateException dbEx)
-            {
-                // Handle database update exceptions, such as foreign key conflicts
-                return StatusCode(500, $"Database Update Error: {dbEx.InnerException?.Message ?? dbEx.Message}");
-            }
-            catch (KeyNotFoundException knfEx)
-            {
-                // Handle cases where related entities might not be found
-                return NotFound(knfEx.Message);
-            }
-            catch (Exception ex)
-            {
-                // Handle any other unexpected exceptions
-                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+                return StatusCode(500, new { Message = "Failed to edit tickets." });
             }
         }
+        catch (DbUpdateException dbEx)
+        {
+            _logger.LogError(dbEx, "DbUpdateException in EditTickets.");
+            return StatusCode(500, new { Message = $"Database Update Error: {dbEx.InnerException?.Message ?? dbEx.Message}" });
+        }
+        catch (KeyNotFoundException knfEx)
+        {
+            _logger.LogError(knfEx, "KeyNotFoundException in EditTickets.");
+            return NotFound(new { Message = knfEx.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Exception in EditTickets.");
+            return StatusCode(500, new { Message = $"Internal Server Error: {ex.Message}" });
+        }
+    }
 
 
         [HttpGet("GetAvailableTicketsByMovie/{movieId}")]
@@ -381,9 +354,10 @@ namespace MovieReviewApp.Controllers
         /// <summary>
         /// Request model for adding tickets to a movie.
         /// </summary>
-        public class AddTicketsRequest
+        public class AddTicketsToMovieRequest
         {
-            public int MovieId { get; set; }
+            
+            public Movie Movie { get; set; }
             public int NumberOfTickets { get; set; }
         }
 
@@ -392,8 +366,9 @@ namespace MovieReviewApp.Controllers
         /// </summary>
         public class RemoveTicketsRequest
         {
-            public int MovieId { get; set; }
-            public int NumberOfTickets { get; set; }
+                public Movie Movie { get; set; }
+
+                public int NumberOfTickets { get; set; }
         }
 
         /// <summary>
@@ -401,10 +376,15 @@ namespace MovieReviewApp.Controllers
         /// </summary>
         public class EditTicketsRequest
         {
-            public int MovieId { get; set; }
-            public decimal Price { get; set; }
-            public bool Availability { get; set; }
-            public int ShowTimeId { get; set; }    
+            public Movie Movie { get; set; }
+            public Ticket NewTicket { get; set; }
+        }
+
+        public class EditMovieRequest
+        {
+            
+            public Movie OldMovie { get; set; }
+            public Movie NewMovie { get; set; }
         }
 
         // DTO class for the response

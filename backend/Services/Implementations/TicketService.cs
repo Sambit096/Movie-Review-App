@@ -124,7 +124,7 @@ namespace MovieReviewApp.Services
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unexpected error occurred while adding tickets to Movie ID {MovieId}.", movieId);
-            throw new Exception(ErrorDictionary.ErrorLibrary[500], ex);
+            throw new Exception("An error occurred while adding tickets.", ex);
         }
     }
 
@@ -167,7 +167,6 @@ namespace MovieReviewApp.Services
                     ticket.ShowTimeId = newTicketData.ShowTimeId;
                     ticket.Price = newTicketData.Price;
                     ticket.Availability = newTicketData.Availability;
-                    
                 }
 
                 _dbContext.Tickets.UpdateRange(ticketsToEdit);
@@ -177,9 +176,8 @@ namespace MovieReviewApp.Services
             }
             catch (Exception ex)
             {
-                // Log the exception if logging is implemented
-                // _logger.LogError(ex, "Error editing tickets for MovieId {MovieId}", movieId);
-                throw new Exception(ErrorDictionary.ErrorLibrary[500], ex);
+                _logger.LogError(ex, "Error editing tickets for MovieId {MovieId}.", movieId);
+                throw new Exception("An error occurred while editing tickets.", ex);
             }
         }
 

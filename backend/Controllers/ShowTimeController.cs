@@ -84,26 +84,5 @@ public class ShowTimeController : ControllerBase
         }
     }
 
-    /// <summary>
-    /// Adds a new ShowTime to the database
-    /// </summary>
-    /// <param name="showTime"></param>
-    /// <returns></returns>
-    [HttpPost(nameof(AddShowTime))]
-    public async Task<IActionResult> AddShowTime(ShowTime showTime)
-    {
-        try
-        {
-            var result = await this.showTimeService.AddShowTime(showTime);
-            if (result)
-            {
-                return StatusCode(201); // Created
-            }
-            return StatusCode(400, ErrorDictionary.ErrorLibrary[400]);
-        }
-        catch (Exception)
-        {
-            return StatusCode(500, ErrorDictionary.ErrorLibrary[500]);
-        }
-    }
+    
 }
