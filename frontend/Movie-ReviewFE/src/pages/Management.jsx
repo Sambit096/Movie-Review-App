@@ -556,6 +556,7 @@ const Management = () => {
 
   // Edit Tickets
   const editTickets = async () => {
+    // Validate inputs
     if (!editTicketData.movieId) {
       alert("Please select a movie.");
       return;
@@ -568,25 +569,19 @@ const Management = () => {
       alert("Please enter a valid price.");
       return;
     }
-
+  
     const price = parseFloat(editTicketData.price);
     if (isNaN(price) || price < 0) {
       alert("Please enter a valid price.");
       return;
     }
-
+  
     const movieId = Number(editTicketData.movieId);
     const showTimeId = Number(editTicketData.showTimeId);
     const availability = editTicketData.availability;
-
+  
     try {
-      const ticketsAvailable = await fetchAvailableTickets(movieId);
-
-      if (ticketsAvailable === 0) {
-        alert("No tickets available to edit for this movie and showtime. Add tickets first.");
-        return;
-      }
-
+      // Construct the request data
       const requestData = {
         movie: {
           movieId: movieId,
@@ -604,7 +599,7 @@ const Management = () => {
           showTime: {
             showTimeId: showTimeId,
             movieId: movieId,
-            viewingTime: "2024-12-10T00:42:49.259Z", 
+            viewingTime: "2024-12-10T00:42:49.259Z", // placeholder
             movie: {
               movieId: movieId,
               title: "",
@@ -633,9 +628,9 @@ const Management = () => {
           }
         }
       };
-
+  
       console.log("EditTickets Request Data:", requestData);
-
+  
       const response = await fetch("http://localhost:5190/api/Management/EditTickets", {
         method: "POST",
         headers: {
@@ -643,7 +638,7 @@ const Management = () => {
         },
         body: JSON.stringify(requestData),
       });
-
+  
       if (response.ok) {
         const data = await response.json();
         alert(data.Message || "Tickets updated successfully!");
@@ -668,7 +663,6 @@ const Management = () => {
       }
     }
   };
-
   return (
     <div className="management-container">
       <h1>Management</h1>
@@ -733,7 +727,7 @@ const Management = () => {
             value={editMovieData.movieId}
             onChange={(e) => {
               const selectedMovieId = e.target.value;
-              // Do not populate old values; leave them blank
+              // Only set movieId, leave others blank
               setEditMovieData({
                 movieId: selectedMovieId,
                 title: "",
@@ -984,80 +978,97 @@ const Management = () => {
 
       {/* Edit Tickets */}
       <section>
-        <h2>Edit Tickets</h2>
-        <form>
-          <label htmlFor="edit-ticket-movie">Select Movie:</label>
-          <select
-            id="edit-ticket-movie"
-            value={editTicketData.movieId}
-            onChange={(e) => {
-              const selectedMovieId = e.target.value;
-              setEditTicketData({ ...editTicketData, movieId: selectedMovieId, showTimeId: "" });
-              fetchShowTimesForEdit(selectedMovieId);
-            }}
-          >
-            <option value="">Select Movie</option>
-            {movieList && movieList.length > 0 ? (
-              movieList.map((movie) => (
-                <option key={movie.movieId} value={movie.movieId}>
-                  {movie.title}
-                </option>
-              ))
-            ) : (
-              <option value="">No movies available</option>
-            )}
-          </select>
+  <h2>Edit Tickets</h2>
+  <form>
+    <label htmlFor="edit-ticket-movie">Select Movie:</label>
+    <select
+      id="edit-ticket-movie"
+      value={editTicketData.movieId}
+      onChange={async (e) => {
+        const selectedMovieId = e.target.value;
+        setEditTicketData({
+          ...editTicketData,
+          movieId: selectedMovieId,
+          showTimeId: ""
+        });
 
-          <label htmlFor="edit-showtime">Select Showtime:</label>
-          <select
-            id="edit-showtime"
-            value={editTicketData.showTimeId}
-            onChange={(e) => {
-              const selectedShowTimeId = e.target.value;
-              setEditTicketData({ ...editTicketData, showTimeId: selectedShowTimeId });
-            }}
-            disabled={!editTicketData.movieId || showTimesForEdit.length === 0}
-          >
-            <option value="">Select Showtime</option>
-            {showTimesForEdit.map((showTime) => (
-              <option key={showTime.showTimeId} value={showTime.showTimeId}>
-                {new Date(showTime.viewingTime).toLocaleString()}
-              </option>
-            ))}
-          </select>
+        if (selectedMovieId) {
+          // Check available tickets for the selected movie
+          const tickets = await fetchAvailableTickets(Number(selectedMovieId));
+          if (tickets === 0) {
+            alert("The selected movie has no tickets available. The page will now reload.");
+            window.location.reload();
+            return; // Stop execution here
+          }
 
-          <label htmlFor="edit-price">New Price:</label>
-          <input
-            type="number"
-            id="edit-price"
-            placeholder="New Price"
-            value={editTicketData.price}
-            onChange={(e) =>
-              setEditTicketData({ ...editTicketData, price: e.target.value })
-            }
-            min="0"
-            step="0.01"
-            disabled={availableTickets === 0}
-          />
+          // Fetch showtimes if tickets exist
+          fetchShowTimesForEdit(selectedMovieId);
+        } else {
+          setShowTimesForEdit([]);
+        }
+      }}
+    >
+      <option value="">Select Movie</option>
+      {movieList && movieList.length > 0 ? (
+        movieList.map((movie) => (
+          <option key={movie.movieId} value={movie.movieId}>
+            {movie.title}
+          </option>
+        ))
+      ) : (
+        <option value="">No movies available</option>
+      )}
+    </select>
 
-          <div className="checkbox-container">
-            <input
-              type="checkbox"
-              id="availability"
-              checked={editTicketData.availability}
-              onChange={(e) =>
-                setEditTicketData({ ...editTicketData, availability: e.target.checked })
-              }
-              disabled={availableTickets === 0}
-            />
-            <label htmlFor="availability">Available</label>
-          </div>
+    <label htmlFor="edit-showtime">Select Showtime:</label>
+    <select
+      id="edit-showtime"
+      value={editTicketData.showTimeId}
+      onChange={(e) => {
+        const selectedShowTimeId = e.target.value;
+        setEditTicketData({ ...editTicketData, showTimeId: selectedShowTimeId });
+      }}
+      disabled={!editTicketData.movieId || showTimesForEdit.length === 0}
+    >
+      <option value="">Select Showtime</option>
+      {showTimesForEdit.map((showTime) => (
+        <option key={showTime.showTimeId} value={showTime.showTimeId}>
+          {new Date(showTime.viewingTime).toLocaleString()}
+        </option>
+      ))}
+    </select>
 
-          <button type="button" onClick={editTickets} disabled={availableTickets === 0}>
-            Edit Tickets
-          </button>
-        </form>
-      </section>
+    <label htmlFor="edit-price">New Price:</label>
+    <input
+      type="number"
+      id="edit-price"
+      placeholder="New Price"
+      value={editTicketData.price}
+      onChange={(e) =>
+        setEditTicketData({ ...editTicketData, price: e.target.value })
+      }
+      min="0"
+      step="0.01"
+    />
+
+    <div className="checkbox-container">
+      <input
+        type="checkbox"
+        id="availability"
+        checked={editTicketData.availability}
+        onChange={(e) =>
+          setEditTicketData({ ...editTicketData, availability: e.target.checked })
+        }
+      />
+      <label htmlFor="availability">Available</label>
+    </div>
+
+    <button type="button" onClick={editTickets}>
+      Edit Tickets
+    </button>
+  </form>
+</section>
+
     </div>
   );
 };
