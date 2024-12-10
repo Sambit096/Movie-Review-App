@@ -10,6 +10,7 @@ namespace MovieReviewApp.Services
     public class MovieService : IMovieService
     {
         private readonly MovieReviewDbContext dbContext;
+        private readonly ILogger<MovieService> logger;
 
         public MovieService(MovieReviewDbContext dbContext)
         {
@@ -84,33 +85,31 @@ namespace MovieReviewApp.Services
             }
         }
 
-        public async Task<bool> EditMovie(Movie editedMovie)
+        public async Task<bool> EditMovie(Movie oldMovie, Movie newMovie)
         {
             try
             {
-                var existingMovie = await this.dbContext.Movies.FindAsync(editedMovie.MovieId);
-                if (existingMovie == null)
-                {
-                    throw new KeyNotFoundException(ErrorDictionary.ErrorLibrary[404]);
-                }
+                var movie = await dbContext.Movies.FindAsync(oldMovie.MovieId);
+                if (movie == null)
+                    return false;
 
-                existingMovie.Title = editedMovie.Title;
-                existingMovie.Genre = editedMovie.Genre;
-                existingMovie.Description = editedMovie.Description;
-                existingMovie.Rating = editedMovie.Rating;
+                // Update properties
+                movie.Title = newMovie.Title;
+                movie.Description = newMovie.Description;
+                movie.Genre = newMovie.Genre;
+                movie.Rating = newMovie.Rating;
+                // Update other properties as needed
 
-                this.dbContext.Movies.Update(existingMovie);
-                await this.dbContext.SaveChangesAsync();
+                await dbContext.SaveChangesAsync();
                 return true;
             }
-            catch (DbUpdateException)
+            catch (Exception ex)
             {
-                throw new Exception(ErrorDictionary.ErrorLibrary[422]); // Unprocessable Entity - validation error
-            }
-            catch (Exception ex) when (!(ex is KeyNotFoundException))
-            {
-                throw new Exception(ErrorDictionary.ErrorLibrary[500]);
+                logger.LogError(ex, "Error editing movie with ID {MovieId}.", oldMovie.MovieId);
+                throw new Exception("An error occurred while editing the movie.", ex);
             }
         }
+
+        
     }
 }
